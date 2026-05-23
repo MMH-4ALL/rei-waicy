@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future Plans — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .roadmap-timeline {
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--cyan), var(--pink-glow), var(--soft-orange));
+      border-radius: 2px;
+      box-shadow: var(--glow-cyan);
+    }
+
+    .roadmap-item {
+      position: relative;
+      margin-bottom: 48px;
+    }
+
+    .roadmap-item::before {
+      content: '';
+      position: absolute;
+      left: -36px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 3px solid var(--bg-primary);
+      z-index: 2;
+    }
+
+    .roadmap-item.soon::before {
+      background: var(--cyan);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .roadmap-item.mid::before {
+      background: var(--pink-glow);
+      box-shadow: 0 0 15px rgba(255, 107, 157, 0.5);
+    }
+
+    .roadmap-item.later::before {
+      background: var(--soft-orange);
+      box-shadow: var(--glow-orange);
+    }
+
+    .roadmap-date {
+      font-family: var(--font-accent);
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      padding: 4px 12px;
+      border-radius: var(--radius-xl);
+      display: inline-block;
+    }
+
+    .roadmap-item.soon .roadmap-date {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: var(--cyan);
+    }
+
+    .roadmap-item.mid .roadmap-date {
+      background: rgba(255, 107, 157, 0.1);
+      border: 1px solid rgba(255, 107, 157, 0.3);
+      color: var(--pink-glow);
+    }
+
+    .roadmap-item.later .roadmap-date {
+      background: rgba(255, 154, 92, 0.1);
+      border: 1px solid rgba(255, 154, 92, 0.3);
+      color: var(--soft-orange);
+    }
+
+    .roadmap-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .roadmap-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .roadmap-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .roadmap-tag {
+      padding: 3px 10px;
+      border-radius: var(--radius-xl);
+      font-size: 0.7rem;
+      font-family: var(--font-accent);
+    }
+
+    .roadmap-item.soon .roadmap-tag {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      color: var(--cyan);
+    }
+
+    .roadmap-item.mid .roadmap-tag {
+      background: rgba(255, 107, 157, 0.1);
+      border: 1px solid rgba(255, 107, 157, 0.2);
+      color: var(--pink-glow);
+    }
+
+    .roadmap-item.later .roadmap-tag {
+      background: rgba(255, 154, 92, 0.1);
+      border: 1px solid rgba(255, 154, 92, 0.2);
+      color: var(--soft-orange);
+    }
+
+    /* Flip cards for future features */
+    .future-flip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .future-vision {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(155, 93, 229, 0.06));
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .future-vision-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .future-vision h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .future-vision p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html" class="active">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="hero" style="padding-bottom: 40px;">
+      <div class="section-label reveal" style="margin-bottom: 24px;">Roadmap</div>
+      <h1 class="hero-title reveal delay-1">
+        Where <span class="hero-title-gradient">Rei</span> Goes Next
+      </h1>
+      <p class="hero-subtitle reveal delay-2">
+        Rei is just the beginning. Here's the roadmap for her growth — and the future we're building toward.
+      </p>
+    </section>
+
+    <!-- Roadmap Timeline -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Development Roadmap</span>
+        <h2 class="section-title">The Path Ahead</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="roadmap-timeline">
+        <div class="roadmap-item soon reveal delay-1">
+          <div class="roadmap-date">Coming Soon — 2026</div>
+          <h3 class="roadmap-title">Voice Interaction</h3>
+          <p class="roadmap-desc">Rei will gain a voice — a warm, steady, calming voice. Teens can talk to her hands-free, and she'll respond with synthesized speech that matches her maternal, reassuring tone. Perfect for睡前 conversations or when your hands are full.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Speech Synthesis</span>
+            <span class="roadmap-tag">Voice Recognition</span>
+            <span class="roadmap-tag">Tone Matching</span>
+          </div>
+        </div>
+
+        <div class="roadmap-item soon reveal delay-2">
+          <div class="roadmap-date">Coming Soon — 2026</div>
+          <h3 class="roadmap-title">Multi-Platform Expansion</h3>
+          <p class="roadmap-desc">Beyond the website — Rei will be available as a Discord bot, a mobile app, and a browser extension. She'll meet teens where they already are, whether that's Discord servers, TikTok browsers, or iOS home screens.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">iOS / Android</span>
+            <span class="roadmap-tag">Discord Bot</span>
+            <span class="roadmap-tag">Browser Extension</span>
+          </div>
+        </div>
+
+        <div class="roadmap-item mid reveal delay-3">
+          <div class="roadmap-date">Mid-Term — 2027</div>
+          <h3 class="roadmap-title">Guardian Dashboard</h3>
+          <p class="roadmap-desc">Parents and guardians will get a private dashboard showing anonymized well-being insights — without reading private conversations. Think: "Jordan seems less anxious this week" rather than "Jordan said X." Privacy-preserving oversight.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Privacy-Preserving</span>
+            <span class="roadmap-tag">Anonymized Insights</span>
+            <span class="roadmap-tag">Guardian Controls</span>
+          </div>
+        </div>
+
+        <div class="roadmap-item mid reveal delay-4">
+          <div class="roadmap-date">Mid-Term — 2027</div>
+          <h3 class="roadmap-title">Peer Connection Features</h3>
+          <p class="roadmap-desc">Rei will facilitate safe peer connections — moderated group conversations around shared interests, anonymous support circles, and moderated forums moderated by AI + human oversight. Connection without the toxicity.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Moderated Groups</span>
+            <span class="roadmap-tag">Anonymous Circles</span>
+            <span class="roadmap-tag">Shared Interests</span>
+          </div>
+        </div>
+
+        <div class="roadmap-item later reveal delay-5">
+          <div class="roadmap-date">Long-Term — 2028+</div>
+          <h3 class="roadmap-title">Adaptive Emotional Model</h3>
+          <p class="roadmap-desc">Rei's emotional intelligence will grow over time, learning from anonymized, consented interaction patterns to better detect subtle emotional shifts — anxiety spirals, depressive patterns, and joy — with increasingly nuanced, personalized responses.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Personalized AI</span>
+            <span class="roadmap-tag">Emotional Patterns</span>
+            <span class="roadmap-tag">Consent-Based Learning</span>
+          </div>
+        </div>
+
+        <div class="roadmap-item later reveal delay-6">
+          <div class="roadmap-date">Long-Term — 2028+</div>
+          <h3 class="roadmap-title">Research Partnership & Open Ethics</h3>
+          <p class="roadmap-desc">We plan to publish Rei-inspired research on teen AI companion safety, host open ethics workshops, and collaborate with academic institutions. The goal: establish industry-wide standards for teen AI safety — making Rei's approach the baseline, not the exception.</p>
+          <div class="roadmap-tags">
+            <span class="roadmap-tag">Academic Research</span>
+            <span class="roadmap-tag">Open Ethics</span>
+            <span class="roadmap-tag">Industry Standards</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Future Vision Cards -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">The Vision</span>
+        <h2 class="section-title">What We're Building Toward</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="future-flip-grid">
+        <div class="future-vision reveal delay-1">
+          <span class="future-vision-icon">🌍</span>
+          <h3>A World Where No Teen Is Alone at 2am</h3>
+          <p>Rei is the first line of support when human support isn't available. She doesn't replace connection — she bridges the gap until real connections can be found.</p>
+        </div>
+
+        <div class="future-vision reveal delay-2">
+          <span class="future-vision-icon">🛡️</span>
+          <h3>AI Safety as the Industry Standard</h3>
+          <p>By publishing our ethics framework and safety protocols, we aim to raise the bar for every AI built for young people — so Rei becomes the template, not the exception.</p>
+        </div>
+
+        <div class="future-vision reveal delay-3">
+          <span class="future-vision-icon">💙</span>
+          <h3>Technology That Heals</h3>
+          <p>Rei proves that the most powerful technology is technology that makes people feel seen, safe, and supported. That's the future we're committed to building.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "The future isn't just about what Rei can do — it's about who she helps become. Thank you for dreaming with us. Be gentle with yourself tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
