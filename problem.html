@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Problem — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .problem-hero {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+    }
+
+    .problem-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 60% 40%, rgba(255, 107, 53, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 30% 70%, rgba(155, 93, 229, 0.08) 0%, transparent 60%);
+    }
+
+    /* Stat cards with pulsing icons */
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 107, 53, 0.15);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+      transition: all 0.4s;
+      backdrop-filter: blur(12px);
+    }
+
+    .stat-card:hover {
+      border-color: rgba(255, 107, 53, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      display: block;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .stat-icon.delayed { animation-delay: -1s; }
+    .stat-icon.delayed2 { animation-delay: -2s; }
+
+    .stat-number-big {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--warm-orange);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .stat-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Problem cards */
+    .problem-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 107, 53, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--warm-orange), var(--soft-orange));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .problem-card:hover::before { opacity: 1; }
+
+    .problem-card:hover {
+      border-color: rgba(255, 107, 53, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    }
+
+    .problem-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .problem-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .problem-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .problem-stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.25);
+      border-radius: var(--radius-xl);
+      font-size: 0.72rem;
+      color: var(--warm-orange);
+      font-family: var(--font-accent);
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    /* Quote callout */
+    .callout-box {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.08), rgba(255, 154, 92, 0.05));
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .callout-box h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .callout-box p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.8;
+    }
+
+    /* Visual divider */
+    .visual-divider {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 1.2rem;
+      letter-spacing: 8px;
+      color: rgba(255, 107, 53, 0.3);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1" style="background:rgba(255,107,53,0.12)"></div>
+  <div class="orb orb-2" style="background:rgba(155,93,229,0.12)"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html" class="active">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="problem-hero">
+      <div class="problem-hero-bg"></div>
+      <div style="position: relative; z-index: 2;">
+        <div class="section-label reveal" style="margin-bottom: 24px;">The Reality</div>
+        <h1 class="hero-title reveal delay-1" style="font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 20px;">
+          The Problem<br>
+          <span style="background: linear-gradient(135deg, var(--warm-orange), var(--soft-orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">We Face</span>
+        </h1>
+        <p class="hero-subtitle reveal delay-2" style="max-width: 600px;">
+          Before we can build a solution, we need to be honest about what teens are actually dealing with.
+        </p>
+      </div>
+    </section>
+
+    <!-- Crisis Stats -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">The Crisis</span>
+        <h2 class="section-title">Teen Mental Health in Numbers</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="grid-4" style="gap: 20px;">
+        <div class="stat-card reveal delay-1">
+          <span class="stat-icon">📈</span>
+          <div class="stat-number-big" data-count="42" data-suffix="%">0</div>
+          <div class="stat-title">Increase</div>
+          <div class="stat-desc">Rise in teen anxiety & depression diagnoses since 2010</div>
+        </div>
+
+        <div class="stat-card reveal delay-2">
+          <span class="stat-icon delayed">⏰</span>
+          <div class="stat-number-big" data-count="7" data-suffix=" hrs">0</div>
+          <div class="stat-title">Daily Screen Time</div>
+          <div class="stat-desc">Average daily screen exposure for teens aged 13–18</div>
+        </div>
+
+        <div class="stat-card reveal delay-3">
+          <span class="stat-icon delayed2">🚫</span>
+          <div class="stat-number-big" data-count="0</div>
+          <div class="stat-title">Safe AI Companions</div>
+          <div class="stat-desc">No major AI companion built specifically for teens' safety</div>
+        </div>
+
+        <div class="stat-card reveal delay-4">
+          <span class="stat-icon">💬</span>
+          <div class="stat-number-big" data-count="56" data-suffix="%">0</div>
+          <div class="stat-title">Turn to AI</div>
+          <div class="stat-desc">Percentage of teens who've used AI chatbots for emotional support</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem Grid -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">What's Broken</span>
+        <h2 class="section-title">The Gaps We're Solving</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="problem-card reveal delay-1">
+          <span class="problem-icon">🔍</span>
+          <h3 class="problem-title">Algorithmic Harm</h3>
+          <p class="problem-desc">Social media algorithms are optimized for engagement, not well-being. They feed teens more of what disturbs them, not what heals them. The business model is in direct conflict with teen mental health.</p>
+          <div class="problem-stat-badge">⚠️ Engagement-first design</div>
+        </div>
+
+        <div class="problem-card reveal delay-2">
+          <span class="problem-icon">🛒</span>
+          <h3 class="problem-title">Data Commodification</h3>
+          <p class="problem-desc">Teen data is the most valuable commodity in the digital economy. Every app, every chatbot, every "free" service harvests their information — their interests, fears, vulnerabilities — and sells it.</p>
+          <div class="problem-stat-badge">🔓 Privacy as an afterthought</div>
+        </div>
+
+        <div class="problem-card reveal delay-3">
+          <span class="problem-icon">🤖</span>
+          <h3 class="problem-title">AI Without Empathy</h3>
+          <p class="problem-desc">Existing AI tools for teens are transactional — they answer questions, they don't read emotions. They have no memory, no continuity, no genuine understanding of context or feeling.</p>
+          <div class="problem-stat-badge">❌ No emotional continuity</div>
+        </div>
+
+        <div class="problem-card reveal delay-4">
+          <span class="problem-icon">⚠️</span>
+          <h3 class="problem-title">Harmful Content Exposure</h3>
+          <p class="problem-desc">Teens encounter self-harm content, eating disorder communities, radicalization pipelines, and misinformation with zero safety filters. Platforms act after damage is done — not before.</p>
+          <div class="problem-stat-badge">🚨 Reactive, not preventive</div>
+        </div>
+
+        <div class="problem-card reveal delay-5">
+          <span class="problem-icon">🕳️</span>
+          <h3 class="problem-title">The 2am Gap</h3>
+          <p class="problem-desc">Crisis doesn't keep business hours. Teens reach out at 2am when they can't sleep, when anxiety peaks, when human support isn't available. The systems meant to help them are offline.</p>
+          <div class="problem-stat-badge">🕐 No 24/7 human support</div>
+        </div>
+
+        <div class="problem-card reveal delay-6">
+          <span class="problem-icon">😶</span>
+          <h3 class="problem-title">Judgment & Stigma</h3>
+          <p class="problem-desc">Teens don't seek help because they're afraid of being judged — by adults, by peers, by institutions. Asking for help is framed as weakness, not strength. The result: silent suffering.</p>
+          <div class="problem-stat-badge">🛑 Stigma barrier</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual divider -->
+    <div class="visual-divider reveal">✦ ✦ ✦ ✦ ✦</div>
+
+    <!-- Quote -->
+    <section class="section">
+      <div class="quote-block reveal" style="max-width: 800px; margin: 0 auto;">
+        <p class="quote-text">
+          "The tools teens use every day were not built with their well-being as the priority. We're building Rei to fix that — starting with safety, grounded in empathy, and built for trust."
+        </p>
+        <div class="quote-author">— The Rei Design Philosophy</div>
+      </div>
+    </section>
+
+    <!-- Callout -->
+    <section class="section">
+      <div class="callout-box reveal">
+        <h3>Every problem listed here has a direct, thoughtful answer in Rei's design.</h3>
+        <p>From algorithmic safety layers to 24/7 availability, from memory-powered empathy to privacy-first architecture — every gap Rei addresses was identified through honest research into teen needs.</p>
+        <div style="margin-top: 28px;">
+          <a href="solution.html" class="btn btn-warm">See How Rei Addresses These →</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "I know this is heavy. It's meant to be. But understanding the problem is the first act of care. Be kind to yourself tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
