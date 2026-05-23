@@ -329,6 +329,24 @@ img {
   text-align: center;
   padding: 120px 24px 80px;
   position: relative;
+  width: 100%;
+}
+
+/* Custom hero variants — also full width */
+.problem-hero,
+.ethics-hero,
+.about-hero,
+.demo-hero,
+.story-hero,
+.closing-section {
+  width: 100%;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
 .hero-badge {
