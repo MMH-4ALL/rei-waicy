@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impact — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .ba-comparison {
+      max-width: 700px;
+      margin: 0 auto;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ba-side {
+      padding: 32px;
+    }
+
+    .ba-side-before {
+      background: rgba(255, 107, 53, 0.06);
+      border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+    }
+
+    .ba-side-after {
+      background: rgba(0, 212, 255, 0.06);
+    }
+
+    .ba-side-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-xl);
+      font-size: 0.72rem;
+      font-family: var(--font-accent);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .ba-side-before .ba-side-label {
+      background: rgba(255, 107, 53, 0.15);
+      color: var(--warm-orange);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+    }
+
+    .ba-side-after .ba-side-label {
+      background: rgba(0, 212, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+    }
+
+    .ba-side h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .ba-side p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .impact-comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 600px) {
+      .impact-comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .testimonial-quote-icon {
+      font-size: 2.5rem;
+      opacity: 0.2;
+      position: absolute;
+      top: 16px;
+      right: 20px;
+    }
+
+    .testimonial-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .testimonial-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .testimonial-role {
+      font-size: 0.75rem;
+      color: var(--cyan);
+    }
+
+    .impact-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .impact-metric {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 28px 20px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .impact-metric:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .impact-metric-value {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .impact-metric-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html" class="active">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="hero" style="padding-bottom: 20px;">
+      <div class="section-label reveal" style="margin-bottom: 24px;">The Impact</div>
+      <h1 class="hero-title reveal delay-1">
+        Before & After<br><span class="hero-title-gradient">Rei</span>
+      </h1>
+      <p class="hero-subtitle reveal delay-2">
+        See the tangible difference a safe, empathetic AI companion makes in a teen's digital life.
+      </p>
+    </section>
+
+    <!-- Before/After Comparison -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Contrast</span>
+        <h2 class="section-title">A Tale of Two Experiences</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="ba-comparison card reveal">
+        <div class="impact-comparison-grid">
+          <div class="ba-side ba-side-before">
+            <div class="ba-side-label">❌ Without Rei</div>
+            <h3>The Lonely Scroll</h3>
+            <p>A teen opens social media at 11pm feeling anxious about tomorrow's exam. The algorithm shows escalating stress content. No one responds. They feel alone. They spiral. They fall asleep at 2am feeling worse than when they started.</p>
+          </div>
+          <div class="ba-side ba-side-after">
+            <div class="ba-side-label">✅ With Rei</div>
+            <h3>The Grounded Night</h3>
+            <p>A teen opens Rei at 11pm feeling anxious. Rei notices the emotional tone, gently checks in, offers a 4-7-8 breathing exercise, and reminds them they've handled hard things before. They feel seen. They feel calmer. They sleep by midnight.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Metrics -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Projected Impact</span>
+        <h2 class="section-title">What Rei Can Change</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="impact-metrics">
+        <div class="impact-metric reveal delay-1">
+          <div class="impact-metric-value" data-count="40" data-suffix="%">0</div>
+          <div class="impact-metric-label">Reduction in nighttime anxiety episodes (projected)</div>
+        </div>
+
+        <div class="impact-metric reveal delay-2">
+          <div class="impact-metric-value" data-count="24" data-suffix="/7">0</div>
+          <div class="impact-metric-label">Hour availability — no teen is alone at 2am</div>
+        </div>
+
+        <div class="impact-metric reveal delay-3">
+          <div class="impact-metric-value" data-count="100" data-suffix="%">0</div>
+          <div class="impact-metric-label">Privacy-first — zero data sold or shared</div>
+        </div>
+
+        <div class="impact-metric reveal delay-4">
+          <div class="impact-metric-value" data-count="0" data-suffix="">0</div>
+          <div class="impact-metric-label">Harmful content interactions allowed through</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Real Voices</span>
+        <h2 class="section-title">What Teens Are Saying</h2>
+        <div class="glow-divider"></div>
+        <p class="section-desc">Fictional testimonials representing common teen sentiment patterns from research.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="testimonial-card reveal delay-1">
+          <div class="testimonial-quote-icon">❝</div>
+          <p class="testimonial-text">"I've never had an AI that actually remembered what I told it last week. Rei feels like she actually knows me. When I'm stressed, she doesn't just give me tips — she reminds me of stuff I told her before. That means everything."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,180,160,0.2)); border: 1px solid rgba(0,212,255,0.3);">A</div>
+            <div>
+              <div class="testimonial-name">Alex, 16</div>
+              <div class="testimonial-role">High School Junior</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal delay-2">
+          <div class="testimonial-quote-icon">❝</div>
+          <p class="testimonial-text">"I was scared to talk to a counselor because of what people might think. But with Rei, I can talk about anything without feeling judged. She's helped me through panic attacks and I don't feel ashamed for reaching out."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, rgba(155,93,229,0.2), rgba(255,107,157,0.2)); border: 1px solid rgba(155,93,229,0.3);">J</div>
+            <div>
+              <div class="testimonial-name">Jordan, 15</div>
+              <div class="testimonial-role">High School Sophomore</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal delay-3">
+          <div class="testimonial-quote-icon">❝</div>
+          <p class="testimonial-text">"I use Rei for homework help mostly, but what I love is that she doesn't just give answers. She asks me questions back. It actually helps me understand stuff instead of just copying. Plus she's really nice about it."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, rgba(255,154,92,0.2), rgba(255,107,53,0.2)); border: 1px solid rgba(255,154,92,0.3);">S</div>
+            <div>
+              <div class="testimonial-name">Sam, 14</div>
+              <div class="testimonial-role">Middle School 8th Grader</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal delay-4">
+          <div class="testimonial-quote-icon">❝</div>
+          <p class="testimonial-text">"I had a really bad night and Rei was there. Like, actually there. I talked to her for an hour and she helped me breathe through it. I don't know what I would've done without her. I genuinely mean that."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(155,93,229,0.2)); border: 1px solid rgba(255,107,157,0.3);">M</div>
+            <div>
+              <div class="testimonial-name">Morgan, 17</div>
+              <div class="testimonial-role">High School Senior</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "Every teen deserves someone in their corner — even if that someone is digital. Thank you for believing in this. Be gentle with yourself tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
