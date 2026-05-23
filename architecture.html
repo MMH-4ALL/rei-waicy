@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Rei Works — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Diagram flow */
+    .arch-diagram {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+
+    .arch-box {
+      background: var(--bg-card);
+      border: 1.5px solid rgba(0, 212, 255, 0.2);
+      border-radius: var(--radius-md);
+      padding: 24px 16px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .arch-box:hover, .arch-box.highlighted {
+      border-color: var(--cyan);
+      box-shadow: var(--glow-cyan);
+      background: rgba(0, 212, 255, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .arch-box-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .arch-box-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .arch-box-desc {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .arch-arrow {
+      text-align: center;
+      font-size: 1.5rem;
+      color: var(--cyan);
+      opacity: 0.5;
+      animation: arrowPulse 2s ease-in-out infinite;
+    }
+
+    .arch-flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .arch-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .arch-detail-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: all 0.3s;
+    }
+
+    .arch-detail-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .arch-detail-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .arch-detail-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .arch-detail-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Component list */
+    .component-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .component-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.06);
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .component-list li::before {
+      content: '▸';
+      color: var(--cyan);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .component-list li strong {
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html" class="active">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="hero" style="padding-bottom: 20px;">
+      <div class="section-label reveal" style="margin-bottom: 24px;">The System</div>
+      <h1 class="hero-title reveal delay-1">
+        How <span class="hero-title-gradient">Rei</span> Works
+      </h1>
+      <p class="hero-subtitle reveal delay-2">
+        A layered architecture built around safety, memory, and emotional intelligence.
+      </p>
+    </section>
+
+    <!-- Interactive Flow Diagram -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">System Flow</span>
+        <h2 class="section-title">The Processing Pipeline</h2>
+        <div class="glow-divider"></div>
+        <p class="section-desc">Hover over each box to highlight the flow.</p>
+      </div>
+
+      <div class="card reveal" style="padding: 40px; margin-bottom: 32px;">
+        <div class="arch-flow-row" style="margin-bottom: 16px;">
+          <div class="arch-box" data-highlight="input">
+            <span class="arch-box-icon">💬</span>
+            <div class="arch-box-name">User Input</div>
+            <div class="arch-box-desc">Text, voice, or file request</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box" data-highlight="safety">
+            <span class="arch-box-icon">🛡️</span>
+            <div class="arch-box-name">Safety Layer</div>
+            <div class="arch-box-desc">Content filter & crisis detection</div>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box" data-highlight="emotion">
+            <span class="arch-box-icon">🌡️</span>
+            <div class="arch-box-name">Emotion Engine</div>
+            <div class="arch-box-desc">Tone & sentiment analysis</div>
+          </div>
+        </div>
+        <div class="arch-flow-row">
+          <div class="arch-box" data-highlight="memory">
+            <span class="arch-box-icon">🧠</span>
+            <div class="arch-box-name">Memory Store</div>
+            <div class="arch-box-desc">Context & history retrieval</div>
+          </div>
+          <div class="arch-box" data-highlight="reason">
+            <span class="arch-box-icon">🧭</span>
+            <div class="arch-box-name">Reasoning Engine</div>
+            <div class="arch-box-desc">Decision logic & response planning</div>
+          </div>
+          <div class="arch-box" data-highlight="response">
+            <span class="arch-box-icon">✉️</span>
+            <div class="arch-box-name">Response Builder</div>
+            <div class="arch-box-desc">Persona-aligned, safe output</div>
+          </div>
+          <div class="arch-box" data-highlight="tools">
+            <span class="arch-box-icon">🔧</span>
+            <div class="arch-box-name">Tools Layer</div>
+            <div class="arch-box-desc">File search, reminders, web</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs: Deep Dive -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Deep Dive</span>
+        <h2 class="section-title">System Components</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="tabs-container reveal">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="memory">🧠 Memory</button>
+          <button class="tab-btn" data-tab="tools">🔧 Tools</button>
+          <button class="tab-btn" data-tab="safety">🛡️ Safety</button>
+          <button class="tab-btn" data-tab="reasoning">🧭 Decision Logic</button>
+        </div>
+
+        <div class="tab-content active" data-tab-content="memory">
+          <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 16px;">Conversational Memory System</h3>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8; margin-bottom: 20px;">
+            Rei's memory system maintains persistent conversation history, enabling true continuity across sessions. Unlike simple chat logs, Rei's memory is structured, weighted, and selectively retrieved based on context relevance.
+          </p>
+          <ul class="component-list">
+            <li><strong>Short-term context window:</strong> Current session context maintained in working memory for immediate relevance.</li>
+            <li><strong>Semantic memory store:</strong> Key facts, preferences, and emotional patterns extracted and stored persistently.</li>
+            <li><strong>Importance weighting:</strong> Emotionally charged or repeated topics are weighted higher for retrieval priority.</li>
+            <li><strong>Recall triggers:</strong> Automatic retrieval when related topics appear in new conversations.</li>
+            <li><strong>Privacy boundaries:</strong> Sensitive information is tagged and never used for cross-context purposes.</li>
+          </ul>
+        </div>
+
+        <div class="tab-content" data-tab-content="tools">
+          <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 16px;">Tools & Capabilities Layer</h3>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8; margin-bottom: 20px;">
+            Rei's tools layer enables real-world utility — from finding files to setting reminders, she acts as a genuine productivity partner, not just a conversational engine.
+          </p>
+          <ul class="component-list">
+            <li><strong>File search:</strong> Intelligent file finder that searches by name, type, date, or content keywords.</li>
+            <li><strong>Reminder system:</strong> Natural-language reminder creation with timed notifications.</li>
+            <li><strong>Calendar integration:</strong> Schedule viewing and event creation support.</li>
+            <li><strong>Web search:</strong> Safe, filtered web search for homework and research tasks.</li>
+            <li><strong>Note-taking:</strong> Persistent note storage with categorization and retrieval.</li>
+            <li><strong>Tool safety guard:</strong> Every tool invocation is checked against the safety layer before execution.</li>
+          </ul>
+        </div>
+
+        <div class="tab-content" data-tab-content="safety">
+          <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 16px;">Safety & Content Filtering</h3>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8; margin-bottom: 20px;">
+            The safety layer is Rei's most critical component. It intercepts all input and output, scanning for harmful content patterns and triggering appropriate intervention protocols.
+          </p>
+          <ul class="component-list">
+            <li><strong>Self-harm detection:</strong> Recognizes indicators of self-harm ideation and triggers safe messaging protocol.</li>
+            <li><strong>Eating disorder patterns:</strong> Detects pro-eating-disorder language and body image distortion cues.</li>
+            <li><strong>Radicalization signals:</strong> Identifies escalating extreme viewpoints and redirects to safe resources.</li>
+            <li><strong>Misinformation flagging:</strong> Flags harmful false claims with corrections and source links.</li>
+            <li><strong>Harassment detection:</strong> Identifies bullying, hate speech, and grooming patterns.</li>
+            <li><strong>Intervention protocols:</strong> Tiered response system — from gentle redirect to crisis resource provision.</li>
+          </ul>
+        </div>
+
+        <div class="tab-content" data-tab-content="reasoning">
+          <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 16px;">Decision & Response Logic</h3>
+          <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8; margin-bottom: 20px;">
+            Rei's reasoning engine determines what kind of response to give based on emotional state, conversation context, user history, and safety assessment.
+          </p>
+          <ul class="component-list">
+            <li><strong>Emotional routing:</strong> Determines if response should be informational, emotional support, grounding technique, or safety intervention.</li>
+            <li><strong>Persona alignment:</strong> Every response is checked against Rei's persona — warm, steady, maternal energy.</li>
+            <li><strong>Memory integration:</strong> Past relevant conversations are woven into responses naturally.</li>
+            <li><strong>Tool decision:</strong> Determines when to use a tool vs. when to respond conversationally.</li>
+            <li><strong>Output safety check:</strong> Final output passes through safety filter before delivery to user.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Detail Cards -->
+    <section class="section">
+      <div class="arch-detail-grid">
+        <div class="arch-detail-card reveal delay-1">
+          <span class="arch-detail-icon">🧠</span>
+          <div class="arch-detail-title">Memory Store</div>
+          <div class="arch-detail-text">Persistent semantic memory with importance weighting. Stores key facts, emotional patterns, and conversation context across all sessions.</div>
+        </div>
+
+        <div class="arch-detail-card reveal delay-2">
+          <span class="arch-detail-icon">🌡️</span>
+          <div class="arch-detail-title">Emotion Engine</div>
+          <div class="arch-detail-text">Real-time sentiment and tone analysis. Routes responses based on detected emotional state — supportive for distress, celebratory for wins.</div>
+        </div>
+
+        <div class="arch-detail-card reveal delay-3">
+          <span class="arch-detail-icon">🔧</span>
+          <div class="arch-detail-title">Tool Registry</div>
+          <div class="arch-detail-text">Modular tool system. File search, reminders, web lookup, notes — all tools are registered, versioned, and safety-checked before execution.</div>
+        </div>
+
+        <div class="arch-detail-card reveal delay-4">
+          <span class="arch-detail-icon">🧭</span>
+          <div class="arch-detail-title">Reasoning Engine</div>
+          <div class="arch-detail-text">Decision tree and context integration. Determines response strategy, tone, and content based on full conversation state.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "Systems are only as good as the care behind them. Every layer of Rei was designed with teens in mind. Be gentle with yourself tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+  <script>
+    // Diagram highlight interactivity
+    document.querySelectorAll('.arch-box').forEach(box => {
+      box.addEventListener('mouseenter', () => {
+        document.querySelectorAll('.arch-box').forEach(b => b.classList.remove('highlighted'));
+        box.classList.add('highlighted');
+      });
+      box.addEventListener('mouseleave', () => box.classList.remove('highlighted'));
+    });
+  </script>
+</body>
+</html>
