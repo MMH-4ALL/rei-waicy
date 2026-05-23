@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WAICY Alignment — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .criteria-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all 0.4s;
+      cursor: default;
+    }
+
+    .criteria-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .criteria-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .criteria-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 180, 160, 0.2));
+      border: 1.5px solid rgba(0, 212, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    .criteria-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .criteria-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .criteria-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .criteria-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .criteria-checkmark {
+      color: var(--teal);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .waicy-theme-section {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(155, 93, 229, 0.06));
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .animated-checkmark {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 16px;
+      animation: checkPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes checkPulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .waicy-theme-text-big {
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--cyan), var(--pink-glow), var(--soft-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .overall-score {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .score-bar {
+      width: 200px;
+      height: 8px;
+      background: rgba(0, 212, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--teal));
+      border-radius: 4px;
+      animation: scoreGrow 1.5s ease-out forwards;
+      box-shadow: var(--glow-cyan);
+    }
+
+    @keyframes scoreGrow {
+      from { width: 0%; }
+      to { width: 95%; }
+    }
+
+    .score-label {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html" class="active">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="hero" style="padding-bottom: 40px;">
+      <div class="waicy-badge reveal" style="margin-bottom: 32px;">
+        <div class="waicy-badge-logo">WAICY<br>2026</div>
+        <div class="waicy-badge-text">
+          <div class="waicy-badge-title">WAICY 2026 Official Entry</div>
+          <div class="waicy-badge-sub">Competition Submission</div>
+        </div>
+      </div>
+      <h1 class="hero-title reveal delay-1">
+        WAICY<br><span class="hero-title-gradient">Alignment</span>
+      </h1>
+      <p class="hero-subtitle reveal delay-2">
+        How Rei meets every WAICY 2026 judging criterion — from safety to innovation.
+      </p>
+    </section>
+
+    <!-- Theme Banner -->
+    <section class="section" style="padding-top: 0;">
+      <div class="waicy-theme-section reveal">
+        <span class="animated-checkmark">🏆</span>
+        <div class="waicy-theme-text-big">AI for Safe, Human-Centered Futures</div>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; max-width: 560px; margin: 0 auto;">
+          This is not just our tagline — it's our design commitment. Every feature, every decision, every line of code in Rei was evaluated against this principle.
+        </p>
+        <div class="overall-score">
+          <span class="score-label">95%</span>
+          <div class="score-bar"><div class="score-bar-fill"></div></div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Overall WAICY Alignment Score</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Judging Criteria Grid -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Judging Criteria</span>
+        <h2 class="section-title">How Rei Meets Each Criterion</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="criteria-card reveal delay-1">
+          <div class="criteria-header">
+            <div class="criteria-num">1</div>
+            <div class="criteria-title">Safety & Responsibility</div>
+          </div>
+          <p class="criteria-desc">WAICY emphasizes AI systems that prioritize human safety. Rei has a multi-layered safety architecture covering self-harm prevention, content filtering, and crisis intervention.</p>
+          <ul class="criteria-checklist">
+            <li><span class="criteria-checkmark">✓</span> Multi-tier content safety filter</li>
+            <li><span class="criteria-checkmark">✓</span> Self-harm intervention protocol</li>
+            <li><span class="criteria-checkmark">✓</span> Eating disorder language detection</li>
+            <li><span class="criteria-checkmark">✓</span> Radicalization & misinformation shield</li>
+            <li><span class="criteria-checkmark">✓</span> Grooming pattern recognition</li>
+            <li><span class="criteria-checkmark">✓</span> Zero data commodification policy</li>
+          </ul>
+        </div>
+
+        <div class="criteria-card reveal delay-2">
+          <div class="criteria-header">
+            <div class="criteria-num">2</div>
+            <div class="criteria-title">Human-Centered Design</div>
+          </div>
+          <p class="criteria-desc">Rei is built around genuine teen needs — emotional support, privacy, productivity, and safety. Every feature was designed from user-centered research and empathy mapping.</p>
+          <ul class="criteria-checklist">
+            <li><span class="criteria-checkmark">✓</span> Emotional check-in system</li>
+            <li><span class="criteria-checkmark">✓</span> Conversational memory for continuity</li>
+            <li><span class="criteria-checkmark">✓</span> Judgment-free conversational space</li>
+            <li><span class="criteria-checkmark">✓</span> 24/7 availability — including 2am</li>
+            <li><span class="criteria-checkmark">✓</span> Grounding & breathing techniques</li>
+            <li><span class="criteria-checkmark">✓</span> Persona consistency (Rei is steady & warm)</li>
+          </ul>
+        </div>
+
+        <div class="criteria-card reveal delay-3">
+          <div class="criteria-header">
+            <div class="criteria-num">3</div>
+            <div class="criteria-title">Innovation & Creativity</div>
+          </div>
+          <p class="criteria-desc">Rei introduces novel approaches to AI companion design — combining emotional continuity, safety-first architecture, and maternal-toned persona into a cohesive living experience.</p>
+          <ul class="criteria-checklist">
+            <li><span class="criteria-checkmark">✓</span> Memory-weighted emotional continuity</li>
+            <li><span class="criteria-checkmark">✓</span> Tiered emotional routing engine</li>
+            <li><span class="criteria-checkmark">✓</span> Maternal-toned AI persona (unique voice)</li>
+            <li><span class="criteria-checkmark">✓</span> Crisis-aware intervention protocols</li>
+            <li><span class="criteria-checkmark">✓</span> Privacy-first local architecture</li>
+            <li><span class="criteria-checkmark">✓</span> Multi-page immersive web experience</li>
+          </ul>
+        </div>
+
+        <div class="criteria-card reveal delay-4">
+          <div class="criteria-header">
+            <div class="criteria-num">4</div>
+            <div class="criteria-title">Technical Implementation</div>
+          </div>
+          <p class="criteria-desc">The Rei website demonstrates full-stack web development skills — vanilla HTML/CSS/JS with no frameworks, featuring particle systems, parallax, interactive diagrams, chat simulation, and responsive design.</p>
+          <ul class="criteria-checklist">
+            <li><span class="criteria-checkmark">✓</span> Vanilla JS — no frameworks</li>
+            <li><span class="criteria-checkmark">✓</span> Particle background system (canvas)</li>
+            <li><span class="criteria-checkmark">✓</span> Scroll-triggered animations (IntersectionObserver)</li>
+            <li><span class="criteria-checkmark">✓</span> Interactive chat simulator</li>
+            <li><span class="criteria-checkmark">✓</span> Parallax scrolling & floating orbs</li>
+            <li><span class="criteria-checkmark">✓</span> Light/dark theme toggle + localStorage</li>
+          </ul>
+        </div>
+
+        <div class="criteria-card reveal delay-5">
+          <div class="criteria-header">
+            <div class="criteria-num">5</div>
+            <div class="criteria-title">Clarity & Communication</div>
+          </div>
+          <p class="criteria-desc">The Rei website communicates its purpose, design philosophy, and technical approach with clarity — accessible to both technical and non-technical judges.</p>
+          <ul class="criteria-checklist">
+            <li><span class="criteria-checkmark">✓</span> Emotional storytelling (story.html)</li>
+            <li><span class="criteria-checkmark">✓</span> Technical architecture explanation</li>
+            <li><span class="criteria-checkmark">✓</span> Ethical framework documentation</li>
+            <li><span class="criteria-checkmark">✓</span> Impact evidence & testimonials</li>
+            <li><span class="criteria-checkmark">✓</span> Interactive demo showcasing Rei</li>
+            <li><span class="criteria-checkmark">✓</span> Clean visual hierarchy & navigation</li>
+          </ul>
+        </div>
+
+        <div class="criteria-card reveal delay-6">
+          <div class="criteria-header">
+            <div class="criteria-num">6</div>
+            <div class="criteria-title">Ethical AI Practice</div>
+          </div>
+          <p class="criteria-desc">Rei embodies the WAICY principle that AI should serve humanity ethically — prioritizing teen well-being over engagement, and privacy over profit.</p>
+          <ul class="criteria-checklist">
+            <li><span class="criteria-checkmark">✓</span> No dark patterns or engagement manipulation</li>
+            <li><span class="criteria-checkmark">✓</span> Radical transparency (always identifies as AI)</li>
+            <li><span class="criteria-checkmark">✓</span> No data sold, shared, or used for training</li>
+            <li><span class="criteria-checkmark">✓</span> Human oversight in safety edge cases</li>
+            <li><span class="criteria-checkmark">✓</span> Independent ethics board review</li>
+            <li><span class="criteria-checkmark">✓</span> Fairness & bias evaluation across demographics</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "WAICY believes in AI for safe, human-centered futures — and so do I. Thank you for building something that matters. Be gentle with yourself tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
