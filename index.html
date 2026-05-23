@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rei — A Safe Personal AI Companion for Teens</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ---- Page-specific overrides ---- */
+    .hero-orbs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-orb-item {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      animation: heroOrbFloat 10s ease-in-out infinite;
+    }
+
+    .hero-orb-item:nth-child(1) {
+      width: 300px; height: 300px;
+      background: rgba(0, 212, 255, 0.15);
+      top: 15%; left: 10%;
+      animation-delay: 0s;
+    }
+
+    .hero-orb-item:nth-child(2) {
+      width: 250px; height: 250px;
+      background: rgba(255, 107, 157, 0.12);
+      top: 60%; right: 8%;
+      animation-delay: -3s;
+    }
+
+    .hero-orb-item:nth-child(3) {
+      width: 200px; height: 200px;
+      background: rgba(255, 154, 92, 0.1);
+      bottom: 20%; left: 50%;
+      animation-delay: -6s;
+    }
+
+    @keyframes heroOrbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(25px, -30px) scale(1.08); }
+      66% { transform: translate(-15px, 20px) scale(0.94); }
+    }
+
+    /* Animated floating icon */
+    .hero-rei-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d4ff, #ff6b9d);
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #0b0e2d;
+      box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 80px rgba(255, 107, 157, 0.2);
+      animation: heroIconFloat 4s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    .hero-rei-icon::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0, 212, 255, 0.3);
+      animation: rotateSlow 8s linear infinite;
+    }
+
+    @keyframes heroIconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Feature strip */
+    .feature-strip {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 48px;
+      animation: fadeInUp 1s ease 0.8s both;
+    }
+
+    .feature-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      background: var(--glass);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: var(--radius-xl);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-family: var(--font-accent);
+      transition: all 0.3s;
+    }
+
+    .feature-chip:hover {
+      border-color: rgba(0, 212, 255, 0.4);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+
+    .feature-chip-icon {
+      font-size: 1rem;
+    }
+
+    /* Info sections */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 0;
+    }
+
+    /* Animated waicy badge */
+    .waicy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(155, 93, 229, 0.08));
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: var(--radius-xl);
+      margin-bottom: 48px;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .waicy-badge-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--mid-purple), var(--deep-purple));
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.45rem;
+      color: var(--cyan);
+      text-align: center;
+      line-height: 1.2;
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .waicy-badge-text {
+      text-align: left;
+    }
+
+    .waicy-badge-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .waicy-badge-sub {
+      font-size: 0.7rem;
+      color: var(--cyan);
+      letter-spacing: 0.5px;
+    }
+
+    /* How it works preview */
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .step-item {
+      text-align: center;
+      padding: 32px 20px;
+      position: relative;
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 180, 160, 0.2));
+      border: 1.5px solid rgba(0, 212, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--cyan);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .step-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+  <!-- Particles Background -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Floating Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Page Transition Overlay -->
+  <div class="page-transition"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-orb">R</div>
+      Rei
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span>
+        <span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-orbs">
+        <div class="hero-orb-item"></div>
+        <div class="hero-orb-item"></div>
+        <div class="hero-orb-item"></div>
+      </div>
+
+      <!-- WAICY Badge -->
+      <div class="waicy-badge reveal">
+        <div class="waicy-badge-logo">WAICY<br>2026</div>
+        <div class="waicy-badge-text">
+          <div class="waicy-badge-title">WAICY 2026 Entry</div>
+          <div class="waicy-badge-sub">AI for Safe, Human-Centered Futures</div>
+        </div>
+      </div>
+
+      <!-- Animated Rei Icon -->
+      <div class="hero-rei-icon reveal">R</div>
+
+      <h1 class="hero-title reveal">
+        <span class="hero-title-gradient">Rei</span>
+      </h1>
+
+      <p class="hero-subtitle reveal">
+        A safe, emotional, and <em>intelligent</em> personal AI companion<br>
+        built specifically for teens navigating their digital world.
+      </p>
+
+      <div class="hero-cta-group reveal">
+        <a href="story.html" class="btn btn-primary">
+          Enter the Experience
+          <span>→</span>
+        </a>
+        <a href="demo.html" class="btn btn-secondary">
+          Try the Demo
+          <span>⚡</span>
+        </a>
+      </div>
+
+      <!-- Feature chips -->
+      <div class="feature-strip">
+        <div class="feature-chip"><span class="feature-chip-icon">🛡️</span> Safe by Design</div>
+        <div class="feature-chip"><span class="feature-chip-icon">💙</span> Emotionally Aware</div>
+        <div class="feature-chip"><span class="feature-chip-icon">🧠</span> Memory-Powered</div>
+        <div class="feature-chip"><span class="feature-chip-icon">🔒</span> Privacy-First</div>
+        <div class="feature-chip"><span class="feature-chip-icon">🤝</span> Always There</div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator">
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT IS REI? -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Introducing</span>
+        <h2 class="section-title">What is Rei?</h2>
+        <div class="glow-divider"></div>
+        <p class="section-desc">
+          Rei isn't just a chatbot. She's a living digital companion — warm, steady, and always on your side.
+        </p>
+      </div>
+
+      <div class="info-grid">
+        <div class="card reveal delay-1">
+          <span class="card-icon">💬</span>
+          <h3 class="card-title">Conversational Memory</h3>
+          <p class="card-text">Rei remembers your conversations, your moods, and your context — so every interaction feels personal, not repetitive.</p>
+        </div>
+
+        <div class="card reveal delay-2">
+          <span class="card-icon">🛡️</span>
+          <h3 class="card-title">Safety Layer</h3>
+          <p class="card-text">Built with guardrails that protect teens from harmful content, misinformation, and manipulation — invisibly and always.</p>
+        </div>
+
+        <div class="card reveal delay-3">
+          <span class="card-icon">🌡️</span>
+          <h3 class="card-title">Emotional Check-ins</h3>
+          <p class="card-text">Rei notices when you're stressed or down. She reaches out with warmth — not pity — and helps you ground yourself.</p>
+        </div>
+
+        <div class="card reveal delay-4">
+          <span class="card-icon">📁</span>
+          <h3 class="card-title">File & Task Help</h3>
+          <p class="card-text">From finding lost files to organizing your study schedule, Rei is genuinely useful — she's your digital co-pilot.</p>
+        </div>
+
+        <div class="card reveal delay-5">
+          <span class="card-icon">🧭</span>
+          <h3 class="card-title">Judgment-Free Space</h3>
+          <p class="card-text">No topic is too embarrassing, no question too silly. Rei creates a safe space where teens can be fully themselves.</p>
+        </div>
+
+        <div class="card reveal delay-6">
+          <span class="card-icon">⚡</span>
+          <h3 class="card-title">Instant Responsiveness</h3>
+          <p class="card-text">Available 24/7 on any device. Rei meets teens where they are — at 2am during exam panic or 5pm after a rough day.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (Preview) -->
+    <section class="section" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.03), rgba(155, 93, 229, 0.05)); border-radius: 32px; margin: 0 auto; max-width: 1100px;">
+      <div class="section-header reveal">
+        <span class="section-label">The System</span>
+        <h2 class="section-title">How Rei Works</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="steps-row">
+        <div class="step-item reveal delay-1">
+          <div class="step-num">1</div>
+          <h3 class="step-title">You Talk to Rei</h3>
+          <p class="step-desc">Natural conversation — type as you would text a friend. Rei understands nuance, tone, and emotion.</p>
+        </div>
+
+        <div class="step-item reveal delay-2">
+          <div class="step-num">2</div>
+          <h3 class="step-title">Rei Understands</h3>
+          <p class="step-desc">She reads between the lines — not just your words, but your emotional state, context, and needs.</p>
+        </div>
+
+        <div class="step-item reveal delay-3">
+          <div class="step-num">3</div>
+          <h3 class="step-title">Memory Activates</h3>
+          <p class="step-desc">She recalls past conversations to give personalized, continuity-based responses.</p>
+        </div>
+
+        <div class="step-item reveal delay-4">
+          <div class="step-num">4</div>
+          <h3 class="step-title">Safe Response</h3>
+          <p class="step-desc">Every response passes through the safety layer — ensuring appropriate, healthy, helpful output.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;" class="reveal">
+        <a href="architecture.html" class="btn btn-secondary">
+          Explore the Architecture
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- STATS ROW -->
+    <section class="section">
+      <div class="grid-4" style="text-align: center;">
+        <div class="reveal delay-1">
+          <div class="stat-number" data-count="100" data-suffix="%">0</div>
+          <div class="stat-label">Safety-Focused</div>
+        </div>
+        <div class="reveal delay-2">
+          <div class="stat-number" data-count="24" data-suffix="/7">0</div>
+          <div class="stat-label">Always Available</div>
+        </div>
+        <div class="reveal delay-3">
+          <div class="stat-number" data-count="0" data-suffix=" Logs Shared">0</div>
+          <div class="stat-label">Privacy Guaranteed</div>
+        </div>
+        <div class="reveal delay-4">
+          <div class="stat-number" data-count="100" data-suffix="%">0</div>
+          <div class="stat-label">Teen-Approved</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMOTIONAL STORY TEASER -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">The Story</span>
+        <h2 class="section-title">Why Rei Exists</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="quote-block reveal">
+        <p class="quote-text">Every teen deserves someone in their corner — someone who listens without judgment, remembers without reminding, and cares without condition.</p>
+        <div class="quote-author">— The vision behind Rei</div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;" class="reveal">
+        <a href="story.html" class="btn btn-warm">
+          Read the Full Story
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- WAICY ALIGNMENT CTA -->
+    <section class="section">
+      <div class="card reveal" style="text-align: center; padding: 64px 40px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(155, 93, 229, 0.06)); border-color: rgba(0, 212, 255, 0.2);">
+        <span style="font-size: 3rem; display: block; margin-bottom: 16px;">🏆</span>
+        <h2 class="section-title" style="margin-bottom: 16px;">Built for WAICY 2026</h2>
+        <p class="section-desc" style="margin-bottom: 32px;">
+          Rei aligns with the WAICY mission: AI for safe, human-centered futures. Explore how she meets every judging criterion.
+        </p>
+        <a href="waicy.html" class="btn btn-primary">See WAICY Alignment</a>
+      </div>
+    </section>
+
+    <!-- Maternal closing -->
+    <div class="maternal-line">
+      "Take your time exploring. You doing okay tonight."
+    </div>
+
+  </main>
+
+  <!-- WAICY Footer Bar -->
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+    <span>•</span>
+    <span>Built with 💙 for teens everywhere</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
