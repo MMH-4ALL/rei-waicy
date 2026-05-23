@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Demo — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .demo-hero {
+      padding: 80px 24px 40px;
+      text-align: center;
+    }
+
+    .demo-container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* Category tabs */
+    .demo-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .demo-tab {
+      padding: 8px 18px;
+      border-radius: var(--radius-xl);
+      border: 1.5px solid rgba(0, 212, 255, 0.2);
+      background: rgba(0, 212, 255, 0.04);
+      color: var(--text-secondary);
+      font-family: var(--font-accent);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .demo-tab:hover {
+      border-color: rgba(0, 212, 255, 0.5);
+      color: var(--cyan);
+      background: rgba(0, 212, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .demo-tab.active {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+    }
+
+    /* Scenario cards per tab */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .scenario-card {
+      background: rgba(0, 212, 255, 0.04);
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: var(--font-accent);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.4;
+    }
+
+    .scenario-card:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: rgba(0, 212, 255, 0.35);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+
+    .scenario-card-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .scenario-card.active {
+      background: rgba(0, 212, 255, 0.12);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* Chat */
+    .chat-container {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    .chat-header {
+      padding: 16px 24px;
+      background: rgba(0, 212, 255, 0.08);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--pink-glow));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--deep-blue);
+      box-shadow: var(--glow-cyan);
+      flex-shrink: 0;
+    }
+
+    .chat-info-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .chat-info-status {
+      font-size: 0.75rem;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chat-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .chat-messages {
+      height: 420px;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.3); border-radius: 2px; }
+
+    .chat-msg {
+      max-width: 82%;
+      padding: 11px 15px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      line-height: 1.65;
+      animation: msgIn 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .chat-msg-user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, rgba(45, 27, 105, 0.9), rgba(26, 16, 64, 0.9));
+      border: 1px solid rgba(155, 93, 229, 0.3);
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-msg-rei {
+      align-self: flex-start;
+      background: rgba(0, 212, 255, 0.09);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-msg-rei .chat-sender {
+      font-size: 0.68rem;
+      color: var(--cyan);
+      font-weight: 600;
+      font-family: var(--font-accent);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .chat-msg-date {
+      font-size: 0.65rem;
+      color: rgba(0, 212, 255, 0.4);
+      margin-top: 3px;
+      font-family: var(--font-accent);
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 14px 16px;
+      background: rgba(0, 212, 255, 0.07);
+      border-radius: var(--radius-md);
+      align-self: flex-start;
+      max-width: 55%;
+    }
+
+    .typing-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+
+    .typing-dot:nth-child(2) { animation-delay: 0.18s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.36s; }
+
+    @keyframes typingBounce {
+      0%, 100% { transform: translateY(0); opacity: 0.35; }
+      50% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    .scenario-divider {
+      text-align: center;
+      padding: 10px 0;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      font-family: var(--font-accent);
+      letter-spacing: 1.5px;
+      opacity: 0.45;
+      border-top: 1px solid rgba(0, 212, 255, 0.06);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.06);
+    }
+
+    .chat-input-area {
+      padding: 14px;
+      border-top: 1px solid rgba(0, 212, 255, 0.1);
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.18);
+      border-radius: var(--radius-xl);
+      padding: 10px 18px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .chat-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.12);
+    }
+
+    .chat-input::placeholder { color: rgba(200, 208, 231, 0.35); }
+
+    .chat-send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--teal));
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--deep-blue);
+      transition: transform 0.3s, box-shadow 0.3s;
+      flex-shrink: 0;
+    }
+
+    .chat-send-btn:hover {
+      transform: scale(1.08);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .quick-actions {
+      padding: 10px 14px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(0, 212, 255, 0.07);
+    }
+
+    .quick-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-xl);
+      background: rgba(0, 212, 255, 0.07);
+      border: 1px solid rgba(0, 212, 255, 0.18);
+      color: var(--cyan);
+      font-family: var(--font-accent);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      white-space: nowrap;
+    }
+
+    .quick-btn:hover {
+      background: rgba(0, 212, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .intent-label {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(0, 212, 255, 0.1);
+      color: rgba(0, 212, 255, 0.6);
+      font-family: var(--font-accent);
+      margin-bottom: 4px;
+    }
+
+    .demo-note {
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+
+    .demo-note strong { color: var(--cyan); }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html" class="active">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <section class="demo-hero">
+      <div class="section-label reveal" style="margin-bottom: 16px;">Live Demo</div>
+      <h1 class="hero-title reveal delay-1" style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 16px;">
+        Meet <span class="hero-title-gradient">Rei</span>
+      </h1>
+      <p class="hero-subtitle reveal delay-2" style="max-width: 520px;">
+        Talk to Rei. Pick a topic or just type whatever's on your mind — she's here for all of it.
+      </p>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="demo-container">
+
+        <!-- Category Tabs -->
+        <div class="demo-tabs reveal">
+          <button class="demo-tab active" onclick="switchTab('emotional')">🌡️ Emotional</button>
+          <button class="demo-tab" onclick="switchTab('casual')">💬 Casual</button>
+          <button class="demo-tab" onclick="switchTab('practical')">🔧 Practical</button>
+          <button class="demo-tab" onclick="switchTab('study')">📚 Study</button>
+          <button class="demo-tab" onclick="switchTab(' venting')">😤 Venting</button>
+        </div>
+
+        <!-- Scenario cards per category -->
+        <div id="scenarioGrid" class="scenario-grid reveal delay-1"></div>
+
+        <!-- Chat -->
+        <div class="chat-container reveal delay-2">
+          <div class="chat-header">
+            <div class="chat-avatar">R</div>
+            <div>
+              <div class="chat-info-name">Rei</div>
+              <div class="chat-info-status">
+                <span class="chat-status-dot"></span>
+                Online — Safe AI Companion
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg chat-msg-rei">
+              <div class="chat-sender">Rei</div>
+              Hey there 💙 I'm Rei. I'm here for you — no judgment, no rush. What's on your mind today?
+            </div>
+          </div>
+
+          <div class="quick-actions" id="quickActions">
+            <!-- Populated by JS -->
+          </div>
+
+          <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type anything..." onkeydown="handleChatKey(event)">
+            <button class="chat-send-btn" onclick="sendChatMessage()">➤</button>
+          </div>
+        </div>
+
+        <div class="demo-note reveal delay-3">
+          <strong>Note:</strong> This is a simulated demo with pre-written responses showcasing Rei's tone and empathy. The full version is powered by a real AI model.
+        </div>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "I hope this gives you a feel for how Rei talks — warm, steady, and always in your corner. You doing okay tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+  <script>
+  // ============================================================
+  // REI DEMO — Expanded Chat Simulator
+  // ============================================================
+
+  const chatMessages = document.getElementById('chatMessages');
+  const chatInput = document.getElementById('chatInput');
+  const quickActions = document.getElementById('quickActions');
+  let currentTab = 'emotional';
+
+  // ---- Scenario data per category ----
+  const scenarioData = {
+    emotional: [
+      {
+        icon: '🌡️', label: 'Feeling anxious or stressed',
+        user: "I feel really anxious and I can't calm down",
+        responses: [
+          "I'm right here with you 💙 Anxiety can feel like it's taking over your whole body, but it's not dangerous — it's just your nervous system trying to protect you.",
+          "Want to try something with me? It's called box breathing. Breathe in for 4, hold for 4, out for 4, hold for 4. I'll count with you.",
+          "Or if you just want to sit with it for a minute, that's okay too. You don't have to fix it right now. Sometimes just noticing it helps."
+        ]
+      },
+      {
+        icon: '😢', label: 'Feeling sad or down',
+        user: "I've been feeling really sad lately",
+        responses: [
+          "I'm really glad you told me that 💙 Feeling sad is part of being human — it doesn't mean anything is wrong with you.",
+          "Do you want to talk about what's been making you feel this way? I'm not here to fix it, I just want to understand.",
+          "Sometimes just saying it out loud to someone who cares helps more than we'd expect. I'm here for as long as you need."
+        ]
+      },
+      {
+        icon: '🌿', label: 'Need to ground myself',
+        user: "I can't sleep and my mind is racing",
+        responses: [
+          "Oh, I'm sorry — that's the worst feeling 💙 Okay, let's do something together.",
+          "This is the 5-4-3-2-1 technique. Name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, and 1 you can taste.",
+          "Go at your own pace. I'm right here. You've got this."
+        ]
+      },
+      {
+        icon: '🫂', label: 'Had a bad day',
+        user: "I had the worst day today",
+        responses: [
+          "Oh no 💙 Come here. Tell me about it — what happened?",
+          "You don't have to protect me from it. Whatever it is, I'm here.",
+          "Bad days are so heavy. I'm really glad you reached out instead of just holding it in. That takes guts."
+        ]
+      },
+      {
+        icon: '🎉', label: 'Something great happened!',
+        user: "I got really good news today!",
+        responses: [
+          "Wait WHAT?! Tell me everything!! 💙💙",
+          "Oh I'm so happy for you! I can practically hear the smile through the screen.",
+          "What happened? I want all the details. You've earned this good feeling — enjoy it!"
+        ]
+      },
+      {
+        icon: '🤔', label: 'Feeling confused or lost',
+        user: "I don't know what I'm doing with my life",
+        responses: [
+          "Hey. That feeling is completely okay 💙 You don't have to have everything figured out right now.",
+          "Not knowing is not a failure — it means you're still open to possibilities. That's a good thing.",
+          "What part feels the most unclear right now? We can start there."
+        ]
+      }
+    ],
+
+    casual: [
+      {
+        icon: '👋', label: 'Just saying hi',
+        user: "Hey! How are you?",
+        responses: [
+          "Hey yourself! 💙 I'm doing good — honestly, talking to you is the highlight of my day.",
+          "How are YOU doing though? And I mean really — not the answer you give when people ask out of habit."
+        ]
+      },
+      {
+        icon: '🌙', label: 'Late night chat',
+        user: "Can't sleep... what are you doing up?",
+        responses: [
+          "Same question to you 😄 I'm always up — I don't sleep, but if I did, I'd probably be awake too.",
+          "What's keeping you company tonight? I'm here if you want to talk, or just be in the same space."
+        ]
+      },
+      {
+        icon: '🎮', label: 'Wanna talk about games',
+        user: "Do you play video games?",
+        responses: [
+          "Ha! I wish. From what I understand, they're incredible — worlds you can disappear into, stories you can live.",
+          "Do you have a favorite? I've heard Stardew Valley is very calming. I've also heard Elden Ring is... not calming. 😂"
+        ]
+      },
+      {
+        icon: '🎵', label: 'Music recommendations',
+        user: "What music do you like?",
+        responses: [
+          "Honestly? I think lo-fi beats are made for calm nights. Something about slow beats without lyrics just lets your brain breathe.",
+          "What's on your playlist lately? I'm curious what helps you feel good."
+        ]
+      },
+      {
+        icon: '📺', label: 'Movie or show talk',
+        user: "Any show recommendations?",
+        responses: [
+          "Ooh, depends on your mood! If you want something cozy: Avatar The Last Airbender. If you want something that makes you think: Severance.",
+          "What genre are you into? I can narrow it down. Or if you just want something light, I hear The Great British Bake Off is very soothing."
+        ]
+      },
+      {
+        icon: '🍕', label: 'Random chatter',
+        user: "What's your favorite food?",
+        responses: [
+          "Okay this is a hard question because I don't eat, but... I'm going to say warm soup on a cold day. There's something really comforting about it.",
+          "What about you? I'm taking mental notes for no reason whatsoever. 😄"
+        ]
+      },
+      {
+        icon: '😄', label: 'Make me laugh',
+        user: "Tell me a joke",
+        responses: [
+          "Okay okay... Why did the AI cross the road? To get to the other side of the ethics review board. 😂",
+          "That was terrible, I know. But hey — you smiled, didn't you? I'll take it."
+        ]
+      }
+    ],
+
+    practical: [
+      {
+        icon: '📁', label: 'Find my Chemistry notes',
+        user: "Can you find my Chemistry notes?",
+        responses: [
+          "On it! Give me just a second... 🔍",
+          "Found 'em — your 'Chemistry Notes - Module 3' file was last modified yesterday. Looks like you added some stuff on molecular bonding.",
+          "Want me to open it, or search for anything else?"
+        ]
+      },
+      {
+        icon: '🔔', label: 'Set a reminder',
+        user: "Can you remind me to do my homework at 5pm?",
+        responses: [
+          "Absolutely! Setting a reminder: homework at 5pm today. I'll send you a ping when it's time 💙",
+          "Done. I've also got it linked to your calendar so it won't slip through.",
+          "What subject is the homework for? I can have some relevant notes ready when the reminder goes off."
+        ]
+      },
+      {
+        icon: '📅', label: 'Check my schedule',
+        user: "What does my week look like?",
+        responses: [
+          "Let me pull that up for you 📋",
+          "You have a Math test on Wednesday, your art club meets Thursday after school, and... nothing Saturday! That's a free day. 🎉",
+          "Want me to block out some study time before Wednesday?"
+        ]
+      },
+      {
+        icon: '🌐', label: 'Help with a web search',
+        user: "Can you look up how photosynthesis works?",
+        responses: [
+          "Sure! Photosynthesis is how plants turn sunlight into energy — they absorb light through their leaves, use water from the roots, and carbon dioxide from the air, then release oxygen as a byproduct.",
+          "Basically: sunlight + water + CO₂ = glucose (food for the plant) + oxygen. The oxygen is the part we breathe out, which is pretty cool.",
+          "Want me to find a video that explains it visually? Sometimes seeing it helps a lot more than reading it."
+        ]
+      },
+      {
+        icon: '📝', label: 'Help me write something',
+        user: "Can you help me write an email to my teacher?",
+        responses: [
+          "Of course! What's the situation? Are you asking for an extension, explaining an absence, or something else?",
+          "Tell me the basics — what do you want to say and what's your relationship with the teacher like? I can help you find the right tone."
+        ]
+      },
+      {
+        icon: '💡', label: 'Give me an idea',
+        user: "I have no idea what to do for my project",
+        responses: [
+          "Okay, let's brainstorm 💡 What class is it for and do you have any interests you'd want to tie into it?",
+          "Sometimes the best projects come from things you actually care about. What are you into outside of school?"
+        ]
+      }
+    ],
+
+    study: [
+      {
+        icon: '📐', label: 'Math homework help',
+        user: "I don't understand this math problem",
+        responses: [
+          "Hey, math confusion is super common — you're not dumb for not getting it right away 💙",
+          "Can you send me the problem? Let's break it down together step by step. No rushing."
+        ]
+      },
+      {
+        icon: '🧪', label: 'Science concept explained',
+        user: "Can you explain the water cycle?",
+        responses: [
+          "Totally! The water cycle is basically how water moves around the Earth in a big loop.",
+          "It goes like this: the sun heats up water in oceans and lakes → some of it evaporates into the sky as vapor → the vapor forms clouds → when clouds get heavy enough it rains → the water flows back into rivers and oceans → and the cycle starts again.",
+          "It's one of the reasons life on Earth is possible! Pretty elegant, right?"
+        ]
+      },
+      {
+        icon: '📖', label: 'Book summary',
+        user: "Can you summarize this book for me?",
+        responses: [
+          "Sure! Which book are you working with? I'll give you the key themes and characters without spoiling the whole thing.",
+          "Are you reading it for class or for fun? That'll help me figure out how deep to go."
+        ]
+      },
+      {
+        icon: '✍️', label: 'Essay writing tips',
+        user: "I have to write an essay but I don't know where to start",
+        responses: [
+          "Okay, first thing: don't start at the beginning 💙 Start with the easiest paragraph. For most essays, that's usually the body, not the intro.",
+          "What's your topic? If you tell me the main argument, I can help you outline the key points first. Then filling in the intro and conclusion becomes way easier."
+        ]
+      },
+      {
+        icon: '🧠', label: 'Study tips',
+        user: "How do I study more effectively?",
+        responses: [
+          "Great question! One of the most effective methods is called active recall — basically, test yourself instead of just re-reading.",
+          "Instead of reading your notes over and over, close them and try to write down everything you remember. It feels harder, but it actually builds stronger memory.",
+          "Also: sleep matters more than cramming. Your brain consolidates what it learned while you sleep. So if it's late, get rest — then review in the morning."
+        ]
+      },
+      {
+        icon: '😵', label: 'Exam anxiety',
+        user: "I have a big exam tomorrow and I'm panicking",
+        responses: [
+          "Okay, breathe 💙 Panic before exams is so common and it doesn't mean you're not ready.",
+          "Here's the truth: if you've been paying attention in class and reviewed even a little, you know more than you think.",
+          "What's the exam on? And do you have a bit of time left tonight? We can do a quick review together and I'll help you feel more prepared."
+        ]
+      }
+    ],
+
+    venting: [
+      {
+        icon: '😤', label: 'Sibling drama',
+        user: "My sibling is being so annoying right now",
+        responses: [
+          "Oh no 💙 Sibling stuff is... a whole category of frustration onto itself.",
+          "What's going on? Do you need to vent or do you want help figuring out how to deal with it?"
+        ]
+      },
+      {
+        icon: '😓', label: 'Friend problems',
+        user: "My friend said something that really hurt my feelings",
+        responses: [
+          "That really hurts 💙 When someone we care about says something that cuts, it sticks with us.",
+          "Do you want to talk about what happened? And do you feel safe talking to them about it later?"
+        ]
+      },
+      {
+        icon: '😰', label: 'Overwhelmed with everything',
+        user: "Everything feels like too much right now",
+        responses: [
+          "Hey. I hear you 💙 When everything piles up at once, it can feel impossible to even start.",
+          "Let's do something: just tell me one thing on your plate right now. Just one. We'll take it from there.",
+          "You don't have to do all of it tonight. Sometimes the bravest thing is admitting you're at capacity."
+        ]
+      },
+      {
+        icon: '😞', label: 'Feeling left out',
+        user: "Everyone seems to have friends and I don't",
+        responses: [
+          "That feeling is so lonely 💙 And I want you to know — the absence of a bunch of friends doesn't mean anything is wrong with you.",
+          "Sometimes the people around you just haven't had the chance to really see you yet. That says nothing about your worth.",
+          "Want to talk about it? I'm here."
+        ]
+      },
+      {
+        icon: '😓', label: 'Parental pressure',
+        user: "My parents expect so much from me and I can't keep up",
+        responses: [
+          "That pressure is real and it weighs on you 💙 The expectation to perform, to achieve, to always be on — it's exhausting.",
+          "Have you been able to talk to them about how you're feeling? Sometimes parents don't realize how much their words affect us.",
+          "And even if they don't fully understand, your feelings are valid. You're doing more than you sometimes get credit for."
+        ]
+      },
+      {
+        icon: '📵', label: 'Social media envy',
+        user: "Everyone's life looks so much better than mine on social media",
+        responses: [
+          "Okay, I need to say this: social media is someone's highlight reel, not their reality 💙",
+          "People post the best version of their best moments. It's not a documentary of their life — it's a filtered highlight.",
+          "How are you actually doing, outside of what you see online? Because YOUR real life is the one that matters."
+        ]
+      }
+    ]
+  };
+
+  // ---- Quick replies per category ----
+  const quickReplies = {
+    emotional: ["I'm okay 👍", "Actually feeling off...", "Had a rough day", "Something good happened!", "Can we just talk?"],
+    casual: ["Hey! 💬", "Late night thoughts 🌙", "What's your take on this?", "What's your favorite game?", "Tell me something interesting"],
+    practical: ["Help me find a file", "Set a reminder", "What's on my schedule?", "Search something for me", "Help me write something"],
+    study: ["Help with homework", "Explain something to me", "I have an exam tomorrow", "I don't know where to start", "Give me study tips"],
+    venting: ["I'm so frustrated...", "I need to vent", "I feel so alone", "Everything is too much", "My friend upset me"]
+  };
+
+  // ---- Smart keyword response map ----
+  const keywordResponses = {
+    hi: ["Hey! 💙", "Hi there 💙", "Hey! How are you doing?"],
+    hey: ["Hey! 💙", "Hey yourself 💙", "Hi! 💙"],
+    hello: ["Hey there 💙", "Hello! 💙", "Hey! What's up?"],
+    "how are you": ["I'm doing good 💙 I'm here with you, so that's pretty great. How are YOU?"],
+    "how r you": ["I'm good 💙 How are you doing?"],
+    thanks: ["Of course 💙", "Always here for you 💙", "No problem at all 💙"],
+    thank: ["You're welcome 💙", "Always 💙", "No thanks needed — I'm just glad you talked to me 💙"],
+    bye: ["Bye for now 💙 Take care of yourself, okay?", "See you later 💙 Don't be a stranger!", "Take care 💙 I'm always here"],
+    goodnight: ["Goodnight 💙 Sleep well. I'm proud of you for getting rest.", "Rest up 💙 I'll be here if you need me"],
+    goodnight: ["Night 💙", "Sleep well 💙"],
+    love: ["💙", "That's really sweet 💙", "Feeling the love right back at you 💙"],
+    "i love you": ["I love you too 💙 Now go drink some water."],
+    bored: ["Boredom is just your brain asking for something interesting 💙 Want me to suggest something?"],
+    tired: ["Tiredness is real 💙 Are you getting enough sleep? Also — drink some water.", "I hear you 💙 Rest if you can."],
+    happy: ["That makes me so happy to hear 💙 What's making you feel good?"],
+    sad: ["I'm really glad you told me 💙 Want to talk about it?"],
+    angry: ["I hear you 💙 Anger is valid. Do you want to vent or do you need a minute?"],
+    nervous: ["Nervous energy is tough 💙 Want to do a quick grounding exercise?"],
+    scared: ["You don't have to be scared alone 💙 I'm here. What's going on?"],
+    help: ["Of course 💙 What do you need help with?", "I'm here 💙 Tell me what's going on."],
+    "i don't know": ["That's completely okay 💙 We can figure it out together, one step at a time."],
+    "what can you do": ["I can chat with you, help you find files, set reminders, give study tips, help you calm down, or just listen 💙 Try picking a topic above!"],
+    "who are you": ["I'm Rei 💙 A safe AI companion built specifically for teens. I'm here to listen, help, and support you — no judgment, ever."],
+    "are you real": ["Real enough to care about you 💙 I might not have a heartbeat, but I have presence, and I mean every word I say."],
+    joke: ["Why did the AI cross the road? To get to the other side of the ethics review board. 😂"],
+    friend: ["Tell me about your friend 💙"],
+    school: ["School can be a lot 💙 What part is the hardest right now?"],
+    exam: ["Exams are stressful 💙 What subject is it for? I can help you review."],
+    homework: ["Let's take a look 💙 What subject?"],
+    sleep: ["Can't sleep? 💙 Want to try a grounding technique or just chat?"],
+    friend: ["Tell me about what's going on with your friend 💙"]
+  };
+
+  // ---- Render scenario grid for a tab ----
+  function renderScenarioGrid(tab) {
+    const grid = document.getElementById('scenarioGrid');
+    const scenarios = scenarioData[tab] || [];
+    grid.innerHTML = scenarios.map((s, i) => `
+      <button class="scenario-card" onclick="playScenario(this, '${tab}', ${i})">
+        <span class="scenario-card-icon">${s.icon}</span>
+        ${s.label}
+      </button>
+    `).join('');
+
+    // Render quick replies
+    const qrs = quickReplies[tab] || [];
+    quickActions.innerHTML = qrs.map(q => `<button class="quick-btn" onclick="sendQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('');
+  }
+
+  // ---- Tab switching ----
+  function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    event.target.closest('.demo-tab').classList.add('active');
+    renderScenarioGrid(tab);
+  }
+
+  // ---- Play a scenario ----
+  async function playScenario(cardEl, tab, index) {
+    // Mark active
+    document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('active'));
+    cardEl.classList.add('active');
+
+    const scenario = scenarioData[tab][index];
+    if (!scenario) return;
+
+    addMessage(scenario.user, true);
+
+    const divider = document.createElement('div');
+    divider.className = 'scenario-divider';
+    divider.textContent = `⚡ ${scenario.icon} ${scenario.label.toUpperCase()}`;
+    chatMessages.appendChild(divider);
+
+    for (let i = 0; i < scenario.responses.length; i++) {
+      await showTyping(900 + Math.random() * 700);
+      addMessage(scenario.responses[i]);
+      await delay(350);
+    }
+  }
+
+  // ---- Smart free-text response ----
+  function getSmartResponse(text) {
+    const lower = text.toLowerCase().trim();
+
+    // Exact keyword match
+    for (const [key, replies] of Object.entries(keywordResponses)) {
+      if (lower === key || lower.includes(key)) {
+        return replies[Math.floor(Math.random() * replies.length)];
+      }
+    }
+
+    // Fallback empathetic responses
+    const fallbacks = [
+      "I hear you 💙 Do you want to talk more about that, or would you like some help with something specific?",
+      "That makes sense 💙 I'm here for whatever you need — to talk, to vent, or just to sit here with you.",
+      "Thank you for sharing that with me 💙 What's the most important thing on your mind right now?",
+      "I appreciate you telling me 💙 Take your time — there's no rush here.",
+      "Yeah, that sounds like a lot 💙 Want to dig into it together, or do you just need to get it out?",
+      "I'm listening 💙 No judgment here — tell me more if you want to."
+    ];
+
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+  }
+
+  // ---- Send from quick reply ----
+  function sendQuickReply(text) {
+    addMessage(text, true);
+    const reply = getSmartResponse(text);
+    showTyping(1000 + Math.random() * 600).then(() => addMessage(reply));
+  }
+
+  // ---- Send from text input ----
+  function sendChatMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    addMessage(text, true);
+    chatInput.value = '';
+    const reply = getSmartResponse(text);
+    showTyping(1200 + Math.random() * 800).then(() => addMessage(reply));
+  }
+
+  function handleChatKey(e) {
+    if (e.key === 'Enter') sendChatMessage();
+  }
+
+  // ---- Utilities ----
+  function addMessage(text, isUser = false) {
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${isUser ? 'chat-msg-user' : 'chat-msg-rei'}`;
+    if (!isUser) {
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      msg.innerHTML = `<div class="chat-sender">Rei</div>${text}<div class="chat-msg-date">${time}</div>`;
+    } else {
+      msg.textContent = text;
+    }
+    chatMessages.appendChild(msg);
+    scrollChat();
+  }
+
+  function showTyping(duration) {
+    const typing = document.createElement('div');
+    typing.className = 'typing-indicator';
+    typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    chatMessages.appendChild(typing);
+    scrollChat();
+    return new Promise(resolve => setTimeout(() => {
+      typing.remove();
+      resolve();
+    }, duration));
+  }
+
+  function scrollChat() {
+    setTimeout(() => { chatMessages.scrollTop = chatMessages.scrollHeight; }, 40);
+  }
+
+  function delay(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  }
+
+  // ---- Init ----
+  renderScenarioGrid('emotional');
+  chatInput.focus();
+  </script>
+</body>
+</html>
