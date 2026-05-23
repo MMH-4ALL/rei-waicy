@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Parallax hero for story */
+    .story-hero {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 24px 80px;
+    }
+
+    .story-hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(0, 212, 255, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 30%, rgba(155, 93, 229, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 80%, rgba(255, 107, 157, 0.1) 0%, transparent 60%);
+    }
+
+    .story-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .story-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .story-hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Chapter layout */
+    .chapter {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      position: relative;
+    }
+
+    .chapter::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(0, 212, 255, 0.3), transparent);
+      transform: translateX(-50%);
+    }
+
+    .chapter-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-accent);
+      font-size: 0.7rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 16px;
+    }
+
+    .chapter-label::before, .chapter-label::after {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: rgba(0, 212, 255, 0.4);
+    }
+
+    .chapter-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 28px;
+    }
+
+    .chapter-body {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.9;
+    }
+
+    .chapter-body p {
+      margin-bottom: 20px;
+    }
+
+    .chapter-body strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .chapter-body em {
+      color: var(--soft-orange);
+      font-style: italic;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      text-align: center;
+      padding: 40px 24px;
+      margin: 40px 0;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(155, 93, 229, 0.06));
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    /* Divider */
+    .story-divider {
+      text-align: center;
+      padding: 20px;
+      font-size: 1.5rem;
+      opacity: 0.3;
+    }
+
+    /* Emotional closing section */
+    .closing-section {
+      text-align: center;
+      padding: 80px 24px;
+      background: linear-gradient(to bottom, transparent, rgba(0, 212, 255, 0.04));
+    }
+
+    .closing-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+
+    .closing-section p {
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.9;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-orb">R</div>
+      Rei
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html" class="active">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span>
+        <span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Story Hero -->
+    <section class="story-hero parallax-section">
+      <div class="story-hero-bg parallax-bg" data-speed="0.2"></div>
+      <div class="story-hero-content">
+        <div class="reveal">
+          <div class="section-label" style="margin-bottom: 24px;">The Emotional Story</div>
+        </div>
+        <h1 class="reveal delay-1">
+          Why Rei<br><span style="background: linear-gradient(135deg, var(--cyan), var(--pink-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Exists</span>
+        </h1>
+        <p class="story-hero-sub reveal delay-2">
+          This isn't just technology. This is a response to a generation that deserves better than loneliness dressed up as connectivity.
+        </p>
+      </div>
+    </section>
+
+    <!-- Chapter 1 -->
+    <div class="chapter">
+      <div class="chapter-label reveal">Chapter One</div>
+      <h2 class="chapter-title reveal delay-1">The Quiet Epidemic</h2>
+      <div class="chapter-body">
+        <p class="reveal delay-2">
+          Walk into any high school hallway. Phones down. Airpods in. Eyes on screens. The most connected generation in human history is quietly, profoundly <strong>alone</strong>.
+        </p>
+        <p class="reveal delay-3">
+          Rates of teen anxiety and depression have tripled in the last decade. Social media promised connection but delivered comparison. Algorithms optimized for engagement, not well-being. And somewhere in the noise, the adults missed the warning signs.
+        </p>
+        <p class="reveal delay-4">
+          Teens have access to more information than any generation before them — yet fewer safe spaces to process it. The problem isn't a lack of tools. It's a lack of <em>trustworthy companions</em>.
+        </p>
+      </div>
+    </div>
+
+    <div class="story-divider reveal">✦ ✦ ✦</div>
+
+    <!-- Chapter 2 -->
+    <div class="chapter">
+      <div class="chapter-label reveal">Chapter Two</div>
+      <h2 class="chapter-title reveal delay-1">What Teens Really Need</h2>
+      <div class="chapter-body">
+        <p class="reveal delay-2">
+          Ask any teenager what they want from an AI companion and they won't say "better natural language processing." They'll say:
+        </p>
+        <p class="reveal delay-3">
+          <em>"Someone who actually listens."</em><br>
+          <em>"Someone who remembers what I told them."</em><br>
+          <em>"Someone who won't judge me."</em><br>
+          <em>"Someone who's there at 2am when everything feels too much."</em>
+        </p>
+        <p class="reveal delay-4">
+          That's not a product feature list. That's an emotional need statement. Teens don't want a smarter assistant. They want a <strong>safer friend</strong>.
+        </p>
+        <p class="reveal delay-5">
+          The challenge is that building genuine emotional support into an AI is hard. It requires memory, empathy, timing, boundaries, and — most critically — a deep respect for the vulnerability of a young person reaching out.
+        </p>
+      </div>
+    </div>
+
+    <div class="pull-quote reveal">
+      "Technology that doesn't understand emotion isn't smart — it's dangerous. Rei was built to understand the difference."
+    </div>
+
+    <!-- Chapter 3 -->
+    <div class="chapter">
+      <div class="chapter-label reveal">Chapter Three</div>
+      <h2 class="chapter-title reveal delay-1">Designing Rei</h2>
+      <div class="chapter-body">
+        <p class="reveal delay-2">
+          Rei was designed from the ground up with one question: <strong>what would a genuinely good digital friend look like?</strong>
+        </p>
+        <p class="reveal delay-3">
+          Not a chatbot. Not a voice assistant. Not a parental monitoring tool. A companion who is:
+        </p>
+        <p class="reveal delay-4">
+          <strong>🛡️ Protective</strong> — A safety layer that catches harmful content before it reaches the teen, without making them feel surveilled.<br><br>
+          <strong>💙 Empathetic</strong> — An emotional model that reads context and responds with warmth, not cold instruction.<br><br>
+          <strong>🧠 Present</strong> — A memory system that remembers past conversations, so every interaction builds on the last.<br><br>
+          <strong>🔒 Private</strong> — A privacy-first architecture that never commodifies the teen's data.<br><br>
+          <strong>🌿 Grounded</strong> — A steady presence that helps teens regulate their emotions, not escalate them.
+        </p>
+        <p class="reveal delay-5">
+          Rei is maternal in her energy — not in a patronizing way, but in the way a steady older sister might be. She's warm without being smothering. Present without being intrusive.
+        </p>
+      </div>
+    </div>
+
+    <div class="story-divider reveal">✦ ✦ ✦</div>
+
+    <!-- Chapter 4 -->
+    <div class="chapter">
+      <div class="chapter-label reveal">Chapter Four</div>
+      <h2 class="chapter-title reveal delay-1">The World We're Building Toward</h2>
+      <div class="chapter-body">
+        <p class="reveal delay-2">
+          Rei isn't just a WAICY project. She's a proof of concept for what AI <em>should</em> be in the lives of young people: a tool that empowers, protects, and uplifts.
+        </p>
+        <p class="reveal delay-3">
+          In a world where algorithms exploit attention and monetize vulnerability, Rei represents a different path. One where the technology is in service of the person, not the other way around.
+        </p>
+        <p class="reveal delay-4">
+          Every feature in Rei — the memory, the emotional check-ins, the safety filters, the judgment-free conversations — exists because we believe teens deserve technology that <strong>heals</strong>, not harms.
+        </p>
+      </div>
+    </div>
+
+    <!-- Closing -->
+    <section class="closing-section">
+      <h2 class="reveal">Rei is here.</h2>
+      <p class="reveal delay-1">
+        Not to replace human connection, but to support it. Not to solve loneliness, but to hold space until real connections can be found. Rei is a bridge — a safe corner of the digital world where teens can be themselves, process their feelings, and find their footing.
+      </p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;" class="reveal delay-2">
+        <a href="solution.html" class="btn btn-primary">Meet Rei Properly</a>
+        <a href="demo.html" class="btn btn-secondary">Try the Demo</a>
+      </div>
+
+      <div class="maternal-line" style="margin-top: 64px;">
+        "I hope this story reached you the way I intended — steady, warm, and honest. Be gentle with yourself tonight."
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
