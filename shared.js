@@ -214,63 +214,8 @@ function initPageTransition() {
   });
 }
 
-// ---- Counter Animation ----
-function animateCounters() {
-  const counters = document.querySelectorAll('.stat-number[data-count]');
-  let hasAnimated = false;
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting && !hasAnimated) return;
-      const el = entry.target;
-      const target = parseFloat(el.dataset.count);
-      const suffix = el.dataset.suffix || '';
-      const prefix = el.dataset.prefix || '';
-      const isFloat = target % 1 !== 0;
-      const duration = 2000;
-      const start = performance.now();
-
-      function update(now) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        // Ease out cubic
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = eased * target;
-        el.textContent = prefix + (isFloat ? current.toFixed(1) : Math.floor(current)) + suffix;
-        if (progress < 1) requestAnimationFrame(update);
-      }
-
-      requestAnimationFrame(update);
-      observer.unobserve(el);
-      hasAnimated = true;
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-
-  counters.forEach(el => observer.observe(el));
-
-  // Fallback: animate all counters after 1 second regardless
-  setTimeout(() => {
-    counters.forEach(el => {
-      if (el.textContent === '0' || el.textContent === '0%') {
-        const target = parseFloat(el.dataset.count);
-        const suffix = el.dataset.suffix || '';
-        const prefix = el.dataset.prefix || '';
-        const isFloat = target % 1 !== 0;
-        const duration = 1800;
-        const start = performance.now();
-        function update(now) {
-          const elapsed = now - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = eased * target;
-          el.textContent = prefix + (isFloat ? current.toFixed(1) : Math.floor(current)) + suffix;
-          if (progress < 1) requestAnimationFrame(update);
-        }
-        requestAnimationFrame(update);
-      }
-    });
-  }, 1000);
-}
+// ---- Static Stats (no animation) ----
+// Stat values are set directly in HTML. No JS needed.
 
 // ---- Easter Egg: Console Message ----
 function initEasterEgg() {
@@ -336,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initExpandables();
   initTabs();
   initPageTransition();
-  animateCounters();
+
   initEasterEgg();
   initDiagramHighlight();
 
