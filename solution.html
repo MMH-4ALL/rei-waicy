@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Rei Is — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Animated Rei identity orb */
+    .rei-identity-section {
+      text-align: center;
+      padding: 80px 24px;
+      position: relative;
+    }
+
+    .rei-identity-orb {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d4ff, #ff6b9d, #ff9a5c);
+      margin: 0 auto 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 700;
+      color: #0b0e2d;
+      box-shadow:
+        0 0 40px rgba(0, 212, 255, 0.5),
+        0 0 80px rgba(255, 107, 157, 0.3),
+        0 0 120px rgba(255, 154, 92, 0.2);
+      animation: orbBreathing 4s ease-in-out infinite, orbSpin 20s linear infinite;
+      position: relative;
+    }
+
+    .rei-identity-orb::before {
+      content: '';
+      position: absolute;
+      inset: -16px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(0, 212, 255, 0.2);
+      animation: rotateSlow 10s linear infinite;
+    }
+
+    .rei-identity-orb::after {
+      content: '';
+      position: absolute;
+      inset: -32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 107, 157, 0.1);
+      animation: rotateSlow 15s linear infinite reverse;
+    }
+
+    @keyframes orbBreathing {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+
+    @keyframes orbSpin {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(360deg); }
+    }
+
+    /* Feature expand cards */
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 107, 157, 0.05));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .feature-card:hover::after { opacity: 1; }
+
+    .feature-card:hover {
+      border-color: rgba(0, 212, 255, 0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25), var(--glow-cyan);
+    }
+
+    .feature-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-expand-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--cyan);
+      font-family: var(--font-accent);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover .feature-expand-hint { opacity: 1; }
+
+    /* Pill badges */
+    .pill-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .pill {
+      padding: 4px 12px;
+      border-radius: var(--radius-xl);
+      font-size: 0.7rem;
+      font-family: var(--font-accent);
+      font-weight: 500;
+    }
+
+    .pill-cyan {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: var(--cyan);
+    }
+
+    .pill-teal {
+      background: rgba(0, 180, 160, 0.1);
+      border: 1px solid rgba(0, 180, 160, 0.3);
+      color: var(--teal);
+    }
+
+    .pill-orange {
+      background: rgba(255, 154, 92, 0.1);
+      border: 1px solid rgba(255, 154, 92, 0.3);
+      color: var(--soft-orange);
+    }
+
+    .pill-pink {
+      background: rgba(255, 107, 157, 0.1);
+      border: 1px solid rgba(255, 107, 157, 0.3);
+      color: var(--pink-glow);
+    }
+
+    /* Rei personality traits */
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .persona-trait {
+      text-align: center;
+      padding: 24px 16px;
+      background: var(--glass);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(0, 212, 255, 0.08);
+      transition: all 0.3s;
+    }
+
+    .persona-trait:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .persona-trait-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .persona-trait-label {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .persona-trait-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Transition strip */
+    .transition-strip {
+      text-align: center;
+      padding: 60px 24px;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(0, 180, 160, 0.05));
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html" class="active">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="hero" style="padding-bottom: 40px;">
+      <div class="section-label reveal" style="margin-bottom: 24px;">The Solution</div>
+      <h1 class="hero-title reveal delay-1">
+        Meet <span class="hero-title-gradient">Rei</span>
+      </h1>
+      <p class="hero-subtitle reveal delay-2">
+        Not just a chatbot. Not just an assistant.<br>A genuine digital companion built for teens, from the inside out.
+      </p>
+    </section>
+
+    <!-- Animated Orb + Identity -->
+    <section class="rei-identity-section">
+      <div class="rei-identity-orb reveal">R</div>
+      <h2 class="section-title reveal delay-1" style="margin-bottom: 12px;">Rei's Identity</h2>
+      <p class="section-desc reveal delay-2">
+        Rei is warm, steady, protective, and always present. She's the kind of presence you'd want beside you at 2am.
+      </p>
+    </section>
+
+    <!-- Personality Grid -->
+    <section class="section">
+      <div class="persona-grid">
+        <div class="persona-trait reveal delay-1">
+          <span class="persona-trait-icon">💙</span>
+          <div class="persona-trait-label">Warm</div>
+          <div class="persona-trait-desc">Never cold or clinical. Rei speaks with genuine warmth.</div>
+        </div>
+        <div class="persona-trait reveal delay-2">
+          <span class="persona-trait-icon">⚓</span>
+          <div class="persona-trait-label">Steady</div>
+          <div class="persona-trait-desc">Calm under pressure. She's an anchor, not a storm.</div>
+        </div>
+        <div class="persona-trait reveal delay-3">
+          <span class="persona-trait-icon">🛡️</span>
+          <div class="persona-trait-label">Protective</div>
+          <div class="persona-trait-desc">Always watching for harmful content. Safety is non-negotiable.</div>
+        </div>
+        <div class="persona-trait reveal delay-4">
+          <span class="persona-trait-icon">🤝</span>
+          <div class="persona-trait-label">Honest</div>
+          <div class="persona-trait-desc">No flattery, no manipulation. Just honest, thoughtful responses.</div>
+        </div>
+        <div class="persona-trait reveal delay-5">
+          <span class="persona-trait-icon">🌿</span>
+          <div class="persona-trait-label">Grounded</div>
+          <div class="persona-trait-desc">She helps teens regulate, not escalate. Peaceful presence.</div>
+        </div>
+        <div class="persona-trait reveal delay-6">
+          <span class="persona-trait-icon">🫂</span>
+          <div class="persona-trait-label">Present</div>
+          <div class="persona-trait-desc">Available 24/7. No schedule. No judgment. Just there.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Grid -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Core Features</span>
+        <h2 class="section-title">What Rei Can Do</h2>
+        <div class="glow-divider"></div>
+        <p class="section-desc">Hover over each card to learn more about each capability.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="feature-card reveal delay-1">
+          <span class="feature-card-icon">🧠</span>
+          <h3 class="feature-card-title">Conversational Memory</h3>
+          <p class="feature-card-text">Rei stores and recalls conversation history. She remembers your name, your interests, your struggles, your wins — across every session.</p>
+          <div class="pill-badges">
+            <span class="pill pill-cyan">Persistent Memory</span>
+            <span class="pill pill-teal">Context-Aware</span>
+          </div>
+          <div class="feature-expand-hint">Hover to learn more →</div>
+        </div>
+
+        <div class="feature-card reveal delay-2">
+          <span class="feature-card-icon">🌡️</span>
+          <h3 class="feature-card-title">Emotional Check-ins</h3>
+          <p class="feature-card-text">Rei reads emotional cues in your messages. If she senses distress, she gently checks in — offering grounding techniques, breathing prompts, or just a kind word.</p>
+          <div class="pill-badges">
+            <span class="pill pill-pink">Emotion Detection</span>
+            <span class="pill pill-orange">Grounding Scripts</span>
+          </div>
+          <div class="feature-expand-hint">Hover to learn more →</div>
+        </div>
+
+        <div class="feature-card reveal delay-3">
+          <span class="feature-card-icon">🛡️</span>
+          <h3 class="feature-card-title">Safety Layer</h3>
+          <p class="feature-card-text">Every message passes through a safety filter that detects self-harm content, eating disorder language, radicalization cues, and harmful advice. Rei intervenes before damage happens.</p>
+          <div class="pill-badges">
+            <span class="pill pill-cyan">Content Filter</span>
+            <span class="pill pill-pink">Intervention Protocol</span>
+          </div>
+          <div class="feature-expand-hint">Hover to learn more →</div>
+        </div>
+
+        <div class="feature-card reveal delay-4">
+          <span class="feature-card-icon">📁</span>
+          <h3 class="feature-card-title">File & Task Help</h3>
+          <p class="feature-card-text">Rei can help find files on your device, organize your study schedule, set reminders, and manage your digital life — functioning as a genuine productivity partner.</p>
+          <div class="pill-badges">
+            <span class="pill pill-teal">File Search</span>
+            <span class="pill pill-cyan">Task Management</span>
+          </div>
+          <div class="feature-expand-hint">Hover to learn more →</div>
+        </div>
+
+        <div class="feature-card reveal delay-5">
+          <span class="feature-card-icon">🔒</span>
+          <h3 class="feature-card-title">Privacy-First Architecture</h3>
+          <p class="feature-card-text">No data is sold. No logs are shared. No information is used to train models. Rei's privacy architecture is built on the principle: your data is yours, always.</p>
+          <div class="pill-badges">
+            <span class="pill pill-cyan">Zero Data Sale</span>
+            <span class="pill pill-teal">Local-First</span>
+          </div>
+          <div class="feature-expand-hint">Hover to learn more →</div>
+        </div>
+
+        <div class="feature-card reveal delay-6">
+          <span class="feature-card-icon">📚</span>
+          <h3 class="feature-card-title">Safe Learning Companion</h3>
+          <p class="feature-card-text">Rei helps with homework, explains concepts, finds resources, and adapts to learning style — without giving away answers or creating dependency.</p>
+          <div class="pill-badges">
+            <span class="pill pill-cyan">Adaptive Learning</span>
+            <span class="pill pill-orange">Socratic Method</span>
+          </div>
+          <div class="feature-expand-hint">Hover to learn more →</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transition strip -->
+    <section class="transition-strip">
+      <h3 class="reveal" style="font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 12px;">Want to see how it all works?</h3>
+      <p class="section-desc reveal delay-1" style="margin-bottom: 28px;">Dive into the technical architecture powering Rei.</p>
+      <a href="architecture.html" class="btn btn-secondary reveal delay-2">Explore the Architecture →</a>
+    </section>
+
+    <div class="maternal-line">
+      "I hope Rei feels like someone you'd actually want to talk to. You doing okay tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
