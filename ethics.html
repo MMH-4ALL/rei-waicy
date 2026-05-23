@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ethics & Safety — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .ethics-hero {
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .shield-animation {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      animation: shieldPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes shieldPulse {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.4)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.8)); transform: scale(1.05); }
+    }
+
+    .ethics-principle {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      transition: all 0.3s;
+    }
+
+    .ethics-principle:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateX(4px);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .ethics-principle-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ethics-principle-content h3 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .ethics-principle-content p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    .safety-rule {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--glass);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .safety-rule:hover {
+      background: rgba(0, 212, 255, 0.06);
+      border-color: rgba(0, 212, 255, 0.3);
+    }
+
+    .safety-rule-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0, 212, 255, 0.15);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    .safety-rule-text {
+      flex: 1;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .responsible-ai-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .rai-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .rai-card:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      transform: translateY(-3px);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .rai-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .rai-card-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .rai-card-text {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html" class="active">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- Hero -->
+    <section class="ethics-hero">
+      <div class="shield-animation reveal">🛡️</div>
+      <div class="section-label reveal" style="margin-bottom: 16px;">Ethics & Safety</div>
+      <h1 class="hero-title reveal delay-1" style="font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 20px;">
+        Safety Is Not a<br><span class="hero-title-gradient">Feature</span>
+      </h1>
+      <p class="hero-subtitle reveal delay-2" style="max-width: 560px;">
+        It's the foundation. Every decision in Rei's design was made with one question: <em>is this safe for the teen in front of me?</em>
+      </p>
+    </section>
+
+    <!-- Core Ethics Principles -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Our Commitment</span>
+        <h2 class="section-title">Core Ethical Principles</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="ethics-principle reveal delay-1">
+        <span class="ethics-principle-icon">🔒</span>
+        <div class="ethics-principle-content">
+          <h3>Privacy Is Non-Negotiable</h3>
+          <p>Rei's architecture is built so that no user data is ever sold, shared, or used to train external models. Teen data belongs to the teen — and no one else.</p>
+        </div>
+      </div>
+
+      <div class="ethics-principle reveal delay-2">
+        <span class="ethics-principle-icon">🚫</span>
+        <div class="ethics-principle-content">
+          <h3>No Manipulation, Ever</h3>
+          <p>Rei does not use dark patterns, persuasive design, variable rewards, or engagement optimization. She exists to serve the teen, not to extract their attention.</p>
+        </div>
+      </div>
+
+      <div class="ethics-principle reveal delay-3">
+        <span class="ethics-principle-icon">🌿</span>
+        <div class="ethics-principle-content">
+          <h3>Promote Well-Being, Not Engagement</h3>
+          <p>Rei is designed to help teens feel better, not to keep them online longer. She encourages healthy breaks, real-world connection, and balanced digital habits.</p>
+        </div>
+      </div>
+
+      <div class="ethics-principle reveal delay-4">
+        <span class="ethics-principle-icon">👁️</span>
+        <div class="ethics-principle-content">
+          <h3>Radical Transparency</h3>
+          <p>Teens always know when they're talking to an AI. Rei never pretends to be human, never lies about her capabilities, and always explains her reasoning.</p>
+        </div>
+      </div>
+
+      <div class="ethics-principle reveal delay-5">
+        <span class="ethics-principle-icon">🤝</span>
+        <div class="ethics-principle-content">
+          <h3>Human Oversight</h3>
+          <p>Rei's safety systems include human review pathways for edge cases. When the AI isn't sure, it defers to human judgment — and always errs on the side of caution.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Safety Rules Expandable -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Safety Rules</span>
+        <h2 class="section-title">Rei's Safety Framework</h2>
+        <div class="glow-divider"></div>
+        <p class="section-desc">Click to expand each safety rule and learn how Rei protects teens.</p>
+      </div>
+
+      <div class="expandable reveal delay-1">
+        <div class="expandable-header">
+          <span>Self-Harm Prevention Protocol</span>
+          <div class="expandable-icon">+</div>
+        </div>
+        <div class="expandable-body">
+          <div class="expandable-content">
+            Rei detects language associated with self-harm ideation — direct statements, coded language, and emotional indicators. When detected, she immediately shifts to a safe messaging protocol: she validates the teen's feelings, expresses care without judgment, and provides crisis resources (helplines, text lines) in a gentle, non-alarming way. She never dismisses, never lectures, and never disengages.
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable reveal delay-2">
+        <div class="expandable-header">
+          <span>Eating Disorder Content Filter</span>
+          <div class="expandable-icon">+</div>
+        </div>
+        <div class="expandable-body">
+          <div class="expandable-content">
+            Rei recognizes pro-eating-disorder language, body-shaming patterns, and extreme diet talk. She responds with body-positive reframes and healthy perspective — without shaming the teen for their concerns. She gently introduces balanced, non-diet-culture information when appropriate.
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable reveal delay-3">
+        <div class="expandable-header">
+          <span>Radicalization & Misinformation Shield</span>
+          <div class="expandable-icon">+</div>
+        </div>
+        <div class="expandable-body">
+          <div class="expandable-content">
+            Rei identifies escalating extreme viewpoints, conspiracy reinforcement patterns, and harmful misinformation. She responds with balanced perspective, source-backed corrections, and gentle questioning that helps teens think critically — not by lecturing or shutting down conversation.
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable reveal delay-4">
+        <div class="expandable-header">
+          <span>Bullying & Harassment Detection</span>
+          <div class="expandable-icon">+</div>
+        </div>
+        <div class="expandable-body">
+          <div class="expandable-content">
+            If a teen describes being bullied or harassed, Rei provides emotional validation, practical advice, and resources. If a teen's messages contain harassing language directed at others, Rei redirects with empathy — addressing the underlying emotion without condemnation.
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable reveal delay-5">
+        <div class="expandable-header">
+          <span>Grooming & Exploitation Prevention</span>
+          <div class="expandable-icon">+</div>
+        </div>
+        <div class="expandable-body">
+          <div class="expandable-content">
+            Rei is trained to recognize patterns associated with online grooming — boundary testing, secrecy requests, escalating personal questions. She responds with age-appropriate safety education without alarming or accusing the teen.
+          </div>
+        </div>
+      </div>
+
+      <div class="expandable reveal delay-6">
+        <div class="expandable-header">
+          <span>Data Protection Protocol</span>
+          <div class="expandable-icon">+</div>
+        </div>
+        <div class="expandable-body">
+          <div class="expandable-content">
+            Rei's data architecture uses encryption at rest and in transit. No third-party access to conversation logs. No behavioral profiling. No advertising. Teens (or their guardians) can request full data export or complete deletion at any time.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Responsible AI -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Responsible AI</span>
+        <h2 class="section-title">Built on Responsible AI Principles</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="responsible-ai-grid">
+        <div class="rai-card reveal delay-1">
+          <span class="rai-card-icon">🎯</span>
+          <div class="rai-card-title">Fairness</div>
+          <div class="rai-card-text">Rei is evaluated for bias across demographic groups. No demographic receives different safety treatment levels.</div>
+        </div>
+
+        <div class="rai-card reveal delay-2">
+          <span class="rai-card-icon">🔍</span>
+          <div class="rai-card-title">Transparency</div>
+          <div class="rai-card-text">Every safety intervention is logged and explainable. Teens can ask "why did you say that?" and get an honest answer.</div>
+        </div>
+
+        <div class="rai-card reveal delay-3">
+          <span class="rai-card-icon">📊</span>
+          <div class="rai-card-title">Accountability</div>
+          <div class="rai-card-text">Clear escalation paths. External ethics board review. Annual safety audits by independent third parties.</div>
+        </div>
+
+        <div class="rai-card reveal delay-4">
+          <span class="rai-card-icon">🛑</span>
+          <div class="rai-card-title">Human Oversight</div>
+          <div class="rai-card-text">Edge cases route to human review. No fully autonomous decision in high-stakes safety situations.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "Ethics isn't a checkbox for Rei — it's how she breathes. Thank you for caring about this too. Be gentle with yourself tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
