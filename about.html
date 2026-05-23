@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Rei</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .about-hero {
+      padding: 80px 24px 40px;
+      text-align: center;
+    }
+
+    .profile-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      max-width: 480px;
+      margin: 0 auto 40px;
+      backdrop-filter: blur(16px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--pink-glow), var(--soft-orange));
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00d4ff, #ff6b9d);
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #0b0e2d;
+      box-shadow: var(--glow-cyan);
+    }
+
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .profile-handle {
+      color: var(--cyan);
+      font-size: 0.9rem;
+      font-family: var(--font-accent);
+      margin-bottom: 4px;
+    }
+
+    .profile-role {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .profile-bio {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .profile-links {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-xl);
+      background: rgba(0, 212, 255, 0.08);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      color: var(--cyan);
+      font-size: 0.82rem;
+      font-family: var(--font-accent);
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .profile-link:hover {
+      background: rgba(0, 212, 255, 0.18);
+      transform: translateY(-2px);
+      color: var(--cyan);
+    }
+
+    .credits-section {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .credit-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.06);
+      align-items: center;
+    }
+
+    .credit-item-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .credit-item-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .credit-item-text strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .built-with-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .built-with-item {
+      background: var(--glass);
+      border: 1px solid rgba(0, 212, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .built-with-item:hover {
+      border-color: rgba(0, 212, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .built-with-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .built-with-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .built-with-desc {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .contact-form-mini {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      max-width: 480px;
+      margin: 0 auto;
+      backdrop-filter: blur(12px);
+    }
+
+    .contact-form-mini h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .contact-form-mini p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .contact-field {
+      margin-bottom: 14px;
+    }
+
+    .contact-field label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      font-family: var(--font-accent);
+    }
+
+    .contact-field input,
+    .contact-field textarea {
+      width: 100%;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .contact-field input:focus,
+    .contact-field textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
+    }
+
+    .contact-field textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .contact-field input::placeholder,
+    .contact-field textarea::placeholder {
+      color: rgba(200, 208, 231, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="page-transition"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-orb">R</div>Rei</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="story.html">Story</a></li>
+      <li><a href="problem.html">Problem</a></li>
+      <li><a href="solution.html">Solution</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="ethics.html">Ethics</a></li>
+      <li><a href="impact.html">Impact</a></li>
+      <li><a href="demo.html">Demo</a></li>
+      <li><a href="waicy.html">WAICY</a></li>
+      <li><a href="future.html">Future</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span class="theme-toggle-moon">🌙</span><span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+      <button class="nav-mobile-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- About Hero -->
+    <section class="about-hero">
+      <div class="section-label reveal" style="margin-bottom: 16px;">Credits</div>
+      <h1 class="hero-title reveal delay-1" style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 16px;">
+        About the <span class="hero-title-gradient">Project</span>
+      </h1>
+      <p class="hero-subtitle reveal delay-2" style="max-width: 500px;">
+        Rei is a WAICY 2026 project — built with care, intention, and a genuine belief that AI can be a force for good in young people's lives.
+      </p>
+    </section>
+
+    <!-- Profile Card -->
+    <section class="section" style="padding-top: 0;">
+      <div class="profile-card reveal">
+        <div class="profile-avatar">R</div>
+        <div class="profile-name">Rei</div>
+        <div class="profile-handle">@burialsociety</div>
+        <div class="profile-role">WAICY 2026 Competitor</div>
+        <p class="profile-bio">
+          Built by a developer who believes that the best technology is technology that makes people feel less alone. Rei was designed not to impress judges, but to genuinely help teens navigate a world that can feel overwhelming.
+        </p>
+        <div class="profile-links">
+          <a href="index.html" class="profile-link">🏠 Home</a>
+          <a href="demo.html" class="profile-link">⚡ Try Demo</a>
+          <a href="waicy.html" class="profile-link">🏆 WAICY Page</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Built With -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Tech Stack</span>
+        <h2 class="section-title">Built With</h2>
+        <div class="glow-divider"></div>
+        <p class="section-desc">No frameworks. No libraries. Just pure HTML, CSS, and JavaScript — proving that beautiful, immersive web experiences don't need dependencies.</p>
+      </div>
+
+      <div class="built-with-grid">
+        <div class="built-with-item reveal delay-1">
+          <span class="built-with-icon">🌐</span>
+          <div class="built-with-name">HTML5</div>
+          <div class="built-with-desc">Semantic structure</div>
+        </div>
+        <div class="built-with-item reveal delay-2">
+          <span class="built-with-icon">🎨</span>
+          <div class="built-with-name">CSS3</div>
+          <div class="built-with-desc">Animations, layout, theming</div>
+        </div>
+        <div class="built-with-item reveal delay-3">
+          <span class="built-with-icon">⚡</span>
+          <div class="built-with-name">Vanilla JS</div>
+          <div class="built-with-desc">Interactivity, particles, chat</div>
+        </div>
+        <div class="built-with-item reveal delay-4">
+          <span class="built-with-icon">🔲</span>
+          <div class="built-with-name">Canvas API</div>
+          <div class="built-with-desc">Particle system</div>
+        </div>
+        <div class="built-with-item reveal delay-5">
+          <span class="built-with-icon">📐</span>
+          <div class="built-with-name">Intersection Observer</div>
+          <div class="built-with-desc">Scroll reveals</div>
+        </div>
+        <div class="built-with-item reveal delay-6">
+          <span class="built-with-icon">🔤</span>
+          <div class="built-with-name">Google Fonts</div>
+          <div class="built-with-desc">Space Grotesk, Inter, Poppins</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Credits -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Recognition</span>
+        <h2 class="section-title">Credits & Acknowledgments</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="credits-section">
+        <div class="credit-item reveal delay-1">
+          <span class="credit-item-icon">🏆</span>
+          <div class="credit-item-text">
+            <strong>WAICY 2026</strong>
+            For organizing a competition that asks the most important question in AI: how do we build technology that serves humanity ethically?
+          </div>
+        </div>
+
+        <div class="credit-item reveal delay-2">
+          <span class="credit-item-icon">💙</span>
+          <div class="credit-item-text">
+            <strong>Teen Mental Health Researchers</strong>
+            Whose work on anxiety, digital well-being, and AI companion design informed every design decision in Rei.
+          </div>
+        </div>
+
+        <div class="credit-item reveal delay-3">
+          <span class="credit-item-icon">🌍</span>
+          <div class="credit-item-text">
+            <strong>Every Teen Who Shared Their Story</strong>
+            Real experiences of loneliness, anxiety, and digital harm that made building Rei not a choice but a responsibility.
+          </div>
+        </div>
+
+        <div class="credit-item reveal delay-4">
+          <span class="credit-item-icon">🔒</span>
+          <div class="credit-item-text">
+            <strong>Responsible AI Advocates</strong>
+            Who continue to push for privacy, safety, and ethics as non-negotiable foundations — not marketing buzzwords.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="section-label">Get in Touch</span>
+        <h2 class="section-title">Contact</h2>
+        <div class="glow-divider"></div>
+      </div>
+
+      <div class="contact-form-mini reveal">
+        <h3>Questions? Ideas?</h3>
+        <p>Interested in the project, want to collaborate, or have feedback on Rei's approach? Reach out.</p>
+        <div class="contact-field">
+          <label>Your Name</label>
+          <input type="text" placeholder="Your name">
+        </div>
+        <div class="contact-field">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="contact-field">
+          <label>Message</label>
+          <textarea placeholder="What would you like to say?"></textarea>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; justify-content: center;">
+          Send Message →
+        </button>
+      </div>
+    </section>
+
+    <div class="maternal-line">
+      "Thank you for reading all the way to the end — that means a lot. Whether you're a judge, a fellow builder, or just someone who cares about this stuff: be gentle with yourself tonight."
+    </div>
+
+  </main>
+
+  <footer class="waicy-bar">
+    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
+    <span>Rei — WAICY 2026 Entry</span>
+    <span>•</span>
+    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
+    <span>•</span>
+    <span>Built with 💙 by @burialsociety</span>
+  </footer>
+
+  <script src="shared.js"></script>
+</body>
+</html>
