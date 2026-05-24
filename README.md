@@ -4,6 +4,10 @@ Rei - A Safe Personal AI Companion for Teens
 
 Live: https://MMH-4ALL.github.io/rei-waicy
 
+THIS IS A PERSONAL PROJECT. I DO NOT SELL OR SHARE ANYTHING.
+
+I USE THIS TO HOST A LINK. THAT IS ALL.
+
 ## Pages
 
 - index.html - Home
