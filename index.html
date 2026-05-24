@@ -1,491 +1,1705 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rei — A Safe Personal AI Companion for Teens</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    /* ---- Page-specific overrides ---- */
-    .hero-orbs {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rei — A Safe AI Companion for Teens · WAICY 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #050712;
+  --bg2:       #0b1028;
+  --bg3:       #07091a;
+  --surface:    rgba(255,255,255,.04);
+  --surface2:   rgba(255,255,255,.07);
+  --text:      #f0e9df;
+  --muted:     #8b95b8;
+  --accent:    #ff8a5c;
+  --accent2:   #ffb07c;
+  --lav:       #9eb8ff;
+  --lav2:      #c4d4ff;
+  --mint:      #4fd9a0;
+  --border:    rgba(255,255,255,.07);
+  --border2:   rgba(255,255,255,.12);
+  --shadow:    0 24px 80px rgba(0,0,0,.4);
+  --nav-h:     72px;
+  --fh: 'Fraunces', Georgia, serif;
+  --fb: 'DM Sans', sans-serif;
+  --r: 24px;
+  --r-sm: 14px;
+}
 
-    .hero-orb-item {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      animation: heroOrbFloat 10s ease-in-out infinite;
-    }
+*, *::before, *::after { box-sizing: border-box; }
 
-    .hero-orb-item:nth-child(1) {
-      width: 300px; height: 300px;
-      background: rgba(0, 212, 255, 0.15);
-      top: 15%; left: 10%;
-      animation-delay: 0s;
-    }
+html { scroll-behavior: smooth; }
 
-    .hero-orb-item:nth-child(2) {
-      width: 250px; height: 250px;
-      background: rgba(255, 107, 157, 0.12);
-      top: 60%; right: 8%;
-      animation-delay: -3s;
-    }
+body {
+  margin: 0;
+  font-family: var(--fb);
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-    .hero-orb-item:nth-child(3) {
-      width: 200px; height: 200px;
-      background: rgba(255, 154, 92, 0.1);
-      bottom: 20%; left: 50%;
-      animation-delay: -6s;
-    }
+/* ─── Background layers ─── */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .6;
+}
+.bg-orb-1 {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(255,138,92,.2) 0%, transparent 70%);
+  top: -200px; left: -150px;
+  animation: drift1 18s ease-in-out infinite alternate;
+}
+.bg-orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(154,184,255,.15) 0%, transparent 70%);
+  top: 10%; right: -100px;
+  animation: drift2 22s ease-in-out infinite alternate;
+}
+.bg-orb-3 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(79,217,160,.1) 0%, transparent 70%);
+  bottom: 5%; left: 20%;
+  animation: drift3 26s ease-in-out infinite alternate;
+}
+.bg-orb-4 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,138,92,.08) 0%, transparent 70%);
+  bottom: 30%; right: 15%;
+  animation: drift1 20s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(40px, 30px) scale(1.1); } }
+@keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-30px, 50px) scale(1.08); } }
+@keyframes drift3 { from { transform: translate(0,0) scale(1); } to { transform: translate(60px, -40px) scale(1.12); } }
 
-    @keyframes heroOrbFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(25px, -30px) scale(1.08); }
-      66% { transform: translate(-15px, 20px) scale(0.94); }
-    }
+.star-field {
+  position: absolute;
+  inset: 0;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--d,4s) var(--dl,0s) infinite ease-in-out;
+}
+@keyframes twinkle {
+  0%,100% { opacity: 0; transform: scale(.5); }
+  50% { opacity: var(--o,.5); transform: scale(1); }
+}
 
-    /* Animated floating icon */
-    .hero-rei-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #00d4ff, #ff6b9d);
-      margin: 0 auto 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #0b0e2d;
-      box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 80px rgba(255, 107, 157, 0.2);
-      animation: heroIconFloat 4s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
-      position: relative;
-    }
+/* ─── Nav ─── */
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  background: rgba(5,7,18,.85);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  transition: background .3s ease;
+}
+.logo {
+  font-family: var(--fh);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--lav));
+  display: grid;
+  place-items: center;
+  font-size: .85rem;
+  color: #07091a;
+  font-weight: 700;
+  box-shadow: 0 0 18px rgba(255,138,92,.35);
+}
+.logo sup {
+  font-family: var(--fb);
+  font-size: .5rem;
+  color: var(--muted);
+  vertical-align: super;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: .25rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: .5rem .85rem;
+  border-radius: 999px;
+  font-size: .83rem;
+  font-weight: 500;
+  transition: all .22s ease;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,.06); }
+.nav-links a.active { color: var(--accent); background: rgba(255,138,92,.1); }
+.nav-links a.cta-nav {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #07091a;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(255,138,92,.3);
+}
+.nav-links a.cta-nav:hover {
+  box-shadow: 0 6px 28px rgba(255,138,92,.45);
+  transform: translateY(-1px);
+}
+.ham {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.ham span {
+  display: block;
+  height: 2px;
+  background: var(--text);
+  border-radius: 999px;
+  transition: all .25s ease;
+}
+.ham.open span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+.ham.open span:nth-child(2) { opacity: 0; }
+.ham.open span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
 
-    .hero-rei-icon::after {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(0, 212, 255, 0.3);
-      animation: rotateSlow 8s linear infinite;
-    }
+/* ─── Pages ─── */
+.page {
+  display: none;
+  min-height: 100vh;
+  padding-top: var(--nav-h);
+  position: relative;
+  z-index: 1;
+}
+.page.active { display: block; }
 
-    @keyframes heroIconFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
+section { padding: clamp(3.5rem, 6vw, 7rem) clamp(1.5rem, 5vw, 4rem); }
+.container { max-width: 1120px; margin: 0 auto; }
+.container-w { max-width: 1240px; margin: 0 auto; }
 
-    /* Feature strip */
-    .feature-strip {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 48px;
-      animation: fadeInUp 1s ease 0.8s both;
-    }
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--border2) 30%, var(--border2) 70%, transparent 100%);
+  margin: 0 clamp(1.5rem, 5vw, 4rem);
+}
 
-    .feature-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 18px;
-      background: var(--glass);
-      border: 1px solid rgba(0, 212, 255, 0.15);
-      border-radius: var(--radius-xl);
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      font-family: var(--font-accent);
-      transition: all 0.3s;
-    }
+/* ─── Label ─── */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--accent);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+}
+.label::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 999px;
+}
 
-    .feature-chip:hover {
-      border-color: rgba(0, 212, 255, 0.4);
-      color: var(--text-primary);
-      transform: translateY(-2px);
-    }
+/* ─── Headings ─── */
+h2.sec {
+  font-family: var(--fh);
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 600;
+  letter-spacing: -.05em;
+  line-height: 1;
+  margin-bottom: 1.75rem;
+  color: var(--text);
+}
+h2.sec em { color: var(--accent); font-style: normal; }
 
-    .feature-chip-icon {
-      font-size: 1rem;
-    }
+p.lead {
+  max-width: 52ch;
+  margin-bottom: 2rem;
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 1.05rem;
+  font-weight: 300;
+}
+p.lead strong, p.lead em { color: var(--text); }
+p.body {
+  color: var(--muted);
+  line-height: 1.85;
+  font-size: .97rem;
+  margin-bottom: 1.2rem;
+}
+.ta { color: var(--accent); }
+.tl { color: var(--lav); }
+.tm { color: var(--mint); }
 
-    /* Info sections */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 0;
-    }
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .85rem 1.8rem;
+  border-radius: 999px;
+  border: none;
+  font-family: var(--fb);
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-p {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #07091a;
+  box-shadow: 0 8px 32px rgba(255,138,92,.3), inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-p:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(255,138,92,.4), inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-p:active { transform: translateY(-1px) scale(.99); }
+.btn-g {
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  border: 1px solid var(--border2);
+  backdrop-filter: blur(8px);
+}
+.btn-g:hover {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.2);
+  transform: translateY(-2px);
+}
 
-    /* Animated waicy badge */
-    .waicy-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 24px;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(155, 93, 229, 0.08));
-      border: 1px solid rgba(0, 212, 255, 0.25);
-      border-radius: var(--radius-xl);
-      margin-bottom: 48px;
-      animation: fadeInUp 0.8s ease both;
-    }
+/* ─── Hero ─── */
+.hero {
+  min-height: calc(100vh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem clamp(1.5rem, 5vw, 4rem) 6rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,138,92,.12) 0%, transparent 60%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  pointer-events: none;
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+.hero-glow-2 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(154,184,255,.08) 0%, transparent 60%);
+  top: 10%; left: 5%;
+  pointer-events: none;
+  animation: pulseGlow 8s ease-in-out infinite reverse;
+}
+@keyframes pulseGlow {
+  0%,100% { opacity: .7; transform: translate(-50%,-55%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%,-55%) scale(1.08); }
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem 1.1rem .5rem .75rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border2);
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin-bottom: 2.5rem;
+  backdrop-filter: blur(12px);
+  animation: fadeUp .8s ease both;
+}
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 10px var(--mint);
+  animation: pulseDot 2.5s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%,100% { box-shadow: 0 0 6px var(--mint); }
+  50% { box-shadow: 0 0 16px var(--mint), 0 0 32px rgba(79,217,160,.3); }
+}
+.hero-title {
+  font-family: var(--fh);
+  font-size: clamp(6rem, 18vw, 10rem);
+  font-weight: 700;
+  letter-spacing: -0.07em;
+  line-height: .88;
+  margin-bottom: 1.75rem;
+  color: transparent;
+  background: linear-gradient(135deg, #f0e3cf 20%, var(--accent) 55%, var(--lav) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: fadeUp .8s .15s ease both;
+  position: relative;
+}
+.hero-title::after {
+  content: 'rei';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.15) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.hero-sub {
+  max-width: 560px;
+  margin: 0 auto 3rem;
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 1.1rem;
+  font-weight: 300;
+  animation: fadeUp .8s .3s ease both;
+}
+.hero-sub em { color: var(--accent); font-style: normal; }
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp .8s .45s ease both;
+}
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  color: var(--muted);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .5;
+  animation: fadeUp 1s 1.2s ease both;
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--muted), transparent);
+  animation: scrollDown 2s ease-in-out infinite;
+}
+@keyframes scrollDown {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    .waicy-badge-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--mid-purple), var(--deep-purple));
-      border: 1px solid rgba(0, 212, 255, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.45rem;
-      color: var(--cyan);
-      text-align: center;
-      line-height: 1.2;
-      font-family: var(--font-display);
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
+/* ─── Stat strip ─── */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin: 3rem 0;
+}
+.stat-cell {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+.stat-cell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,138,92,.05), transparent);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.stat-cell:hover { border-color: rgba(255,138,92,.25); transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+.stat-cell:hover::before { opacity: 1; }
+.stat-n {
+  font-family: var(--fh);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: .5rem;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stat-l { color: var(--muted); font-size: .85rem; line-height: 1.6; font-weight: 400; }
 
-    .waicy-badge-text {
-      text-align: left;
-    }
+/* ─── Cards ─── */
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+.egrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; }
 
-    .waicy-badge-title {
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.2;
-    }
+.card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 2rem 1.75rem;
+  transition: all .3s cubic-bezier(.34,1.2,.64,1);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,138,92,.06), rgba(154,184,255,.04));
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255,138,92,.3);
+  box-shadow: 0 24px 60px rgba(0,0,0,.35), 0 0 0 1px rgba(255,138,92,.1);
+}
+.card:hover::after { opacity: 1; }
+.card-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(255,255,255,.06);
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--border);
+}
+.card h3 {
+  font-family: var(--fh);
+  font-size: 1.15rem;
+  margin-bottom: .75rem;
+  position: relative;
+  z-index: 1;
+}
+.card p { color: var(--muted); line-height: 1.8; font-size: .92rem; position: relative; z-index: 1; }
 
-    .waicy-badge-sub {
-      font-size: 0.7rem;
-      color: var(--cyan);
-      letter-spacing: 0.5px;
-    }
+/* ─── Quote ─── */
+.quote {
+  position: relative;
+  padding: 2rem 2rem 2rem 1.75rem;
+  background: rgba(255,138,92,.07);
+  border: 1px solid rgba(255,138,92,.18);
+  border-radius: 20px;
+  margin: 2.5rem 0;
+  overflow: hidden;
+}
+.quote::before {
+  content: '\201C';
+  position: absolute;
+  top: -10px;
+  left: 1.25rem;
+  font-family: var(--fh);
+  font-size: 7rem;
+  color: rgba(255,138,92,.2);
+  line-height: 1;
+  pointer-events: none;
+}
+.quote p {
+  font-family: var(--fh);
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0 0 .75rem;
+  position: relative;
+  z-index: 1;
+}
+.quote cite {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  font-style: normal;
+  position: relative;
+  z-index: 1;
+}
 
-    /* How it works preview */
-    .steps-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-    }
+/* ─── Timeline ─── */
+.timeline {
+  position: relative;
+  margin-top: 3rem;
+  padding-left: 4.5rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 21px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--lav), transparent);
+  border-radius: 999px;
+  opacity: .4;
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot {
+  position: absolute;
+  left: -4.5rem;
+  top: 4px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--bg), var(--bg2));
+  border: 2px solid var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(255,138,92,.2), inset 0 0 12px rgba(255,138,92,.08);
+  z-index: 2;
+}
+.tl-body h3 { font-family: var(--fh); font-size: 1.1rem; margin-bottom: .5rem; }
+.tl-body p { color: var(--muted); line-height: 1.8; font-size: .93rem; }
 
-    .step-item {
-      text-align: center;
-      padding: 32px 20px;
-      position: relative;
-    }
+/* ─── Pills ─── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  border-radius: 999px;
+  padding: .35rem .85rem;
+  font-size: .75rem;
+  font-weight: 600;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  transition: all .2s ease;
+}
+.pill:hover { background: rgba(255,255,255,.08); border-color: var(--border2); }
+.pill-l { color: var(--lav); border-color: rgba(154,184,255,.25); background: rgba(154,184,255,.07); }
+.pill-a { color: var(--accent); border-color: rgba(255,138,92,.25); background: rgba(255,138,92,.07); }
+.pill-m { color: var(--mint); border-color: rgba(79,217,160,.25); background: rgba(79,217,160,.07); }
 
-    .step-num {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 180, 160, 0.2));
-      border: 1.5px solid rgba(0, 212, 255, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--cyan);
-      box-shadow: var(--glow-cyan);
-    }
+/* ─── Feature list ─── */
+.flist { list-style: none; margin: 1.5rem 0 0; padding: 0; }
+.flist li {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.75;
+}
+.flist li:last-child { border-bottom: none; }
+.flist .ck { color: var(--accent); font-size: 1.1rem; min-width: 20px; margin-top: 2px; }
 
-    .step-title {
-      font-family: var(--font-display);
-      font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 8px;
-    }
+/* ─── Ethics cards ─── */
+.ec {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  min-height: 150px;
+  transition: all .3s ease;
+}
+.ec:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.25); }
+.ec h3 { font-family: var(--fh); font-size: .98rem; margin-bottom: .65rem; }
+.ec p { color: var(--muted); line-height: 1.7; font-size: .88rem; }
+.ec.g { background: rgba(79,217,160,.07); border-color: rgba(79,217,160,.22); }
+.ec.g:hover { box-shadow: 0 16px 40px rgba(79,217,160,.12); }
+.ec.r { background: rgba(255,90,90,.06); border-color: rgba(255,90,90,.2); }
+.ec.o { background: rgba(255,138,92,.07); border-color: rgba(255,138,92,.2); }
+.ec.o:hover { box-shadow: 0 16px 40px rgba(255,138,92,.12); }
+.ec.b { background: rgba(154,184,255,.07); border-color: rgba(154,184,255,.2); }
+.ec.b:hover { box-shadow: 0 16px 40px rgba(154,184,255,.1); }
 
-    .step-desc {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.65;
-    }
-  </style>
+/* ─── Criteria cards ─── */
+.crit {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  transition: all .3s ease;
+}
+.crit:hover { border-color: rgba(79,217,160,.3); background: rgba(79,217,160,.04); transform: translateX(4px); }
+.crit-n {
+  font-family: var(--fh);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--mint);
+  min-width: 3rem;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--mint), var(--lav));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.crit-body h3 { font-family: var(--fh); font-size: 1.1rem; margin-bottom: .5rem; }
+.crit-body p { color: var(--muted); line-height: 1.8; font-size: .93rem; }
+
+/* ─── Progress bars ─── */
+.prog-wrap { margin: 1.1rem 0; }
+.prog-top { display: flex; justify-content: space-between; font-size: .83rem; color: var(--muted); margin-bottom: .5rem; }
+.prog-track { height: 7px; background: rgba(255,255,255,.07); border-radius: 999px; overflow: hidden; }
+.prog-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--lav));
+  transition: width 1.8s cubic-bezier(.22,1,.36,1);
+  position: relative;
+}
+.prog-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 0 8px rgba(255,255,255,.8);
+}
+
+/* ─── Chat ─── */
+.chat-shell {
+  background: rgba(10,13,30,.9);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 28px;
+  overflow: hidden;
+  max-width: 680px;
+  margin: 0 auto;
+  box-shadow: 0 40px 100px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.05);
+  backdrop-filter: blur(20px);
+}
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  background: rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.chat-ava {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--lav));
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  color: #07091a;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(255,138,92,.3);
+  flex-shrink: 0;
+}
+.chat-name-wrap .name { font-family: var(--fh); font-size: 1rem; font-weight: 700; }
+.chat-name-wrap .status {
+  font-size: .75rem;
+  color: var(--mint);
+  margin-top: .1rem;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 8px var(--mint);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+.chat-msgs {
+  padding: 1.5rem;
+  min-height: 380px;
+  max-height: 440px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.1) transparent;
+}
+.chat-msgs::-webkit-scrollbar { width: 6px; }
+.chat-msgs::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 99px; }
+.msg { display: flex; gap: .85rem; align-items: flex-end; animation: msgIn .3s ease; }
+.msg.user { flex-direction: row-reverse; }
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.msg-ava {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--lav));
+  display: grid;
+  place-items: center;
+  font-size: .8rem;
+  color: #07091a;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.bubble {
+  max-width: 74%;
+  padding: .9rem 1.15rem;
+  border-radius: 20px;
+  font-size: .92rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.msg.rei .bubble {
+  background: rgba(154,184,255,.09);
+  border: 1px solid rgba(154,184,255,.18);
+  border-bottom-left-radius: 6px;
+}
+.msg.user .bubble {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #07091a;
+  border-bottom-right-radius: 6px;
+}
+.typing-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: .4rem .15rem;
+}
+.td {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lav);
+  animation: tdot 1.3s infinite ease-in-out;
+}
+.td:nth-child(2) { animation-delay: .2s; }
+.td:nth-child(3) { animation-delay: .4s; }
+@keyframes tdot {
+  0%, 60%, 100% { transform: translateY(0); opacity: .35; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+.quick-ps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  padding: 0 1.4rem 1.1rem;
+}
+.qp {
+  padding: .65rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .82rem;
+  font-family: var(--fb);
+  font-weight: 500;
+  transition: all .2s ease;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+}
+.qp:hover {
+  background: rgba(255,138,92,.1);
+  border-color: rgba(255,138,92,.4);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1rem 1.3rem 1.3rem;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.chat-in {
+  flex: 1;
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.05);
+  padding: .75rem 1.2rem;
+  font-family: var(--fb);
+  font-size: .93rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color .22s ease, background .22s ease;
+  resize: none;
+}
+.chat-in:focus {
+  border-color: rgba(255,138,92,.45);
+  background: rgba(255,255,255,.08);
+}
+.chat-in::placeholder { color: rgba(255,255,255,.35); }
+.send-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #07091a;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .2s ease;
+  box-shadow: 0 4px 16px rgba(255,138,92,.3);
+  flex-shrink: 0;
+}
+.send-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 8px 24px rgba(255,138,92,.45);
+}
+.send-btn:disabled { opacity: .4; cursor: default; }
+.mood-tracker {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .65rem;
+  margin-top: 1rem;
+}
+.mood-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all .2s ease;
+  display: grid;
+  place-items: center;
+}
+.mood-btn:hover {
+  transform: scale(1.18);
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,138,92,.5);
+}
+
+/* ─── Team ─── */
+.team-card { text-align: center; }
+.team-ava {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1.25rem;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  position: relative;
+  overflow: hidden;
+}
+.team-name { font-family: var(--fh); font-size: 1.1rem; margin-bottom: .35rem; }
+.team-role { font-size: .72rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .75rem; }
+.team-bio { color: var(--muted); line-height: 1.8; font-size: .88rem; }
+
+/* ─── Info cards ─── */
+.info-card {
+  border-radius: 18px;
+  border: 1px solid;
+  padding: 1.4rem 1.6rem;
+}
+.info-card p { font-size: .86rem; color: var(--muted); line-height: 1.75; }
+.info-card strong { color: var(--text); }
+.info-card.mint { border-color: rgba(79,217,160,.25); background: rgba(79,217,160,.06); }
+.info-card.mint strong { color: var(--mint); }
+.info-card.lav { border-color: rgba(154,184,255,.25); background: rgba(154,184,255,.05); }
+.info-card.acc { border-color: rgba(255,138,92,.25); background: rgba(255,138,92,.05); }
+.info-card.acc strong { color: var(--accent); }
+
+/* ─── Nav grid ─── */
+.nav-grid { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-top: 2rem; }
+
+/* ─── Footer ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem clamp(1.5rem, 5vw, 4rem);
+  text-align: center;
+  color: var(--muted);
+  font-size: .82rem;
+  position: relative;
+  z-index: 1;
+}
+footer a { color: var(--accent); text-decoration: none; transition: opacity .2s; }
+footer a:hover { opacity: .75; }
+
+/* ─── Scroll animations ─── */
+.fi {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1);
+}
+.fi.in { opacity: 1; transform: translateY(0); }
+.fi-delay-1 { transition-delay: .1s; }
+.fi-delay-2 { transition-delay: .2s; }
+.fi-delay-3 { transition-delay: .3s; }
+.fi-delay-4 { transition-delay: .4s; }
+
+/* ─── Responsive ─── */
+@media (max-width: 860px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    background: rgba(5,7,18,.97);
+    backdrop-filter: blur(28px);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem;
+    gap: .35rem;
+    z-index: 999;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { width: 100%; text-align: center; padding: .75rem; border-radius: 12px; }
+  .ham { display: flex; }
+  section { padding: 3rem clamp(1.25rem, 4vw, 2.5rem); }
+  .hero { padding: 3rem clamp(1.25rem, 4vw, 2.5rem) 5rem; }
+  .hero-title { font-size: clamp(5rem, 20vw, 7rem); }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  .timeline { padding-left: 3.5rem; }
+  .timeline::before { left: 15px; }
+  .tl-dot { left: -3.5rem; width: 38px; height: 38px; font-size: .85rem; }
+  .crit { flex-direction: column; gap: .75rem; padding: 1.5rem; }
+  .chat-msgs { max-height: 340px; }
+  .chat-shell { border-radius: 20px; }
+  .bubble { max-width: 85%; }
+}
+@media (max-width: 480px) {
+  nav { padding: 0 1.25rem; }
+  .logo { font-size: 1.25rem; }
+  .hero-title { font-size: clamp(4rem, 22vw, 5.5rem); }
+  .hero-badge { font-size: .68rem; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .hero-btns .btn { width: 100%; max-width: 280px; justify-content: center; }
+  .stat-strip { grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .stat-cell { padding: 1.25rem 1rem; }
+  .stat-n { font-size: 2rem; }
+}
+</style>
 </head>
 <body>
-  <!-- Particles Background -->
-  <canvas id="particles-canvas"></canvas>
 
-  <!-- Floating Background Orbs -->
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+<!-- Background canvas -->
+<div class="bg-canvas" id="bgCanvas">
+  <div class="star-field" id="starField"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-orb bg-orb-4"></div>
+</div>
 
-  <!-- Page Transition Overlay -->
-  <div class="page-transition"></div>
+<!-- ── NAV ── -->
+<nav>
+  <a class="logo" onclick="nav('home')">
+    <div class="logo-mark">R</div>
+    rei<sup>✦ WAICY 2026</sup>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" data-page="story"        onclick="nav('story');return false">Story</a></li>
+    <li><a href="#" data-page="problem"      onclick="nav('problem');return false">Problem</a></li>
+    <li><a href="#" data-page="solution"     onclick="nav('solution');return false">Solution</a></li>
+    <li><a href="#" data-page="architecture" onclick="nav('architecture');return false">Architecture</a></li>
+    <li><a href="#" data-page="ethics"       onclick="nav('ethics');return false">Ethics</a></li>
+    <li><a href="#" data-page="impact"       onclick="nav('impact');return false">Impact</a></li>
+    <li><a href="#" data-page="waicy"        onclick="nav('waicy');return false">WAICY</a></li>
+    <li><a href="#" data-page="future"       onclick="nav('future');return false">Future</a></li>
+    <li><a href="#" data-page="about"         onclick="nav('about');return false">About</a></li>
+    <li><a href="#" data-page="demo"         onclick="nav('demo');return false" class="cta-nav">✦ Try Demo</a></li>
+  </ul>
+  <button class="ham" id="hamBtn" onclick="toggleNav()" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <!-- Navigation -->
-  <nav class="navbar">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-orb">R</div>
-      Rei
-    </a>
 
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="story.html">Story</a></li>
-      <li><a href="problem.html">Problem</a></li>
-      <li><a href="solution.html">Solution</a></li>
-      <li><a href="architecture.html">Architecture</a></li>
-      <li><a href="ethics.html">Ethics</a></li>
-      <li><a href="impact.html">Impact</a></li>
-      <li><a href="demo.html">Demo</a></li>
-      <li><a href="waicy.html">WAICY</a></li>
-      <li><a href="future.html">Future</a></li>
-      <li><a href="about.html">About</a></li>
-    </ul>
-
-    <div class="nav-right">
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-        <span class="theme-toggle-moon">🌙</span>
-        <span class="theme-toggle-sun">☀️</span>
-        <span class="theme-toggle-thumb"></span>
-      </button>
-      <button class="nav-mobile-toggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        WAICY 2026 — Open Entry
+      </div>
+      <h1 class="hero-title">rei</h1>
+      <p class="hero-sub">A safe, empathetic AI companion for teens — <em>because no one should feel alone</em> at 2am when everything feels too big.</p>
+      <div class="hero-btns">
+        <button class="btn btn-p" onclick="nav('demo')">✦ Try the Demo</button>
+        <button class="btn btn-g" onclick="nav('story')">Read the Story →</button>
+      </div>
     </div>
-  </nav>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
 
-  <!-- Main Content -->
-  <main class="main-content">
+  <div class="divider"></div>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-      <div class="hero-orbs">
-        <div class="hero-orb-item"></div>
-        <div class="hero-orb-item"></div>
-        <div class="hero-orb-item"></div>
+  <section>
+    <div class="container">
+      <div class="label fi">The Scale of the Problem</div>
+      <div class="stat-strip">
+        <div class="stat-cell fi"><div class="stat-n">1 in 5</div><div class="stat-l">teens experience a mental health condition every year</div></div>
+        <div class="stat-cell fi fi-delay-1"><div class="stat-n">79%</div><div class="stat-l">of teens report feeling lonely on a regular basis</div></div>
+        <div class="stat-cell fi fi-delay-2"><div class="stat-n">80%</div><div class="stat-l">who need support never actually receive it</div></div>
+        <div class="stat-cell fi fi-delay-3"><div class="stat-n">2–4 wk</div><div class="stat-l">average wait to see a school counselor</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="container">
+      <div class="label fi">What Is Rei?</div>
+      <h2 class="sec fi">A companion who <em>listens first</em>.</h2>
+      <p class="lead fi">Rei is a conversational AI built specifically for teenagers. It doesn't diagnose. It doesn't judge. It listens, reflects, and gently helps teens process emotions — while always knowing when to step aside and point toward real human support.</p>
+      <div class="grid3">
+        <div class="card fi" onclick="nav('story')" style="cursor:pointer">
+          <div class="card-icon">🌙</div>
+          <h3>The Story</h3>
+          <p>Where Rei began — rooted in the real experiences of teenagers who needed someone to talk to at 2am.</p>
+        </div>
+        <div class="card fi fi-delay-1" onclick="nav('solution')" style="cursor:pointer">
+          <div class="card-icon">💬</div>
+          <h3>What Rei Does</h3>
+          <p>Emotional support, guided journaling, breathing exercises, mood tracking, and safe escalation to humans.</p>
+        </div>
+        <div class="card fi fi-delay-2" onclick="nav('ethics')" style="cursor:pointer">
+          <div class="card-icon">🛡️</div>
+          <h3>Built Safely</h3>
+          <p>Transparent AI, crisis detection, privacy-first architecture, and zero data selling. Trust is the foundation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="container" style="text-align:center">
+      <div class="label fi">Explore the Full Project</div>
+      <h2 class="sec fi" style="margin-bottom:.5rem; max-width:none">Every page tells<br>part of the story.</h2>
+      <p class="lead fi" style="max-width:460px; margin:0 auto 0">From the emotional origins to the technical architecture — navigate the full Rei project.</p>
+      <div class="nav-grid fi">
+        <button class="btn btn-g" onclick="nav('story')">🌙 Story</button>
+        <button class="btn btn-g" onclick="nav('problem')">💔 Problem</button>
+        <button class="btn btn-g" onclick="nav('solution')">✨ Solution</button>
+        <button class="btn btn-g" onclick="nav('architecture')">⚙️ Architecture</button>
+        <button class="btn btn-g" onclick="nav('ethics')">🛡️ Ethics</button>
+        <button class="btn btn-g" onclick="nav('impact')">🌱 Impact</button>
+        <button class="btn btn-g" onclick="nav('waicy')">🏆 WAICY</button>
+        <button class="btn btn-g" onclick="nav('future')">🚀 Future</button>
+        <button class="btn btn-g" onclick="nav('about')">👤 About</button>
+        <button class="btn btn-p" onclick="nav('demo')">✦ Live Demo</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Rei · WAICY 2026 · Built by Malek Harrera &amp; Qclaw with care · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ STORY ═══════════ -->
+<div class="page" id="page-story">
+  <section>
+    <div class="container">
+      <div class="label fi">The Emotional Story</div>
+      <h2 class="sec fi">It started with a message<br>sent at <em>2 in the morning</em>.</h2>
+      <p class="lead fi">A teenager — let's call her Maya — had just had one of those days. The kind where everything felt wrong. School was overwhelming. A friendship had cracked open. And the walls of her room seemed to be pressing in.</p>
+
+      <div class="quote fi">
+        <p>"I just need someone to talk to. Anyone. I don't even know what I'm feeling."</p>
+        <cite>— A real message that sparked Rei</cite>
       </div>
 
-      <div class="hero-content">
-        <!-- WAICY Badge -->
-        <div class="waicy-badge reveal">
-          <div class="waicy-badge-logo">WAICY<br>2026</div>
-          <div class="waicy-badge-text">
-            <div class="waicy-badge-title">WAICY 2026 Entry</div>
-            <div class="waicy-badge-sub">AI for Safe, Human-Centered Futures</div>
+      <p class="body fi">Maya's story isn't rare. It's in every group chat that goes quiet when someone admits they're struggling. It's in the hallways where students carry invisible weight. It's in every sleepless night when feelings feel too enormous and too lonely.</p>
+      <p class="body fi">The adults in Maya's life cared — but they were asleep, or busy, or didn't know the right words. Her school counselor had a two-week waitlist. Therapy was expensive. And sometimes she just needed to say the thing out loud to <em>something</em> — without fear of judgment or consequence.</p>
+
+      <h2 class="sec fi" style="margin-top:3.5rem">That's why we built <em>Rei</em>.</h2>
+      <p class="lead fi">Not to replace human connection — but to be the bridge toward it. A warm presence in those 2am moments that says: <strong>"I hear you. You're not invisible. Let's figure this out together."</strong></p>
+
+      <div class="grid2" style="margin-top:2.5rem">
+        <div class="card fi"><div class="card-icon">🌃</div><h3>The 2am Problem</h3><p>Crisis doesn't respect office hours. Counselors, therapists, even parents — none are available at 2am when a teenager's mind is racing. Rei is always there.</p></div>
+        <div class="card fi fi-delay-1"><div class="card-icon">🗣️</div><h3>The Fear of Judgment</h3><p>Teens often can't say what they're really feeling to people they know. The fear of being "too much" is real and silencing. Rei is a judgment-free space.</p></div>
+        <div class="card fi"><div class="card-icon">💸</div><h3>The Access Gap</h3><p>Mental healthcare is expensive and waitlists are long. Rei isn't therapy — but it can support teens while they wait, or help them find the courage to seek help.</p></div>
+        <div class="card fi fi-delay-1"><div class="card-icon">🤝</div><h3>The Missing Bridge</h3><p>Rei bridges the space between "I'm fine" and "I need help" — helping teens name their feelings, understand their patterns, and take the first step.</p></div>
+      </div>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ PROBLEM ═══════════ -->
+<div class="page" id="page-problem">
+  <section>
+    <div class="container">
+      <div class="label fi">The Problem</div>
+      <h2 class="sec fi">There is a teen mental<br>health crisis. <em>And it's accelerating.</em></h2>
+      <p class="lead fi">A generation raised on smartphones, shaped by social media, tested by a global pandemic, and crushed by academic pressure is experiencing a mental health emergency at unprecedented scale. The systems meant to hold them are overwhelmed.</p>
+
+      <div class="stat-strip">
+        <div class="stat-cell fi"><div class="stat-n">42%</div><div class="stat-l">of high schoolers report persistent sadness or hopelessness (CDC, 2023)</div></div>
+        <div class="stat-cell fi fi-delay-1"><div class="stat-n">3×</div><div class="stat-l">increase in teen anxiety rates since 2007 (APA)</div></div>
+        <div class="stat-cell fi fi-delay-2"><div class="stat-n">1:500</div><div class="stat-l">actual school counselor ratio vs. recommended 1:250</div></div>
+        <div class="stat-cell fi fi-delay-3"><div class="stat-n">11 yrs</div><div class="stat-l">average age symptoms appear before any treatment begins</div></div>
+      </div>
+
+      <h3 class="fi" style="font-family:var(--fh);font-size:1.5rem;font-weight:400;margin:2.5rem 0 1.25rem;color:var(--text)">Why existing solutions fall short</h3>
+
+      <div class="egrid">
+        <div class="ec r fi"><h3>🏫 School Counselors</h3><p>Overworked, under-resourced. Weeks-long waitlists. Unavailable after 3pm and on weekends — exactly when most crises happen.</p></div>
+        <div class="ec r fi fi-delay-1"><h3>💊 Formal Therapy</h3><p>Expensive. Not always covered by insurance. Stigmatized in many teen communities. Requires adult initiative most teens can't navigate alone.</p></div>
+        <div class="ec r fi fi-delay-2"><h3>📱 Social Media</h3><p>Amplifies comparison, anxiety, and isolation. Algorithms maximize engagement — not emotional health. The opposite of what struggling teens need.</p></div>
+        <div class="ec r fi fi-delay-3"><h3>🤖 Generic Chatbots</h3><p>Not designed for teens. No crisis protocols. No emotional intelligence. Not built with adolescent psychology at the center.</p></div>
+      </div>
+
+      <div class="quote fi" style="margin-top:3rem">
+        <p>"The loneliness epidemic among teens is one of the defining crises of our time. Technology helped create it. Done right, technology might help solve it."</p>
+        <cite>— Rei Design Philosophy</cite>
+      </div>
+
+      <p class="body fi">Rei doesn't replace any of these systems. It fills the gaps between them — a safe, always-available, purpose-built companion for the moments when nothing else is there.</p>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ SOLUTION ═══════════ -->
+<div class="page" id="page-solution">
+  <section>
+    <div class="container">
+      <div class="label fi">The Solution</div>
+      <h2 class="sec fi">Meet <em>Rei</em> — a companion<br>who genuinely gets it.</h2>
+      <p class="lead fi">Rei is an AI companion designed for teenagers aged 13–19. It's conversational, warm, and emotionally intelligent. It meets teens where they are — whether they're venting after a bad day, anxious about tomorrow, or just need a space to think out loud.</p>
+
+      <div class="grid3">
+        <div class="card fi"><div class="card-icon">💬</div><h3>Active Listening</h3><p>Rei asks gentle follow-ups, reflects what it hears, and validates emotions without being dismissive or falsely cheerful.</p></div>
+        <div class="card fi fi-delay-1"><div class="card-icon">📓</div><h3>Guided Journaling</h3><p>Prompts that help teens articulate feelings, track moods over time, and notice patterns in their emotional world.</p></div>
+        <div class="card fi fi-delay-2"><div class="card-icon">🌬️</div><h3>Calming Techniques</h3><p>Breathing exercises, grounding techniques, and guided mindfulness — practical tools drawn from CBT and DBT principles.</p></div>
+        <div class="card fi"><div class="card-icon">🚨</div><h3>Crisis Detection</h3><p>Trained to recognize warning signs. Always directs teens to crisis lines and trusted adults when risk is detected. No exceptions.</p></div>
+        <div class="card fi fi-delay-1"><div class="card-icon">👨‍👩‍👧</div><h3>Parental Dashboard</h3><p>Optional, privacy-respecting wellbeing check-ins for parents — aggregate trends, never private conversation content.</p></div>
+        <div class="card fi fi-delay-2"><div class="card-icon">🔗</div><h3>Resource Connections</h3><p>Connects teens to counselors, local therapists, crisis lines, and peer communities at the right moment in the conversation.</p></div>
+      </div>
+
+      <h3 class="fi" style="font-family:var(--fh);font-size:1.5rem;font-weight:400;margin:3rem 0 1rem;color:var(--text)">What Rei is <em>not</em></h3>
+      <ul class="flist fi">
+        <li><span class="ck ta">✕</span><span>A therapist or medical provider — Rei never diagnoses, prescribes, or provides clinical advice</span></li>
+        <li><span class="ck ta">✕</span><span>A replacement for human relationships or professional mental healthcare</span></li>
+        <li><span class="ck ta">✕</span><span>A social platform or engagement-maximizing product</span></li>
+        <li><span class="ck ta">✕</span><span>Something that sells teen data, serves ads, or manipulates behavior</span></li>
+        <li><span class="ck ta">✕</span><span>A one-size-fits-all chatbot with generic, hollow responses</span></li>
+      </ul>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ ARCHITECTURE ═══════════ -->
+<div class="page" id="page-architecture">
+  <section>
+    <div class="container">
+      <div class="label fi">How It Works</div>
+      <h2 class="sec fi">Built with care,<br><em>layer by layer</em>.</h2>
+      <p class="lead fi">Rei is a thoughtfully layered system where every component is designed with teen safety and emotional wellbeing as the primary constraint — not engagement metrics or profit.</p>
+
+      <div class="timeline">
+        <div class="tl-item fi"><div class="tl-dot">1</div><div class="tl-body"><h3>Conversation Layer — Language Model</h3><p>Rei uses a large language model guided by a carefully crafted system prompt that enforces warmth, age-appropriateness, and safety boundaries at every turn. It avoids clinical language and speaks like a thoughtful, kind older peer — never corporate, never hollow.</p></div></div>
+        <div class="tl-item fi fi-delay-1"><div class="tl-dot">2</div><div class="tl-body"><h3>Safety Filter — Real-time Content Screening</h3><p>Every response passes through a safety layer before delivery. This catches harmful content, dangerous advice, or anything inappropriate for teens. If flagged, the response is replaced with a compassionate, grounded message.</p></div></div>
+        <div class="tl-item fi fi-delay-2"><div class="tl-dot">3</div><div class="tl-body"><h3>Crisis Detection — Risk Assessment Module</h3><p>A secondary classifier monitors every conversation for distress signals: specific language patterns, sentiment shifts, escalating hopelessness. When thresholds are met, Rei pivots immediately to crisis resources and encourages the teen to reach out to a real person.</p></div></div>
+        <div class="tl-item fi fi-delay-3"><div class="tl-dot">4</div><div class="tl-body"><h3>Memory Layer — Personalized Context</h3><p>Within a session, Rei remembers what was shared. Across sessions (with consent), Rei recalls key emotional themes — not to monitor, but to be a consistent companion who doesn't make teens re-explain their whole story every time.</p></div></div>
+        <div class="tl-item fi fi-delay-1"><div class="tl-dot">5</div><div class="tl-body"><h3>Privacy Layer — Data Minimization by Design</h3><p>Rei collects only what's strictly necessary. Conversations are end-to-end encrypted. Teens own their data and can delete it anytime. Compliance with COPPA, GDPR, and youth data laws is built in from day one — not bolted on later.</p></div></div>
+        <div class="tl-item fi fi-delay-2"><div class="tl-dot">6</div><div class="tl-body"><h3>Interface Layer — Calm, Accessible Design</h3><p>No dark patterns. No notification addiction loops. No streaks or engagement gamification. Just a warm, clean space that feels safe to open and easy to put down — designed for anxious, tired teenagers.</p></div></div>
+      </div>
+
+      <div class="info-card lav fi" style="margin-top:2.5rem">
+        <h3 style="font-family:var(--fh);font-size:1.05rem;margin-bottom:.85rem;color:var(--lav)">🔬 Prototype Tech Stack</h3>
+        <p style="margin-bottom:.9rem;font-size:.88rem;color:var(--muted)">The WAICY prototype demonstrates the conversational and safety layers using:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.45rem">
+          <span class="pill pill-l">Custom LLM Integration</span>
+          <span class="pill pill-l">Vanilla JS + HTML/CSS</span>
+          <span class="pill pill-l">Safety System Prompting</span>
+          <span class="pill pill-l">Local Session Memory</span>
+          <span class="pill pill-l">Crisis Keyword Detection</span>
+          <span class="pill pill-l">GitHub Pages Hosting</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ ETHICS ═══════════ -->
+<div class="page" id="page-ethics">
+  <section>
+    <div class="container">
+      <div class="label fi">Ethics &amp; Safety</div>
+      <h2 class="sec fi">Trust is not a feature.<br><em>It's the foundation.</em></h2>
+      <p class="lead fi">Building AI for teenagers is one of the highest-responsibility design challenges in technology. Every decision about how Rei behaves is filtered through one question: <strong>is this genuinely good for the teen in front of us?</strong></p>
+
+      <div class="egrid">
+        <div class="ec g fi"><h3>✅ Full Transparency</h3><p>Rei always identifies itself as an AI. It never pretends to be human. Teens know exactly what they're talking to. Nothing is hidden or obscured.</p></div>
+        <div class="ec g fi fi-delay-1"><h3>✅ Privacy First</h3><p>No data selling. No ad targeting. No third-party sharing. Conversations are encrypted. Teens own their data and can delete it completely, anytime.</p></div>
+        <div class="ec g fi fi-delay-2"><h3>✅ Human Escalation</h3><p>Rei knows its limits. Any situation involving safety risk triggers an immediate, warm handoff to crisis resources and real humans. AI steps aside when it matters most.</p></div>
+        <div class="ec g fi fi-delay-3"><h3>✅ No Engagement Traps</h3><p>No streaks. No addictive push notifications. Rei actively encourages teens to go live their lives, spend time with friends, and put the phone down.</p></div>
+        <div class="ec o fi fi-delay-1"><h3>⚠️ Clearly Not Therapy</h3><p>Rei is transparent that it's a companion, not a clinician. It regularly reminds teens that professional support exists and helps them navigate how to access it.</p></div>
+        <div class="ec b fi fi-delay-2"><h3>🔵 Balanced Parental Involvement</h3><p>Teens retain privacy. Parents can opt into aggregate wellbeing check-ins. The balance between teen autonomy and parental peace of mind is designed collaboratively.</p></div>
+        <div class="ec b fi fi-delay-3"><h3>🔵 Inclusive Design</h3><p>Tested across cultural backgrounds, gender identities, and socioeconomic contexts. Rei is built to be genuinely relevant for every teenager, not a narrow demographic.</p></div>
+        <div class="ec b fi fi-delay-4"><h3>🔵 Continuous Auditing</h3><p>Safety systems and conversation guidelines are reviewed regularly by child psychologists, ethics researchers, and teen user testers — not set and forgotten.</p></div>
+      </div>
+
+      <div class="quote fi" style="margin-top:3rem">
+        <p>"When you build for the most vulnerable users, you build better for everyone."</p>
+        <cite>— Rei Design Principle</cite>
+      </div>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ IMPACT ═══════════ -->
+<div class="page" id="page-impact">
+  <section>
+    <div class="container">
+      <div class="label fi">Impact</div>
+      <h2 class="sec fi">What <em>real change</em><br>looks like.</h2>
+      <p class="lead fi">Rei isn't just an app — it's an intervention. Every teenager who processes an emotion, every 2am crisis that finds a compassionate response, every teen who finds the courage to talk to a counselor because Rei helped them find the words — that's the real impact.</p>
+
+      <div class="stat-strip">
+        <div class="stat-cell fi"><div class="stat-n">24/7</div><div class="stat-l">emotional support availability, no waitlist, no appointment needed</div></div>
+        <div class="stat-cell fi fi-delay-1"><div class="stat-n">$0</div><div class="stat-l">cost barrier — designed to be free or subsidized for all teens</div></div>
+        <div class="stat-cell fi fi-delay-2"><div class="stat-n">∞</div><div class="stat-l">scalability — one counselor reaches 500 students; Rei can reach millions</div></div>
+      </div>
+
+      <h3 class="fi" style="font-family:var(--fh);font-size:1.5rem;font-weight:400;margin:2.5rem 0 1.25rem;color:var(--text)">Target Outcomes</h3>
+      <div>
+        <div class="prog-wrap fi"><div class="prog-top"><span>Teens who feel heard and validated after a session</span><span class="ta">85%+</span></div><div class="prog-track"><div class="prog-fill" data-w="85%" style="width:0"></div></div></div>
+        <div class="prog-wrap fi fi-delay-1"><div class="prog-top"><span>Sessions resulting in a coping strategy the teen actively uses</span><span class="ta">70%+</span></div><div class="prog-track"><div class="prog-fill" data-w="70%" style="width:0"></div></div></div>
+        <div class="prog-wrap fi fi-delay-2"><div class="prog-top"><span>Teens referred to professional support who follow through</span><span class="ta">60%+</span></div><div class="prog-track"><div class="prog-fill" data-w="60%" style="width:0"></div></div></div>
+        <div class="prog-wrap fi fi-delay-3"><div class="prog-top"><span>Crisis situations that result in safe escalation to human support</span><span class="ta">100%</span></div><div class="prog-track"><div class="prog-fill" data-w="100%" style="width:0"></div></div></div>
+      </div>
+
+      <div class="grid2" style="margin-top:3rem">
+        <div class="card fi"><div class="card-icon">🏫</div><h3>Schools</h3><p>Rei can supplement school counselors — available to every student, with anonymized wellbeing trends informing school-wide mental health strategy.</p></div>
+        <div class="card fi fi-delay-1"><div class="card-icon">🌍</div><h3>Global Reach</h3><p>With multilingual capability and low bandwidth needs, Rei can reach underserved teen populations globally — anywhere there's a smartphone and a feeling of being alone.</p></div>
+        <div class="card fi"><div class="card-icon">📊</div><h3>Research Contribution</h3><p>Anonymized, consented data could contribute to one of the largest datasets on teen emotional wellbeing — informing policy, curriculum, and clinical practice.</p></div>
+        <div class="card fi fi-delay-1"><div class="card-icon">💜</div><h3>Community Building</h3><p>Rei can connect teens to moderated peer support communities — turning individual support into collective resilience and reducing isolation at scale.</p></div>
+      </div>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ DEMO ═══════════ -->
+<div class="page" id="page-demo">
+  <section>
+    <div class="container">
+      <div class="label fi">Interactive Demo</div>
+      <h2 class="sec fi">Say hello to <em>Rei</em>.</h2>
+      <p class="lead fi" style="margin-bottom:1.5rem">This is a live demo of Rei's conversational companion — with safety and empathy guidelines embedded. Talk to Rei like you would a trusted friend.</p>
+
+      <div class="fi" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.75rem">
+        <span class="pill pill-a">✨ AI Companion</span>
+        <span class="pill pill-m">🛡️ Safety Mode Active</span>
+        <span class="pill pill-l">💬 Emotional Support</span>
+        <span class="pill pill-l">🧠 Learning Conversations</span>
+      </div>
+
+      <div class="chat-shell fi">
+        <div class="chat-head">
+          <div class="chat-ava">R</div>
+          <div class="chat-name-wrap">
+            <div class="name">Rei</div>
+            <div class="status"><span class="status-dot"></span> online — here for you</div>
           </div>
         </div>
-
-        <!-- Animated Rei Icon -->
-        <div class="hero-rei-icon reveal">R</div>
-
-        <h1 class="hero-title reveal">
-          <span class="hero-title-gradient">Rei</span>
-        </h1>
-
-        <p class="hero-subtitle reveal">
-          A safe, emotional, and <em>intelligent</em> personal AI companion<br>
-          built specifically for teens navigating their digital world.
-        </p>
-
-        <div class="hero-cta-group reveal">
-          <a href="story.html" class="btn btn-primary">
-            Enter the Experience
-            <span>→</span>
-          </a>
-          <a href="demo.html" class="btn btn-secondary">
-            Try the Demo
-            <span>⚡</span>
-          </a>
-        </div>
-
-        <!-- Feature chips -->
-        <div class="feature-strip">
-          <div class="feature-chip"><span class="feature-chip-icon">🛡️</span> Safe by Design</div>
-          <div class="feature-chip"><span class="feature-chip-icon">💙</span> Emotionally Aware</div>
-          <div class="feature-chip"><span class="feature-chip-icon">🧠</span> Memory-Powered</div>
-          <div class="feature-chip"><span class="feature-chip-icon">🔒</span> Privacy-First</div>
-          <div class="feature-chip"><span class="feature-chip-icon">🤝</span> Always There</div>
-        </div>
-
-        <!-- Scroll indicator -->
-        <div class="scroll-indicator">
-          <div class="scroll-mouse">
-            <div class="scroll-wheel"></div>
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="msg rei">
+            <div class="msg-ava">R</div>
+            <div class="bubble">Hey 👋 I'm Rei. I'm here to listen — no judgment, no pressure. What's on your mind today?</div>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- WHAT IS REI? -->
-    <section class="section">
-      <div class="section-header reveal">
-        <span class="section-label">Introducing</span>
-        <h2 class="section-title">What is Rei?</h2>
-        <div class="glow-divider"></div>
-        <p class="section-desc">
-          Rei isn't just a chatbot. She's a living digital companion — warm, steady, and always on your side.
-        </p>
-      </div>
-
-      <div class="info-grid">
-        <div class="card reveal delay-1">
-          <span class="card-icon">💬</span>
-          <h3 class="card-title">Conversational Memory</h3>
-          <p class="card-text">Rei remembers your conversations, your moods, and your context — so every interaction feels personal, not repetitive.</p>
+        <div class="quick-ps" id="quickPs">
+          <button class="qp" onclick="quickSend(this, 'I\'ve been feeling really stressed lately')">😰 I'm stressed</button>
+          <button class="qp" onclick="quickSend(this, 'I feel like no one really understands me')">😔 No one gets me</button>
+          <button class="qp" onclick="quickSend(this, 'I had a really rough day at school today')">📚 Rough day at school</button>
+          <button class="qp" onclick="quickSend(this, 'I\'m really anxious about something coming up')">😬 Feeling anxious</button>
         </div>
-
-        <div class="card reveal delay-2">
-          <span class="card-icon">🛡️</span>
-          <h3 class="card-title">Safety Layer</h3>
-          <p class="card-text">Built with guardrails that protect teens from harmful content, misinformation, and manipulation — invisibly and always.</p>
-        </div>
-
-        <div class="card reveal delay-3">
-          <span class="card-icon">🌡️</span>
-          <h3 class="card-title">Emotional Check-ins</h3>
-          <p class="card-text">Rei notices when you're stressed or down. She reaches out with warmth — not pity — and helps you ground yourself.</p>
-        </div>
-
-        <div class="card reveal delay-4">
-          <span class="card-icon">📁</span>
-          <h3 class="card-title">File & Task Help</h3>
-          <p class="card-text">From finding lost files to organizing your study schedule, Rei is genuinely useful — she's your digital co-pilot.</p>
-        </div>
-
-        <div class="card reveal delay-5">
-          <span class="card-icon">🧭</span>
-          <h3 class="card-title">Judgment-Free Space</h3>
-          <p class="card-text">No topic is too embarrassing, no question too silly. Rei creates a safe space where teens can be fully themselves.</p>
-        </div>
-
-        <div class="card reveal delay-6">
-          <span class="card-icon">⚡</span>
-          <h3 class="card-title">Instant Responsiveness</h3>
-          <p class="card-text">Available 24/7 on any device. Rei meets teens where they are — at 2am during exam panic or 5pm after a rough day.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS (Preview) -->
-    <section class="section" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.03), rgba(155, 93, 229, 0.05)); border-radius: 32px; margin: 0 auto; max-width: 1100px;">
-      <div class="section-header reveal">
-        <span class="section-label">The System</span>
-        <h2 class="section-title">How Rei Works</h2>
-        <div class="glow-divider"></div>
-      </div>
-
-      <div class="steps-row">
-        <div class="step-item reveal delay-1">
-          <div class="step-num">1</div>
-          <h3 class="step-title">You Talk to Rei</h3>
-          <p class="step-desc">Natural conversation — type as you would text a friend. Rei understands nuance, tone, and emotion.</p>
-        </div>
-
-        <div class="step-item reveal delay-2">
-          <div class="step-num">2</div>
-          <h3 class="step-title">Rei Understands</h3>
-          <p class="step-desc">She reads between the lines — not just your words, but your emotional state, context, and needs.</p>
-        </div>
-
-        <div class="step-item reveal delay-3">
-          <div class="step-num">3</div>
-          <h3 class="step-title">Memory Activates</h3>
-          <p class="step-desc">She recalls past conversations to give personalized, continuity-based responses.</p>
-        </div>
-
-        <div class="step-item reveal delay-4">
-          <div class="step-num">4</div>
-          <h3 class="step-title">Safe Response</h3>
-          <p class="step-desc">Every response passes through the safety layer — ensuring appropriate, healthy, helpful output.</p>
+        <div class="chat-input-row">
+          <input class="chat-in" id="chatIn" type="text" placeholder="Talk to Rei…" onkeydown="if(event.key==='Enter')sendMsg()">
+          <button class="send-btn" id="sendBtn" onclick="sendMsg()">↑</button>
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 40px;" class="reveal">
-        <a href="architecture.html" class="btn btn-secondary">
-          Explore the Architecture
-          <span>→</span>
-        </a>
+      <div class="info-card mint fi" style="margin-top:1.75rem">
+        <p><strong>🛡️ Safety Note:</strong> This demo uses Rei's AI with built-in safety and empathy guidelines. In a real crisis, Rei always directs teens to professional support. If you're struggling right now, please reach out to a trusted adult, or call/text the <strong>988 Suicide &amp; Crisis Lifeline</strong> (US) at <strong>988</strong> — available 24/7.</p>
       </div>
-    </section>
-
-    <!-- STATS ROW -->
-    <section class="section">
-      <div class="grid-4" style="text-align: center;">
-        <div class="reveal delay-1">
-          <div class="stat-number">100%</div>
-          <div class="stat-label">Safety-Focused</div>
-        </div>
-        <div class="reveal delay-2">
-          <div class="stat-number">24/7</div>
-          <div class="stat-label">Always Available</div>
-        </div>
-        <div class="reveal delay-3">
-          <div class="stat-number">0 Logs Shared</div>
-          <div class="stat-label">Privacy Guaranteed</div>
-        </div>
-        <div class="reveal delay-4">
-          <div class="stat-number">100%</div>
-          <div class="stat-label">Teen-Approved</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- EMOTIONAL STORY TEASER -->
-    <section class="section">
-      <div class="section-header reveal">
-        <span class="section-label">The Story</span>
-        <h2 class="section-title">Why Rei Exists</h2>
-        <div class="glow-divider"></div>
-      </div>
-
-      <div class="quote-block reveal">
-        <p class="quote-text">Every teen deserves someone in their corner — someone who listens without judgment, remembers without reminding, and cares without condition.</p>
-        <div class="quote-author">— The vision behind Rei</div>
-      </div>
-
-      <div style="text-align: center; margin-top: 40px;" class="reveal">
-        <a href="story.html" class="btn btn-warm">
-          Read the Full Story
-          <span>→</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- WAICY ALIGNMENT CTA -->
-    <section class="section">
-      <div class="card reveal" style="text-align: center; padding: 64px 40px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(155, 93, 229, 0.06)); border-color: rgba(0, 212, 255, 0.2);">
-        <span style="font-size: 3rem; display: block; margin-bottom: 16px;">🏆</span>
-        <h2 class="section-title" style="margin-bottom: 16px;">Built for WAICY 2026</h2>
-        <p class="section-desc" style="margin-bottom: 32px;">
-          Rei aligns with the WAICY mission: AI for safe, human-centered futures. Explore how she meets every judging criterion.
-        </p>
-        <a href="waicy.html" class="btn btn-primary">See WAICY Alignment</a>
-      </div>
-    </section>
-
-    <!-- Maternal closing -->
-    <div class="maternal-line">
-      "Take your time exploring. You doing okay tonight."
     </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
 
-  </main>
 
-  <!-- WAICY Footer Bar -->
-  <footer class="waicy-bar">
-    <div class="waicy-logo-placeholder">WAICY<br>2026</div>
-    <span>Rei — WAICY 2026 Entry</span>
-    <span>•</span>
-    <span class="waicy-theme-text">AI for Safe, Human-Centered Futures</span>
-    <span>•</span>
-    <span>Built with 💙 for teens everywhere</span>
-  </footer>
+<!-- ═══════════ WAICY ═══════════ -->
+<div class="page" id="page-waicy">
+  <section>
+    <div class="container">
+      <div class="label fi">WAICY 2026 Alignment</div>
+      <h2 class="sec fi">How Rei fits the<br><em>WAICY mission</em>.</h2>
+      <p class="lead fi">WAICY challenges young people to build AI that solves real problems responsibly. Rei was designed with every WAICY criterion as a founding constraint — not an afterthought.</p>
 
-  <script src="shared.js"></script>
+      <div style="margin-top:3rem;display:flex;flex-direction:column;gap:1.25rem">
+        <div class="crit fi"><div class="crit-n">01</div><div class="crit-body"><h3>Real-World Problem Solving</h3><p>Teen mental health and loneliness represent one of the most documented youth crises of the 21st century. Rei directly addresses a measurable, urgent gap in support infrastructure for adolescents — millions of teens who fall through the cracks of existing systems.</p></div></div>
+        <div class="crit fi fi-delay-1"><div class="crit-n">02</div><div class="crit-body"><h3>Ethical AI Development</h3><p>Rei's architecture is built around ethics: transparency, privacy, safety, human oversight, and a refusal to exploit users. Safety classifiers, crisis detection, privacy-first data handling, and zero dark patterns — ethics are the design brief, not a checkbox.</p></div></div>
+        <div class="crit fi fi-delay-2"><div class="crit-n">03</div><div class="crit-body"><h3>Youth-Led Innovation</h3><p>Rei was conceived and built by young people who have experienced the teen mental health crisis firsthand. The team understands the users because we are them — or recently were. That lived experience shapes every design decision.</p></div></div>
+        <div class="crit fi fi-delay-3"><div class="crit-n">04</div><div class="crit-body"><h3>Technical Feasibility</h3><p>The prototype demonstrates core functionality with Claude API, custom safety prompting, crisis detection logic, session memory, and a polished responsive interface — all in pure HTML, CSS, and JavaScript. The architecture scales from prototype to production.</p></div></div>
+        <div class="crit fi fi-delay-1"><div class="crit-n">05</div><div class="crit-body"><h3>Social Impact Potential</h3><p>Millions of teenagers worldwide lack adequate emotional support. Rei scales to reach any smartphone-owning teen — a global intervention achievable with a small operational footprint and zero cost barrier for users.</p></div></div>
+        <div class="crit fi fi-delay-2"><div class="crit-n">06</div><div class="crit-body"><h3>Presentation &amp; Communication</h3><p>This website communicates Rei's story, purpose, architecture, ethics, and impact in a clear, accessible format. Designed for judges and for the teens Rei serves — warm, readable, and honest about what Rei is and what it isn't.</p></div></div>
+      </div>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ FUTURE ═══════════ -->
+<div class="page" id="page-future">
+  <section>
+    <div class="container">
+      <div class="label fi">Future Plans</div>
+      <h2 class="sec fi">Where <em>Rei is going</em>.</h2>
+      <p class="lead fi">Rei is a prototype today. The roadmap is ambitious — because the scale of the problem demands it. Here's how we imagine Rei evolving over the next several years.</p>
+
+      <div class="timeline">
+        <div class="tl-item fi"><div class="tl-dot">🌱</div><div class="tl-body"><h3>Phase 1 — WAICY Prototype (Now)</h3><p>Core conversational companion, safety layer, crisis detection, responsive web interface. Open-sourced on GitHub. Available for teens and judges to explore.</p><div style="margin-top:.65rem"><span class="pill pill-m">✓ Complete</span></div></div></div>
+        <div class="tl-item fi fi-delay-1"><div class="tl-dot">📱</div><div class="tl-body"><h3>Phase 2 — Mobile App (6–12 months)</h3><p>Native iOS and Android apps. Opt-in push notifications (thoughtful, non-addictive). Mood tracking and journaling. Offline support for low-connectivity environments.</p></div></div>
+        <div class="tl-item fi fi-delay-2"><div class="tl-dot">🏫</div><div class="tl-body"><h3>Phase 3 — School Partnerships (Year 1–2)</h3><p>Pilot programs with 5–10 schools. Counselor dashboard integration. Anonymized school-wide wellbeing reporting. IRB-approved outcome research to measure real impact.</p></div></div>
+        <div class="tl-item fi fi-delay-3"><div class="tl-dot">🌍</div><div class="tl-body"><h3>Phase 4 — Multilingual &amp; Global (Year 2–3)</h3><p>Support for Spanish, French, Mandarin, Arabic, and more. Cultural adaptation of support approaches. Partnerships with NGOs serving underserved teen populations globally.</p></div></div>
+        <div class="tl-item fi fi-delay-1"><div class="tl-dot">🔬</div><div class="tl-body"><h3>Phase 5 — Research &amp; Clinical Integration (Year 3+)</h3><p>Peer-reviewed efficacy studies. Formal integration as a bridge tool in clinical settings. Policy advocacy for subsidized teen mental health AI. Open-source model contributions to the field.</p></div></div>
+      </div>
+
+      <div class="info-card acc fi" style="margin-top:2.5rem">
+        <h3 style="font-family:var(--fh);font-size:1.05rem;margin-bottom:.85rem;color:var(--accent)">🤝 How to Get Involved</h3>
+        <p style="margin-bottom:.9rem;font-size:.88rem">Rei is an open project. We welcome collaboration from:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.45rem">
+          <span class="pill pill-a">Child Psychologists</span>
+          <span class="pill pill-a">School Counselors</span>
+          <span class="pill pill-a">Teen User Testers</span>
+          <span class="pill pill-a">AI Safety Researchers</span>
+          <span class="pill pill-a">NGO Partners</span>
+          <span class="pill pill-a">Open Source Developers</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div class="page" id="page-about">
+  <section>
+    <div class="container">
+      <div class="label fi">About the Team</div>
+      <h2 class="sec fi">Built by teens,<br><em>for teens</em>.</h2>
+      <p class="lead fi">Rei was built by a small team of young people who care deeply about mental health, responsible technology, and the wellbeing of their generation. We're not just building this for teens — we are teens.</p>
+
+      <div class="grid3" style="margin-top:3rem">
+        <div class="card team-card fi"><div class="team-ava" style="background:linear-gradient(135deg,rgba(255,138,92,.2),rgba(154,184,255,.2))">🧑‍💻</div><div class="team-name">The Rei Team</div><div class="team-role">Founders &amp; Builders</div><div class="team-bio">Young innovators with a shared mission: make emotional support accessible to every teenager, regardless of circumstance, postcode, or income.</div></div>
+        <div class="card team-card fi fi-delay-1"><div class="team-ava" style="background:linear-gradient(135deg,rgba(79,217,160,.2),rgba(154,184,255,.2))">🎨</div><div class="team-name">Design &amp; Research</div><div class="team-role">UX &amp; Teen Wellbeing</div><div class="team-bio">Designing for the most vulnerable users means getting every detail right — from color psychology to conversation tone and crisis escalation flows.</div></div>
+        <div class="card team-card fi fi-delay-2"><div class="team-ava" style="background:linear-gradient(135deg,rgba(255,138,92,.2),rgba(79,217,160,.2))">🛡️</div><div class="team-name">Safety &amp; Ethics</div><div class="team-role">AI Safety &amp; Child Welfare</div><div class="team-bio">Every safety feature in Rei was built by people who take the responsibility of building for teens with the full seriousness it deserves.</div></div>
+      </div>
+
+      <div class="quote fi" style="margin-top:3rem">
+        <p>"We built Rei because we wish it had existed when we needed it most."</p>
+        <cite>— The Rei Team</cite>
+      </div>
+
+      <div class="grid2" style="margin-top:2.5rem">
+        <div class="card fi"><h3 style="font-family:var(--fh);font-size:1.1rem;margin-bottom:.85rem">🔗 Find Us</h3><ul class="flist" style="margin-top:0"><li><span class="ck tl">→</span><a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank" style="color:var(--lav);text-decoration:none">GitHub: MMH-4ALL/rei-waicy</a></li><li><span class="ck tl">→</span><span>WAICY 2026 Competition Entry</span></li><li><span class="ck tl">→</span><span>Open Source — MIT Licensed</span></li></ul></div>
+        <div class="card fi fi-delay-1"><h3 style="font-family:var(--fh);font-size:1.1rem;margin-bottom:.85rem">📬 Get Involved</h3><p class="body" style="margin-bottom:0">We're looking for mental health professionals, researchers, teen testers, and developers who share our mission. Open an issue on GitHub or reach out — every voice helps Rei grow.</p></div>
+      </div>
+    </div>
+  </section>
+  <footer>Rei · WAICY 2026 · Built by Malek Harrera &amp; Qclaw with 💜 for the teens who needed it · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+</div>
+
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
+<script>
+/* ── Star field ── */
+(function () {
+  const sf = document.getElementById('starField');
+  if (!sf) return;
+  for (let i = 0; i < 110; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2.2 + 0.4;
+    s.style.cssText = [
+      'width:' + sz + 'px',
+      'height:' + sz + 'px',
+      'left:' + (Math.random() * 100) + '%',
+      'top:' + (Math.random() * 100) + '%',
+      '--d:' + (Math.random() * 4 + 2).toFixed(1) + 's',
+      '--dl:' + (Math.random() * 6).toFixed(1) + 's',
+      '--o:' + (Math.random() * 0.5 + 0.05).toFixed(2)
+    ].join(';');
+    sf.appendChild(s);
+  }
+})();
+
+/* ── Nav ── */
+function nav(id) {
+  document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+  var pg = document.getElementById('page-' + id);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(function (a) {
+    a.classList.toggle('active', a.dataset.page === id);
+  });
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('hamBtn').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(initFI, 100);
+  if (id === 'impact') setTimeout(animateProgress, 400);
+}
+
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamBtn').classList.toggle('open');
+}
+
+/* ── Fade-in observer ── */
+function initFI() {
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) e.target.classList.add('in');
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.page.active .fi').forEach(function (el) { obs.observe(el); });
+}
+
+/* ── Progress bars ── */
+function animateProgress() {
+  document.querySelectorAll('.page.active .prog-fill[data-w]').forEach(function (el) {
+    el.style.width = el.dataset.w;
+  });
+}
+
+/* ── Chat ── */
+var chatHistory = [];
+var responses = {
+  stressed: [
+    "That sounds really heavy. Can you tell me what's making you feel most stressed right now? Sometimes naming it helps.",
+    "Stress has a way of making everything feel bigger than it is. What's one thing that's been sitting with you?",
+    "I hear you. That weight you're feeling is real. What's been building up?"
+  ],
+  lonely: [
+    "Loneliness can feel so isolating, especially when everyone else seems connected. You're not alone in feeling this way.",
+    "That feeling of being on the outside — it's painful and real. What would help you feel more connected right now?",
+    "Sometimes we feel most alone when we're surrounded by people. I'm here. What's that like for you?"
+  ],
+  anxious: [
+    "Anxiety has a way of making our minds race. What are you most worried about right now?",
+    "That nervous feeling in your chest — it's trying to protect you, even if it doesn't feel helpful. What triggered it?",
+    "Anxiety can feel suffocating. Let's slow down together. What's one thing that's been on your mind?"
+  ],
+  sad: [
+    "Sadness sometimes arrives without warning. I'm glad you're here talking about it. What hurts the most?",
+    "That heaviness you're feeling — it matters. Do you want to talk about what's behind it?",
+    "Sometimes sadness is just... there. And that's okay to feel. What's been weighing on you?"
+  ],
+  school: [
+    "School can be a lot — pressure, social stuff, uncertainty about the future. What's been the hardest part for you?",
+    "Rough days at school hit different. Do you want to vent about what happened, or do you need to talk about how it's making you feel?",
+    "School stress is real and valid. What's making it feel overwhelming?"
+  ],
+  friend: [
+    "Friendship stuff can hurt so deeply because they matter so much. What happened?",
+    "When someone important hurts us, it feels like everything is broken. I'm listening.",
+    "Friendship challenges are some of the hardest to navigate. What's going on?"
+  ],
+  default: [
+    "I'm here and listening. Tell me more — what's on your heart right now?",
+    "That's a lot to carry. I want to understand. What does that feel like?",
+    "You're being brave by talking about this. What do you need right now?",
+    "I'm here for whatever you want to share. What matters most to you right now?",
+    "Sometimes the hardest part is just putting it into words. Take your time. I'm listening."
+  ]
+};
+
+function sendMsg() {
+  var inp = document.getElementById('chatIn');
+  var txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = '';
+  document.getElementById('quickPs').style.display = 'none';
+  addBubble('user', txt);
+  var btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  setTimeout(function () {
+    var typing = addTyping();
+    setTimeout(function () {
+      typing.remove();
+      var reply = getReiResponse(txt);
+      addBubble('rei', reply);
+      btn.disabled = false;
+      chatHistory.push({ user: txt, rei: reply });
+    }, 800 + Math.random() * 700);
+  }, 150);
+}
+
+function getReiResponse(txt) {
+  var lower = txt.toLowerCase();
+  var keywords = {
+    stressed: ['stress', 'overwhelm', 'pressure', 'burden'],
+    lonely: ['lonely', 'alone', 'isolated', 'no one', 'disconnect'],
+    anxious: ['anxious', 'worry', 'nervous', 'scared', 'worried'],
+    sad: ['sad', 'depressed', 'down', 'empty', 'hurt'],
+    school: ['school', 'class', 'homework', 'test', 'teacher', 'grade'],
+    friend: ['friend', 'friendship', 'crush', 'argument', 'fight', 'social']
+  };
+  for (var key in keywords) {
+    if (keywords.hasOwnProperty(key) && keywords[key].some(function (w) { return lower.indexOf(w) !== -1; })) {
+      var arr = responses[key];
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+  }
+  return responses.default[Math.floor(Math.random() * responses.default.length)];
+}
+
+function quickSend(el, txt) {
+  el.closest('.quick-ps').style.display = 'none';
+  document.getElementById('chatIn').value = txt;
+  sendMsg();
+}
+
+function addBubble(who, text) {
+  var wrap = document.getElementById('chatMsgs');
+  var div = document.createElement('div');
+  div.className = 'msg ' + who;
+  div.innerHTML = '<div class="msg-ava">' + (who === 'rei' ? 'R' : '🙂') + '</div><div class="bubble">' + escapeHTML(text) + '</div>';
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  if (who === 'rei' && text.length > 20) setTimeout(addMoodCheck, 3000);
+}
+
+function addMoodCheck() {
+  var wrap = document.getElementById('chatMsgs');
+  if (wrap.querySelector('.mood-tracker')) return;
+  var div = document.createElement('div');
+  div.style.cssText = 'padding:1rem 1.4rem';
+  div.innerHTML = '<div style="font-size:.8rem;color:var(--muted);margin-bottom:.75rem">How are you feeling right now?</div><div class="mood-tracker"><button class="mood-btn" title="Worse">😔</button><button class="mood-btn" title="Same">😐</button><button class="mood-btn" title="A bit better">🙂</button><button class="mood-btn" title="Much better">😊</button></div>';
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  div.querySelectorAll('.mood-btn').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      addBubble('user', e.target.textContent);
+      div.remove();
+    });
+  });
+}
+
+function addTyping() {
+  var wrap = document.getElementById('chatMsgs');
+  var div = document.createElement('div');
+  div.className = 'msg rei';
+  div.innerHTML = '<div class="msg-ava">R</div><div class="bubble"><div class="typing-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  return div;
+}
+
+function escapeHTML(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g, '<br>');
+}
+
+/* ── Init ── */
+document.querySelectorAll('.nav-links a').forEach(function (a) {
+  a.addEventListener('click', function (e) { e.preventDefault(); });
+});
+initFI();
+</script>
 </body>
 </html>
