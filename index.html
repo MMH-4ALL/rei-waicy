@@ -1872,7 +1872,7 @@ var SCENARIOS = {
     { emoji: '💪', text: "I used to love learning and now I don't care about anything" },
     { emoji: '📝', text: "I studied so hard and still did badly" },
     { emoji: '🏠', text: "My parents put so much pressure on me about school" },
-    { emoji: '🫣', text: "I害羞 speaking up in class" },
+    { emoji: '🫣', text: "I'm too shy to speak up in class" },
   ],
   social: [
     { emoji: '🚶', text: "I feel left out and like I don't belong anywhere" },
@@ -2055,7 +2055,7 @@ function getReiResponse(txt) {
   // Crisis detection — safety first
   var crisisWords = ['suicide', 'kill myself', 'end it all', 'want to die', 'better off dead', 'self harm', 'cutting myself', 'hurt myself'];
   if (crisisWords.some(function (w) { return lower.indexOf(w) !== -1; })) {
-    return 'I want you to know — what you're feeling right now matters so much, and you deserve support. Please talk to a trusted adult or call or text 988 (US Suicide & Crisis Lifeline) — it's free, confidential, and someone is there 24/7. You can also text HOME to 741741. You don\'t have to carry this alone.';
+    return "I want you to know — what you're feeling right now matters so much, and you deserve support. Please talk to a trusted adult or call or text 988 (US Suicide & Crisis Lifeline) — it's free, confidential, and someone is there 24/7. You can also text HOME to 741741. You don't have to carry this alone.";
   }
 
   // Category detection
@@ -2118,7 +2118,7 @@ function moodResp(el, emoji) {
   var wrap = document.getElementById('chatMsgs');
   if (el && el.closest) el.closest('.mood-tracker').parentNode.remove();
   addBubble('user', emoji);
-  var replies = ['I'm glad you shared that with me.', 'Thank you for checking in with yourself.', 'That takes self-awareness — I appreciate you sharing.', 'Your feelings are valid. I'm still here whenever you need me.'];
+  var replies = ["I'm glad you shared that with me.", "Thank you for checking in with yourself.", "That takes self-awareness — I appreciate you sharing.", "Your feelings are valid. I'm still here whenever you need me."];
   setTimeout(function () {
     addBubble('rei', replies[Math.floor(Math.random() * replies.length)]);
   }, 500);
