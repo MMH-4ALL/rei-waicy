@@ -849,20 +849,212 @@ p.body {
   0%, 60%, 100% { transform: translateY(0); opacity: .35; }
   30% { transform: translateY(-6px); opacity: 1; }
 }
-.quick-ps {
+.demo-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.5rem;
+  align-items: start;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.scenario-panel {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.scenario-panel-head {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+}
+.scenario-panel-head h3 {
+  font-family: var(--fh);
+  font-size: .95rem;
+  font-weight: 600;
+  margin: 0 0 .3rem;
+  color: var(--text);
+}
+.scenario-panel-head p {
+  font-size: .75rem;
+  color: var(--muted);
+  margin: 0;
+}
+.cat-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: .55rem;
-  padding: 0 1.4rem 1.1rem;
+  gap: .4rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--border);
 }
+.cat-btn {
+  padding: .4rem .85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: rgba(255,255,255,.04);
+  color: var(--muted);
+  font-family: var(--fb);
+  font-size: .75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.cat-btn:hover { background: rgba(255,255,255,.08); color: var(--text); }
+.cat-btn.active {
+  background: rgba(255,138,92,.15);
+  border-color: rgba(255,138,92,.45);
+  color: var(--accent);
+}
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .55rem;
+  padding: 1rem 1rem;
+  max-height: 360px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.1) transparent;
+}
+.scenario-grid::-webkit-scrollbar { width: 5px; }
+.scenario-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 99px; }
+.scenario-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: .75rem .8rem;
+  border-radius: 13px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--fb);
+  font-size: .8rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all .22s ease;
+  text-align: left;
+  line-height: 1.45;
+  white-space: normal;
+  word-break: break-word;
+}
+.scenario-btn:hover {
+  background: rgba(255,138,92,.1);
+  border-color: rgba(255,138,92,.35);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+.scenario-btn:active { transform: translateY(0); }
+.sc-emoji {
+  font-size: 1.1rem;
+  min-width: 22px;
+  text-align: center;
+  line-height: 1.3;
+}
+.sc-text { flex: 1; }
+.chat-shell {
+  background: rgba(10,13,30,.95);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 32px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  max-height: 560px;
+}
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: 1rem 1.25rem;
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  flex-shrink: 0;
+}
+.chat-ava {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--lav));
+  display: grid;
+  place-items: center;
+  font-size: .9rem;
+  color: #07091a;
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(255,138,92,.3);
+  flex-shrink: 0;
+  position: relative;
+}
+.chat-ava::after {
+  content: '';
+  position: absolute;
+  bottom: 1px; right: 1px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--mint);
+  border: 2px solid #07091a;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+.chat-name-wrap .name { font-family: var(--fh); font-size: .95rem; font-weight: 700; }
+.chat-name-wrap .status { font-size: .72rem; color: var(--mint); margin-top: .1rem; display: flex; align-items: center; gap: .35rem; }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); animation: pulseDot 2s ease-in-out infinite; }
+.chat-msgs {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.1) transparent;
+}
+.chat-msgs::-webkit-scrollbar { width: 5px; }
+.chat-msgs::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 99px; }
+.msg { display: flex; gap: .75rem; align-items: flex-end; animation: msgIn .28s ease; }
+.msg.user { flex-direction: row-reverse; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.msg-ava {
+  width: 32px; height: 32px; min-width: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--lav));
+  display: grid; place-items: center;
+  font-size: .75rem; color: #07091a; font-weight: 700; flex-shrink: 0;
+}
+.msg.user .msg-ava { background: linear-gradient(135deg, #6b7280, #9ca3af); }
+.bubble {
+  max-width: 78%;
+  padding: .8rem 1rem;
+  border-radius: 18px;
+  font-size: .88rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.msg.rei .bubble {
+  background: rgba(154,184,255,.09);
+  border: 1px solid rgba(154,184,255,.16);
+  border-bottom-left-radius: 5px;
+}
+.msg.user .bubble {
+  background: linear-gradient(135deg, rgba(255,138,92,.85), rgba(255,176,124,.85));
+  color: #07091a;
+  border-bottom-right-radius: 5px;
+  font-weight: 500;
+}
+.typing-dots { display: flex; gap: 5px; align-items: center; padding: .3rem .1rem; }
+.td { width: 7px; height: 7px; border-radius: 50%; background: var(--lav); animation: tdot 1.3s infinite ease-in-out; }
+.td:nth-child(2) { animation-delay: .2s; }
+.td:nth-child(3) { animation-delay: .4s; }
+@keyframes tdot { 0%, 60%, 100% { transform: translateY(0); opacity: .35; } 30% { transform: translateY(-6px); opacity: 1; } }
+.quick-ps { display: flex; flex-wrap: wrap; gap: .45rem; padding: 0 1.2rem .9rem; }
 .qp {
-  padding: .65rem 1rem;
+  padding: .5rem .85rem;
   border-radius: 999px;
   background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.09);
   color: var(--muted);
   cursor: pointer;
-  font-size: .82rem;
+  font-size: .78rem;
   font-family: var(--fb);
   font-weight: 500;
   transition: all .2s ease;
@@ -870,11 +1062,69 @@ p.body {
   text-align: center;
   line-height: 1.4;
 }
-.qp:hover {
-  background: rgba(255,138,92,.1);
-  border-color: rgba(255,138,92,.4);
+.qp:hover { background: rgba(255,138,92,.12); border-color: rgba(255,138,92,.4); color: var(--text); transform: translateY(-2px); }
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .9rem 1.1rem 1.1rem;
+  border-top: 1px solid rgba(255,255,255,.07);
+  flex-shrink: 0;
+}
+.chat-in {
+  flex: 1; min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.05);
+  padding: .65rem 1.1rem;
+  font-family: var(--fb);
+  font-size: .88rem;
   color: var(--text);
-  transform: translateY(-2px);
+  outline: none;
+  transition: border-color .22s ease, background .22s ease;
+}
+.chat-in:focus { border-color: rgba(255,138,92,.45); background: rgba(255,255,255,.08); }
+.chat-in::placeholder { color: rgba(255,255,255,.3); }
+.send-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%; border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #07091a; display: grid; place-items: center;
+  font-size: 1rem; cursor: pointer;
+  transition: all .2s ease;
+  box-shadow: 0 4px 16px rgba(255,138,92,.3);
+  flex-shrink: 0;
+}
+.send-btn:hover:not(:disabled) { transform: scale(1.08); box-shadow: 0 8px 24px rgba(255,138,92,.45); }
+.send-btn:disabled { opacity: .4; cursor: default; }
+.mood-tracker {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .55rem;
+  padding: .8rem 1rem;
+  border-top: 1px solid rgba(255,255,255,.05);
+  background: rgba(255,255,255,.03);
+}
+.mood-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.06);
+  color: var(--text); font-size: 1.2rem;
+  cursor: pointer; transition: all .2s ease;
+  display: grid; place-items: center;
+}
+.mood-btn:hover { transform: scale(1.15); background: rgba(255,255,255,.12); border-color: rgba(255,138,92,.5); }
+.mood-label { font-size: .72rem; color: var(--muted); text-align: center; margin-bottom: .4rem; }
+
+/* ─── Demo responsive ─── */
+@media (max-width: 860px) {
+  .demo-layout { grid-template-columns: 1fr; }
+  .scenario-panel { order: 2; }
+  .scenario-grid { max-height: 280px; }
+  .bubble { max-width: 88%; }
+  .chat-shell { max-height: 500px; }
 }
 .chat-input-row {
   display: flex;
@@ -1377,44 +1627,60 @@ footer a:hover { opacity: .75; }
   <section>
     <div class="container">
       <div class="label fi">Interactive Demo</div>
-      <h2 class="sec fi">Say hello to <em>Rei</em>.</h2>
-      <p class="lead fi" style="margin-bottom:1.5rem">This is a live demo of Rei's conversational companion — with safety and empathy guidelines embedded. Talk to Rei like you would a trusted friend.</p>
+      <h2 class="sec fi">Talk to <em>Rei</em>.</h2>
+      <p class="lead fi" style="margin-bottom:1.75rem">A live preview of Rei's conversational companion. Click any scenario to start — or just say what's on your mind.</p>
 
-      <div class="fi" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.75rem">
-        <span class="pill pill-a">✨ AI Companion</span>
-        <span class="pill pill-m">🛡️ Safety Mode Active</span>
-        <span class="pill pill-l">💬 Emotional Support</span>
-        <span class="pill pill-l">🧠 Learning Conversations</span>
-      </div>
-
-      <div class="chat-shell fi">
-        <div class="chat-head">
-          <div class="chat-ava">R</div>
-          <div class="chat-name-wrap">
-            <div class="name">Rei</div>
-            <div class="status"><span class="status-dot"></span> online — here for you</div>
+      <div class="demo-layout fi">
+        <!-- Chat window -->
+        <div>
+          <div class="chat-shell">
+            <div class="chat-head">
+              <div class="chat-ava">R</div>
+              <div class="chat-name-wrap">
+                <div class="name">Rei</div>
+                <div class="status"><span class="status-dot"></span> here for you, always</div>
+              </div>
+            </div>
+            <div class="chat-msgs" id="chatMsgs">
+              <div class="msg rei">
+                <div class="msg-ava">R</div>
+                <div class="bubble">Hey 👋 I'm Rei. I'm here — no rush, no judgment. Pick a scenario that feels close to home, or just tell me what's going on.</div>
+              </div>
+            </div>
+            <div class="quick-ps" id="quickPs">
+              <button class="qp" onclick="quickSend('I\'ve been feeling really stressed lately')">😰 Stressed</button>
+              <button class="qp" onclick="quickSend('I feel like no one really understands me')">😔 Not understood</button>
+              <button class="qp" onclick="quickSend('Something happened with my friend and I\'m really hurt')">💔 Friend drama</button>
+              <button class="qp" onclick="quickSend('I\'m really anxious about something coming up')">😬 Anxious</button>
+              <button class="qp" onclick="quickSend('I just feel really lonely right now')">🌧️ Lonely</button>
+              <button class="qp" onclick="quickSend('I\'m scared about my future')">😟 Future fears</button>
+            </div>
+            <div class="chat-input-row">
+              <input class="chat-in" id="chatIn" type="text" placeholder="Say anything…" onkeydown="if(event.key==='Enter')sendMsg()">
+              <button class="send-btn" id="sendBtn" onclick="sendMsg()">↑</button>
+            </div>
+          </div>
+          <div class="info-card mint" style="margin-top:1rem">
+            <p style="margin:0;font-size:.82rem;color:var(--muted)"><strong style="color:var(--mint)">🛡️ Safety:</strong> Rei always directs teens to professional support in a crisis. US? Call or text <strong style="color:var(--mint)">988</strong> (Suicide &amp; Crisis Lifeline) — 24/7.</p>
           </div>
         </div>
-        <div class="chat-msgs" id="chatMsgs">
-          <div class="msg rei">
-            <div class="msg-ava">R</div>
-            <div class="bubble">Hey 👋 I'm Rei. I'm here to listen — no judgment, no pressure. What's on your mind today?</div>
-          </div>
-        </div>
-        <div class="quick-ps" id="quickPs">
-          <button class="qp" onclick="quickSend(this, 'I\'ve been feeling really stressed lately')">😰 I'm stressed</button>
-          <button class="qp" onclick="quickSend(this, 'I feel like no one really understands me')">😔 No one gets me</button>
-          <button class="qp" onclick="quickSend(this, 'I had a really rough day at school today')">📚 Rough day at school</button>
-          <button class="qp" onclick="quickSend(this, 'I\'m really anxious about something coming up')">😬 Feeling anxious</button>
-        </div>
-        <div class="chat-input-row">
-          <input class="chat-in" id="chatIn" type="text" placeholder="Talk to Rei…" onkeydown="if(event.key==='Enter')sendMsg()">
-          <button class="send-btn" id="sendBtn" onclick="sendMsg()">↑</button>
-        </div>
-      </div>
 
-      <div class="info-card mint fi" style="margin-top:1.75rem">
-        <p><strong>🛡️ Safety Note:</strong> This demo uses Rei's AI with built-in safety and empathy guidelines. In a real crisis, Rei always directs teens to professional support. If you're struggling right now, please reach out to a trusted adult, or call/text the <strong>988 Suicide &amp; Crisis Lifeline</strong> (US) at <strong>988</strong> — available 24/7.</p>
+        <!-- Scenario panel -->
+        <div class="scenario-panel">
+          <div class="scenario-panel-head">
+            <h3>💬 Try a Scenario</h3>
+            <p>Pick something that resonates</p>
+          </div>
+          <div class="cat-tabs" id="catTabs">
+            <button class="cat-btn active" data-cat="emotional" onclick="switchCat('emotional')">💛 Emotional</button>
+            <button class="cat-btn" data-cat="school" onclick="switchCat('school')">📚 School</button>
+            <button class="cat-btn" data-cat="social" onclick="switchCat('social')">👥 Social</button>
+            <button class="cat-btn" data-cat="family" onclick="switchCat('family')">🏠 Family</button>
+            <button class="cat-btn" data-cat="future" onclick="switchCat('future')">🚀 Future</button>
+            <button class="cat-btn" data-cat="self" onclick="switchCat('self')">🌱 Self</button>
+          </div>
+          <div class="scenario-grid" id="scenarioGrid"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -1568,123 +1834,302 @@ function animateProgress() {
 }
 
 /* ── Chat ── */
-var chatHistory = [];
-var responses = {
-  stressed: [
-    "That sounds really heavy. Can you tell me what's making you feel most stressed right now? Sometimes naming it helps.",
-    "Stress has a way of making everything feel bigger than it is. What's one thing that's been sitting with you?",
-    "I hear you. That weight you're feeling is real. What's been building up?"
-  ],
-  lonely: [
-    "Loneliness can feel so isolating, especially when everyone else seems connected. You're not alone in feeling this way.",
-    "That feeling of being on the outside — it's painful and real. What would help you feel more connected right now?",
-    "Sometimes we feel most alone when we're surrounded by people. I'm here. What's that like for you?"
-  ],
-  anxious: [
-    "Anxiety has a way of making our minds race. What are you most worried about right now?",
-    "That nervous feeling in your chest — it's trying to protect you, even if it doesn't feel helpful. What triggered it?",
-    "Anxiety can feel suffocating. Let's slow down together. What's one thing that's been on your mind?"
-  ],
-  sad: [
-    "Sadness sometimes arrives without warning. I'm glad you're here talking about it. What hurts the most?",
-    "That heaviness you're feeling — it matters. Do you want to talk about what's behind it?",
-    "Sometimes sadness is just... there. And that's okay to feel. What's been weighing on you?"
+/* ── Scenario data ── */
+var SCENARIOS = {
+  emotional: [
+    { emoji: '😰', text: "I've been feeling really overwhelmed and stressed" },
+    { emoji: '😔', text: "I feel like no one really understands me" },
+    { emoji: '🌧️', text: "I've been feeling sad and down lately" },
+    { emoji: '💔', text: "Something happened and it really hurt me" },
+    { emoji: '😬', text: "I'm anxious about something coming up" },
+    { emoji: '🔁', text: "I keep overthinking and I can't stop" },
+    { emoji: '😤', text: "I feel so angry and I don't know why" },
+    { emoji: '😓', text: "Everything feels pointless lately" },
+    { emoji: '🫠', text: "I'm emotionally exhausted and burned out" },
+    { emoji: '🚪', text: "I want to shut everyone out" },
+    { emoji: '🌊', text: "My emotions feel like waves I can't control" },
+    { emoji: '🔕', text: "I just need everything to be quiet for a bit" },
+    { emoji: '🪞', text: "I don't even recognize how I'm feeling right now" },
+    { emoji: '🎭', text: "I feel like I'm pretending to be okay all the time" },
+    { emoji: '💭', text: "I keep replaying something over and over in my head" },
+    { emoji: '⚖️', text: "I feel guilty about something I did" },
+    { emoji: '🔒', text: "I don't know how to open up to anyone" },
+    { emoji: '🩹', text: "I want to feel better but I don't know how" },
   ],
   school: [
-    "School can be a lot — pressure, social stuff, uncertainty about the future. What's been the hardest part for you?",
-    "Rough days at school hit different. Do you want to vent about what happened, or do you need to talk about how it's making you feel?",
-    "School stress is real and valid. What's making it feel overwhelming?"
+    { emoji: '📚', text: "I bombed a test and I feel like a failure" },
+    { emoji: '🏆', text: "I'm terrified I won't get into the college I want" },
+    { emoji: '👀', text: "I feel like everyone is judging me at school" },
+    { emoji: '😓', text: "Homework is piling up and I can't catch up" },
+    { emoji: '🎤', text: "I have a presentation and I'm freaking out" },
+    { emoji: '📖', text: "I can't focus in class no matter how hard I try" },
+    { emoji: '🏫', text: "School feels completely meaningless to me" },
+    { emoji: '💬', text: "A teacher said something that really upset me" },
+    { emoji: '🧠', text: "I'm smart but my grades don't show it" },
+    { emoji: '🔬', text: "I have a big exam and I don't know where to start" },
+    { emoji: '🗓️', text: "I have too much going on and too many deadlines" },
+    { emoji: '🚶', text: "I skipped class because I just couldn't go today" },
+    { emoji: '💪', text: "I used to love learning and now I don't care about anything" },
+    { emoji: '📝', text: "I studied so hard and still did badly" },
+    { emoji: '🏠', text: "My parents put so much pressure on me about school" },
+    { emoji: '🫣', text: "I害羞 speaking up in class" },
   ],
-  friend: [
-    "Friendship stuff can hurt so deeply because they matter so much. What happened?",
-    "When someone important hurts us, it feels like everything is broken. I'm listening.",
-    "Friendship challenges are some of the hardest to navigate. What's going on?"
+  social: [
+    { emoji: '🚶', text: "I feel left out and like I don't belong anywhere" },
+    { emoji: '💔', text: "My best friend and I had a big falling out" },
+    { emoji: '👥', text: "Everyone seems to have friends except me" },
+    { emoji: '💬', text: "I said something stupid and I can't stop cringing" },
+    { emoji: '📱', text: "I see everyone hanging out without me" },
+    { emoji: '🔇', text: "I feel invisible in my own friend group" },
+    { emoji: '😶', text: "I don't know how to talk to new people" },
+    { emoji: '🤝', text: "Someone spread a rumor about me" },
+    { emoji: '⚡', text: "My friend group is drama and it's exhausting" },
+    { emoji: '🎭', text: "I'm different around my friends vs. alone" },
+    { emoji: '📲', text: "I texted someone and they didn't reply" },
+    { emoji: '🏆', text: "I feel like I'm only valued for what I do, not who I am" },
+    { emoji: '💭', text: "I keep comparing myself to others online" },
+    { emoji: '🫂', text: "I miss someone who moved away" },
+    { emoji: '👋', text: "I want to make new friends but I'm scared" },
+    { emoji: '❓', text: "I don't know if they actually like me or just tolerate me" },
   ],
-  default: [
-    "I'm here and listening. Tell me more — what's on your heart right now?",
-    "That's a lot to carry. I want to understand. What does that feel like?",
-    "You're being brave by talking about this. What do you need right now?",
-    "I'm here for whatever you want to share. What matters most to you right now?",
-    "Sometimes the hardest part is just putting it into words. Take your time. I'm listening."
+  family: [
+    { emoji: '😤', text: "I got into a huge argument with my parent" },
+    { emoji: '🚪', text: "I slammed the door and now things are tense" },
+    { emoji: '💬', text: "My parents don't listen when I try to explain how I feel" },
+    { emoji: '⚖️', text: "They compare me to my sibling and it hurts" },
+    { emoji: '🔒', text: "I wish my family knew the real me" },
+    { emoji: '🛋️', text: "Home doesn't feel like a safe place anymore" },
+    { emoji: '💔', text: "My parents are getting divorced and it's destroying me" },
+    { emoji: '😰', text: "I'm scared about money and my family's situation" },
+    { emoji: '🎓', text: "They want me to be a doctor but I want something else" },
+    { emoji: '📵', text: "We barely talk at the dinner table anymore" },
+    { emoji: '🪞', text: "I feel like I can never make them proud" },
+    { emoji: '🗣️', text: "They don't take my mental health seriously" },
+    { emoji: '🔁', text: "The same fight keeps happening over and over" },
+    { emoji: '🏠', text: "Everything is fine on the surface but not really" },
+    { emoji: '👶', text: "I feel like the forgotten middle child" },
+    { emoji: '🌍', text: "I can't be who my family expects me to be" },
+  ],
+  future: [
+    { emoji: '🎓', text: "I have no idea what I want to do with my life" },
+    { emoji: '😰', text: "The future scares me" },
+    { emoji: '⏳', text: "I feel like I'm running out of time to figure things out" },
+    { emoji: '🧭', text: "Everyone else seems to have a plan and I don't" },
+    { emoji: '🔮', text: "What if I make the wrong choice?" },
+    { emoji: '📉', text: "The world is so messed up I don't see a future for myself" },
+    { emoji: '💡', text: "I have a dream but it feels impossible" },
+    { emoji: '🏆', text: "I don't want to end up as a failure" },
+    { emoji: '🌍', text: "I'm anxious about climate change and the state of the world" },
+    { emoji: '💼', text: "I don't know what career would actually make me happy" },
+    { emoji: '🆘', text: "I feel lost and like I'm just surviving, not living" },
+    { emoji: '🔧', text: "I keep changing my mind about what I want" },
+    { emoji: '📋', text: "I feel pressured to have my whole life figured out" },
+    { emoji: '🎯', text: "I don't know what I'm good at" },
+    { emoji: '⚡', text: "I want to change the world but I feel so small" },
+    { emoji: '⏰', text: "Everyone older than me seems so put together and I'm not" },
+  ],
+  self: [
+    { emoji: '🪞', text: "I don't like who I am" },
+    { emoji: '⚖️', text: "I'm so hard on myself all the time" },
+    { emoji: '🎯', text: "I set goals but I never follow through" },
+    { emoji: '🔁', text: "I keep doing things I said I'd stop doing" },
+    { emoji: '🛑', text: "I want to change but I don't know where to start" },
+    { emoji: '🔍', text: "I don't know what my values are anymore" },
+    { emoji: '🚫', text: "I keep self-sabotaging myself" },
+    { emoji: '🧠', text: "My brain feels like it's working against me" },
+    { emoji: '💪', text: "I want to be more confident but I don't know how" },
+    { emoji: '🎭', text: "I wear a mask around everyone" },
+    { emoji: '⏪', text: "I miss who I used to be" },
+    { emoji: '🔮', text: "I want to figure out who I really am" },
+    { emoji: '🌱', text: "I want to grow but something keeps holding me back" },
+    { emoji: '📵', text: "I have a bad habit I can't break" },
+    { emoji: '💭', text: "I'm my own worst enemy" },
+    { emoji: '🌟', text: "I don't think I'm good enough" },
   ]
 };
 
+var SCENARIO_RESPONSES = {
+  emotional: [
+    "That sounds really heavy. When did this start feeling so overwhelming? Sometimes just naming it can help.",
+    "I hear you. That weight you're carrying is real. What's one thing that's been making it worse lately?",
+    "Being overwhelmed can make everything feel amplified. You're not broken — you're carrying a lot. What's the hardest part right now?",
+    "That feeling of not being understood is so isolating. I'm here. Can you tell me more about what's going on?",
+    "Emotions like this are your brain's way of saying something matters. Let's slow down together. What triggered this?",
+    "I'm really glad you're talking about this. What's one thing you wish people understood about how you're feeling?",
+  ],
+  school: [
+    "Grades can feel like they define us, but they don't. You are not your scores. What happened, and how are you holding up?",
+    "That pressure you're feeling — it's real, and you're allowed to be scared. What part is hardest right now?",
+    "School can feel like everything when you're in it, but it's not everything. What would help you feel less alone in this?",
+    "Being judged by others at that age is one of the hardest feelings. You're not alone in feeling this way.",
+    "Sometimes the system fails us even when we do everything right. That says nothing about your worth.",
+    "It takes real courage to admit when you're struggling. What would feel like one small step forward right now?",
+  ],
+  social: [
+    "That feeling of being on the outside — it's so painful. What happened, if you're comfortable sharing?",
+    "Friend drama can cut so deep because they matter so much. I'm listening. What's been going on?",
+    "Not being seen by the people around you is one of the loneliest feelings. You deserve to be understood.",
+    "Social situations can feel like a performance when you're scared of judgment. You're allowed to take up space.",
+    "Comparison is such a thief of joy — and it's everywhere online. I'm sorry you're feeling that pressure.",
+    "Making the first move with new people takes so much courage. What would feel like one small step toward connection?",
+  ],
+  family: [
+    "Family conflict cuts so deep because these are the people who are supposed to know us. What happened?",
+    "Feeling unseen by your parents is incredibly lonely. I'm glad you're here. What would help right now?",
+    "That pressure to be someone you're not for the people closest to you — that's exhausting. You deserve to be you.",
+    "Parents are people too, and sometimes they mess up. That doesn't make your feelings any less valid.",
+    "Family stuff is complicated because you can't just walk away. What would make today a little more bearable?",
+    "It's okay to love your family and also feel really frustrated with them at the same time. Both can be true.",
+  ],
+  future: [
+    "Not knowing what you want to do with your life at your age is completely normal — not a failure.",
+    "The future can feel terrifying when everything feels uncertain. What part worries you most right now?",
+    "Everyone figures things out at different paces. Your path doesn't have to look like anyone else's.",
+    "Feeling lost is actually the first step toward finding your way — it means you're still searching.",
+    "The world situation is genuinely scary and adults feel it too. You don't have to carry all that weight alone.",
+    "What would it look like to give yourself a little more time to figure things out?",
+  ],
+  self: [
+    "Being your own worst critic is exhausting. What would you say to a friend who felt the way you do?",
+    "Wanting to change but feeling stuck is one of the most frustrating places to be. I hear you.",
+    "You are more than the habits you struggle with. What's one small thing you're proud of about yourself?",
+    "Self-discovery is a lifelong journey — you're already ahead just by being curious about it.",
+    "The fact that you want to be better means you're already someone with depth and conscience.",
+    "What would it feel like to show yourself a little of the kindness you show other people?",
+  ]
+};
+
+var chatHistory = [];
+var currentCat = 'emotional';
+
+function switchCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(function (b) { b.classList.toggle('active', b.dataset.cat === cat); });
+  renderScenarios();
+}
+
+function renderScenarios() {
+  var grid = document.getElementById('scenarioGrid');
+  if (!grid) return;
+  var items = SCENARIOS[currentCat] || [];
+  grid.innerHTML = items.map(function (s) {
+    return '<button class="scenario-btn" onclick="scenarioClick(\'' + s.text.replace(/'/g, "\\'") + '\')"><span class="sc-emoji">' + s.emoji + '</span><span class="sc-text">' + s.text + '</span></button>';
+  }).join('');
+}
+
+function scenarioClick(text) {
+  document.getElementById('chatIn').value = text;
+  sendMsg();
+}
+
+function quickSend(txt) {
+  document.getElementById('chatIn').value = txt;
+  sendMsg();
+}
+
 function sendMsg() {
   var inp = document.getElementById('chatIn');
+  if (!inp) return;
   var txt = inp.value.trim();
   if (!txt) return;
   inp.value = '';
   document.getElementById('quickPs').style.display = 'none';
   addBubble('user', txt);
   var btn = document.getElementById('sendBtn');
-  btn.disabled = true;
+  if (btn) btn.disabled = true;
   setTimeout(function () {
     var typing = addTyping();
     setTimeout(function () {
       typing.remove();
       var reply = getReiResponse(txt);
       addBubble('rei', reply);
-      btn.disabled = false;
+      if (btn) btn.disabled = false;
       chatHistory.push({ user: txt, rei: reply });
-    }, 800 + Math.random() * 700);
-  }, 150);
+    }, 600 + Math.random() * 800);
+  }, 200);
 }
 
 function getReiResponse(txt) {
   var lower = txt.toLowerCase();
-  var keywords = {
-    stressed: ['stress', 'overwhelm', 'pressure', 'burden'],
-    lonely: ['lonely', 'alone', 'isolated', 'no one', 'disconnect'],
-    anxious: ['anxious', 'worry', 'nervous', 'scared', 'worried'],
-    sad: ['sad', 'depressed', 'down', 'empty', 'hurt'],
-    school: ['school', 'class', 'homework', 'test', 'teacher', 'grade'],
-    friend: ['friend', 'friendship', 'crush', 'argument', 'fight', 'social']
+
+  // Crisis detection — safety first
+  var crisisWords = ['suicide', 'kill myself', 'end it all', 'want to die', 'better off dead', 'self harm', 'cutting myself', 'hurt myself'];
+  if (crisisWords.some(function (w) { return lower.indexOf(w) !== -1; })) {
+    return 'I want you to know — what you're feeling right now matters so much, and you deserve support. Please talk to a trusted adult or call or text 988 (US Suicide & Crisis Lifeline) — it's free, confidential, and someone is there 24/7. You can also text HOME to 741741. You don\'t have to carry this alone.';
+  }
+
+  // Category detection
+  var catKeywords = {
+    emotional: ['stress', 'overwhelm', 'sad', 'hurt', 'angry', 'anxious', 'lonely', 'alone', 'empty', 'burned out', 'exhausted', 'shut out', 'overthink', 'emotion', 'feel', 'mood', 'feelings', 'crying', 'cry', 'depressed', 'down', 'hopeless', 'worthless', 'guilt', 'guilty', 'numb', '失控', '压'],
+    school: ['school', 'test', 'exam', 'grade', 'homework', 'college', 'university', 'class', 'teacher', 'presentation', 'study', 'professor', 'campus', 'academic', 'assignment', 'failed', 'bombed', '学', '考试', '作业', '成绩'],
+    social: ['friend', 'friends', 'best friend', 'group', 'party', 'hang out', 'left out', 'excluded', 'rumor', 'drama', 'social', 'conversation', 'text', 'message', 'reply', 'called out', 'ignore', 'ignored', 'rejected', 'popular', '朋友圈', '朋友'],
+    family: ['mom', 'dad', 'parent', 'parents', 'family', 'brother', 'sister', 'sibling', 'home', 'divorce', 'argued', 'fight', 'living room', 'dinner', 'bedroom', '家', '爸妈', '父母', '妈', '爸', '兄弟', '姐妹'],
+    future: ['future', 'career', 'job', 'college', 'major', 'life', 'purpose', 'direction', 'plan', 'uncertain', 'scared', 'failure', 'success', 'dream', 'goal', '迷茫', '未来', '职业', '梦想'],
+    self: ['self', 'confidence', 'confident', 'identity', 'myself', 'habit', 'change', 'growth', 'improve', 'worth', 'enough', 'value', 'authentic', 'mask', '成长的烦恼', '自我', '自信']
   };
-  for (var key in keywords) {
-    if (keywords.hasOwnProperty(key) && keywords[key].some(function (w) { return lower.indexOf(w) !== -1; })) {
-      var arr = responses[key];
-      return arr[Math.floor(Math.random() * arr.length)];
+
+  var cat = null;
+  var maxHits = 0;
+  for (var key in catKeywords) {
+    if (catKeywords.hasOwnProperty(key)) {
+      var hits = catKeywords[key].filter(function (w) { return lower.indexOf(w) !== -1; }).length;
+      if (hits > maxHits) { maxHits = hits; cat = key; }
     }
   }
-  return responses.default[Math.floor(Math.random() * responses.default.length)];
-}
 
-function quickSend(el, txt) {
-  el.closest('.quick-ps').style.display = 'none';
-  document.getElementById('chatIn').value = txt;
-  sendMsg();
+  var responsePool;
+  if (cat && SCENARIO_RESPONSES[cat]) {
+    responsePool = SCENARIO_RESPONSES[cat];
+  } else {
+    responsePool = [
+      "I'm here and listening. Tell me more about what's going on?",
+      "That's a lot to carry. What does it feel like from the inside?",
+      "You're being really brave by talking about this. What's one thing you need right now?",
+      "I want to understand. What happened that brought you here today?",
+      "Sometimes just saying it out loud helps. I'm here for you.",
+      "What you're feeling is valid. Do you want to talk about what's behind it?",
+    ];
+  }
+
+  return responsePool[Math.floor(Math.random() * responsePool.length)];
 }
 
 function addBubble(who, text) {
   var wrap = document.getElementById('chatMsgs');
+  if (!wrap) return;
   var div = document.createElement('div');
   div.className = 'msg ' + who;
   div.innerHTML = '<div class="msg-ava">' + (who === 'rei' ? 'R' : '🙂') + '</div><div class="bubble">' + escapeHTML(text) + '</div>';
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
-  if (who === 'rei' && text.length > 20) setTimeout(addMoodCheck, 3000);
+  if (who === 'rei' && text.length > 15) setTimeout(addMoodCheck, 3500);
 }
 
 function addMoodCheck() {
   var wrap = document.getElementById('chatMsgs');
-  if (wrap.querySelector('.mood-tracker')) return;
+  if (!wrap || wrap.querySelector('.mood-tracker')) return;
   var div = document.createElement('div');
-  div.style.cssText = 'padding:1rem 1.4rem';
-  div.innerHTML = '<div style="font-size:.8rem;color:var(--muted);margin-bottom:.75rem">How are you feeling right now?</div><div class="mood-tracker"><button class="mood-btn" title="Worse">😔</button><button class="mood-btn" title="Same">😐</button><button class="mood-btn" title="A bit better">🙂</button><button class="mood-btn" title="Much better">😊</button></div>';
+  div.innerHTML = '<div class="mood-label">How are you feeling right now?</div><div class="mood-tracker"><button class="mood-btn" onclick="moodResp(this,\'😔\')" title="Worse">😔</button><button class="mood-btn" onclick="moodResp(this,\'😐\')" title="Same">😐</button><button class="mood-btn" onclick="moodResp(this,\'🙂\')" title="A bit better">🙂</button><button class="mood-btn" onclick="moodResp(this,\'😊\')" title="Much better">😊</button></div>';
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
-  div.querySelectorAll('.mood-btn').forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-      addBubble('user', e.target.textContent);
-      div.remove();
-    });
-  });
+}
+
+function moodResp(el, emoji) {
+  var wrap = document.getElementById('chatMsgs');
+  if (el && el.closest) el.closest('.mood-tracker').parentNode.remove();
+  addBubble('user', emoji);
+  var replies = ['I'm glad you shared that with me.', 'Thank you for checking in with yourself.', 'That takes self-awareness — I appreciate you sharing.', 'Your feelings are valid. I'm still here whenever you need me.'];
+  setTimeout(function () {
+    addBubble('rei', replies[Math.floor(Math.random() * replies.length)]);
+  }, 500);
 }
 
 function addTyping() {
   var wrap = document.getElementById('chatMsgs');
+  if (!wrap) return;
   var div = document.createElement('div');
   div.className = 'msg rei';
+  div.id = 'typing-msg';
   div.innerHTML = '<div class="msg-ava">R</div><div class="bubble"><div class="typing-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
@@ -1700,6 +2145,7 @@ document.querySelectorAll('.nav-links a').forEach(function (a) {
   a.addEventListener('click', function (e) { e.preventDefault(); });
 });
 initFI();
+renderScenarios();
 </script>
 </body>
 </html>
