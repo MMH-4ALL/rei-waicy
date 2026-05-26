@@ -166,8 +166,21 @@ nav {
   font-weight: 500;
   transition: all .22s ease;
   white-space: nowrap;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 2px;
+  background: linear-gradient(135deg, var(--accent), var(--lav));
+  border-radius: 999px;
+  transition: width .3s cubic-bezier(.22,1,.36,1);
 }
 .nav-links a:hover { color: var(--text); background: rgba(255,255,255,.06); }
+.nav-links a:hover::after { width: calc(100% - 1.7rem); }
+.nav-links a.active::after { width: calc(100% - 1.7rem); }
 .nav-links a.active { color: var(--accent); background: rgba(0,245,170,.1); }
 .nav-links a.cta-nav {
   background: linear-gradient(135deg, var(--accent), var(--lav));
@@ -352,6 +365,8 @@ p.body {
   position: relative;
   z-index: 2;
   max-width: 860px;
+  will-change: transform, opacity;
+  transition: transform .05s linear, opacity .05s linear;
 }
 .hero-badge {
   display: inline-flex;
@@ -394,6 +409,15 @@ p.body {
   background-clip: text;
   animation: fadeUp .8s .15s ease both;
   position: relative;
+}
+
+.hero-title.shimmer-text {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--lav) 25%, #ffffff 50%, var(--accent) 75%, var(--lav) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
 }
 .hero-title::after {
   content: 'rei';
@@ -451,6 +475,25 @@ p.body {
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(28px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--lav) 25%, #ffffff 50%, var(--accent) 75%, var(--lav) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes borderPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,170,0); }
+  50% { box-shadow: 0 0 0 6px rgba(0,245,170,0.12); }
 }
 
 /* ─── Stat strip ─── */
@@ -1311,6 +1354,9 @@ footer a:hover { opacity: .75; }
   <div class="bg-orb bg-orb-4"></div>
 </div>
 
+<!-- Cursor follower -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
 <!-- ── NAV ── -->
 <nav>
   <a class="logo" onclick="nav('home')">
@@ -1345,7 +1391,7 @@ footer a:hover { opacity: .75; }
         <span class="hero-badge-dot"></span>
         WAICY 2026 — Open Entry
       </div>
-      <h1 class="hero-title">rei</h1>
+      <h1 class="hero-title shimmer-text">rei</h1>
       <p class="hero-sub">A safe, empathetic AI companion for teens — <em>because no one should feel alone</em> at 2am when everything feels too big.</p>
       <div class="hero-btns">
         <button class="btn btn-p" onclick="nav('demo')">✦ Try the Demo</button>
@@ -1793,6 +1839,80 @@ footer a:hover { opacity: .75; }
     ].join(';');
     sf.appendChild(s);
   }
+})();
+
+/* ── Cursor glow follower ── */
+(function () {
+  const glow = document.getElementById('cursorGlow');
+  if (!glow) return;
+  let mx = -500, my = -500;
+  let cx = -500, cy = -500;
+  let ticking = false;
+
+  document.addEventListener('mousemove', function (e) {
+    mx = e.clientX;
+    my = e.clientY;
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        cx = mx; cy = my;
+        glow.style.left = cx + 'px';
+        glow.style.top = cy + 'px';
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+
+/* ── Hero scroll parallax ── */
+(function () {
+  const heroInner = document.querySelector('.hero-inner');
+  const heroSection = document.querySelector('.hero');
+  const orbs = document.querySelectorAll('.bg-orb');
+  if (!heroInner || !heroSection) return;
+
+  window.addEventListener('scroll', function () {
+    var scrollY = window.scrollY;
+    var heroH = heroSection.offsetHeight;
+    var progress = Math.min(scrollY / heroH, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+
+    heroInner.style.transform = 'translateY(' + (-ease * 48) + 'px)';
+    heroInner.style.opacity = String(1 - ease * 0.65);
+
+    orbs.forEach(function (orb, i) {
+      var depth = (i + 1) * 0.2;
+      orb.style.transform = 'translateY(' + (scrollY * depth * 0.3) + 'px)';
+    });
+  }, { passive: true });
+})();
+
+/* ── Mouse parallax on orbs (home page) ── */
+(function () {
+  const hero = document.querySelector('.hero');
+  const orbs = document.querySelectorAll('.bg-orb');
+  if (!hero || !orbs.length) return;
+
+  hero.addEventListener('mousemove', function (e) {
+    var rect = hero.getBoundingClientRect();
+    var cx = rect.width / 2;
+    var cy = rect.height / 2;
+    var mx = (e.clientX - rect.left - cx) / cx;
+    var my = (e.clientY - rect.top - cy) / cy;
+
+    orbs.forEach(function (orb, i) {
+      var depth = (i + 1) * 0.35;
+      orb.style.transition = 'transform 0.1s linear';
+      orb.style.transform = 'translate(' + (mx * 20 * depth) + 'px, ' + (my * 20 * depth) + 'px)';
+    });
+  });
+
+  hero.addEventListener('mouseleave', function () {
+    orbs.forEach(function (orb) {
+      orb.style.transition = 'transform 600ms cubic-bezier(0.23,1,0.32,1)';
+      orb.style.transform = '';
+    });
+  });
 })();
 
 /* ── Nav ── */
