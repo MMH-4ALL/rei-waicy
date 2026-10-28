@@ -4,8 +4,9 @@
 
 // ---- Theme Management ----
 function initTheme() {
-  const stored = localStorage.getItem('rei-theme');
-  if (stored) {
+  let stored;
+  try { stored = localStorage.getItem('rei-theme'); } catch { /* Use the system theme. */ }
+  if (stored === 'light' || stored === 'dark') {
     document.documentElement.setAttribute('data-theme', stored);
   } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
     document.documentElement.setAttribute('data-theme', 'light');
@@ -16,7 +17,7 @@ function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme');
   const next = current === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('rei-theme', next);
+  try { localStorage.setItem('rei-theme', next); } catch { /* Theme still applies for this visit. */ }
 }
 
 // ---- Particles System ----
@@ -50,10 +51,12 @@ class Particle {
 }
 
 function initParticles() {
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
+  if (!ctx) return;
   let animId;
   let particles = [];
 
@@ -94,11 +97,16 @@ function initParticles() {
 
 // ---- Scroll Reveal ----
 function initScrollReveal() {
+  if (!('IntersectionObserver' in window) || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => el.classList.add('visible'));
+    return;
+  }
   const observer = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
       });
     },
@@ -112,6 +120,7 @@ function initScrollReveal() {
 
 // ---- Parallax ----
 function initParallax() {
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
   window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
     document.querySelectorAll('.parallax-bg').forEach(el => {
@@ -151,10 +160,13 @@ function initMobileNav() {
   const toggle = document.querySelector('.nav-mobile-toggle');
   const links = document.querySelector('.nav-links');
   if (!toggle || !links) return;
-  toggle.addEventListener('click', () => {
-    links.classList.toggle('open');
+  links.id ||= 'mobile-nav-links';
+  toggle.setAttribute('aria-controls', links.id);
+  function setOpen(open) {
+    links.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
     const spans = toggle.querySelectorAll('span');
-    if (links.classList.contains('open')) {
+    if (open) {
       spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
       spans[1].style.opacity = '0';
       spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
@@ -163,16 +175,30 @@ function initMobileNav() {
       spans[1].style.opacity = '';
       spans[2].style.transform = '';
     }
-  });
+  }
+  setOpen(false);
+  toggle.addEventListener('click', () => setOpen(!links.classList.contains('open')));
+  links.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
 }
 
 // ---- Expandable Sections ----
 function initExpandables() {
   document.querySelectorAll('.expandable-header').forEach(header => {
-    header.addEventListener('click', () => {
+    const activate = () => {
       const expandable = header.closest('.expandable');
       expandable.classList.toggle('open');
-    });
+      header.setAttribute('aria-expanded', String(expandable.classList.contains('open')));
+    };
+    header.setAttribute('aria-expanded', String(header.closest('.expandable').classList.contains('open')));
+    if (header.tagName !== 'BUTTON') {
+      header.setAttribute('role', 'button');
+      header.tabIndex = 0;
+      header.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+      });
+    }
+    header.addEventListener('click', activate);
   });
 }
 
@@ -199,7 +225,10 @@ function initPageTransition() {
   document.querySelectorAll('a[href$=".html"]').forEach(link => {
     link.addEventListener('click', e => {
       // Skip external links or anchors
-      if (link.target === '_blank' || link.href.startsWith('http')) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey ||
+          link.target === '_blank' || link.hasAttribute('download') ||
+          new URL(link.href).origin !== location.origin ||
+          window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
       const transition = document.querySelector('.page-transition');
       if (!transition) return;

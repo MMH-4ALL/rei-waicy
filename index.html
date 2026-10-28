@@ -1342,6 +1342,14 @@ footer a:hover { opacity: .75; }
   .stat-n { font-size: 2rem; }
 }
 </style>
+<style>
+:focus-visible { outline: 2px solid var(--mint); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .fi { opacity: 1 !important; transform: none !important; }
+  .cursor-glow { display: none; }
+}
+</style>
 </head>
 <body>
 
@@ -1359,7 +1367,7 @@ footer a:hover { opacity: .75; }
 
 <!-- ── NAV ── -->
 <nav>
-  <a class="logo" onclick="nav('home')">
+  <a class="logo" href="#home" onclick="nav('home');return false">
     <div class="logo-mark">R</div>
     rei<sup>✦ WAICY 2026</sup>
   </a>
@@ -1375,7 +1383,7 @@ footer a:hover { opacity: .75; }
     <li><a href="#" data-page="about"         onclick="nav('about');return false">About</a></li>
     <li><a href="#" data-page="demo"         onclick="nav('demo');return false" class="cta-nav">✦ Try Demo</a></li>
   </ul>
-  <button class="ham" id="hamBtn" onclick="toggleNav()" aria-label="Toggle menu">
+  <button class="ham" id="hamBtn" onclick="toggleNav()" aria-label="Toggle menu" aria-controls="navLinks" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -1410,10 +1418,10 @@ footer a:hover { opacity: .75; }
     <div class="container">
       <div class="label fi">The Scale of the Problem</div>
       <div class="stat-strip">
-        <div class="stat-cell fi"><div class="stat-n">1 in 5</div><div class="stat-l">teens experience a mental health condition every year</div></div>
-        <div class="stat-cell fi fi-delay-1"><div class="stat-n">79%</div><div class="stat-l">of teens report feeling lonely on a regular basis</div></div>
-        <div class="stat-cell fi fi-delay-2"><div class="stat-n">80%</div><div class="stat-l">who need support never actually receive it</div></div>
-        <div class="stat-cell fi fi-delay-3"><div class="stat-n">2–4 wk</div><div class="stat-l">average wait to see a school counselor</div></div>
+        <div class="stat-cell fi"><div class="stat-n">1 in 7</div><div class="stat-l">10–19-year-olds globally experience a mental disorder. <a href="https://www.who.int/news-room/fact-sheets/detail/adolescent-mental-health">WHO, 2025</a></div></div>
+        <div class="stat-cell fi fi-delay-1"><div class="stat-n">Listen</div><div class="stat-l">a space to explore how supportive conversations could work</div></div>
+        <div class="stat-cell fi fi-delay-2"><div class="stat-n">Connect</div><div class="stat-l">encouraging support from trusted people</div></div>
+        <div class="stat-cell fi fi-delay-3"><div class="stat-n">Prototype</div><div class="stat-l">an educational demo, with no clinical evaluation</div></div>
       </div>
     </div>
   </section>
@@ -1467,7 +1475,7 @@ footer a:hover { opacity: .75; }
     </div>
   </section>
 
-  <footer>Rei · WAICY 2026 · Built by Malek Harrera &amp; Qclaw with care · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+  <footer>Rei · WAICY 2026 · Built by Malek Harera &amp; Qclaw with care · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
 </div>
 
 
@@ -1507,17 +1515,17 @@ footer a:hover { opacity: .75; }
   <section>
     <div class="container">
       <div class="label fi">The Problem</div>
-      <h2 class="sec fi">There is a teen mental<br>health crisis. <em>And it's accelerating.</em></h2>
-      <p class="lead fi">A generation raised on smartphones, shaped by social media, tested by a global pandemic, and crushed by academic pressure is experiencing a mental health emergency at unprecedented scale. The systems meant to hold them are overwhelmed.</p>
+      <h2 class="sec fi">Teen mental health<br>needs <em>real support.</em></h2>
+      <p class="lead fi">WHO describes adolescence as a time when social, physical and emotional changes can affect mental health. Supportive families, schools and communities matter, and many young people still face barriers to care.</p>
 
       <div class="stat-strip">
-        <div class="stat-cell fi"><div class="stat-n">42%</div><div class="stat-l">of high schoolers report persistent sadness or hopelessness (CDC, 2023)</div></div>
-        <div class="stat-cell fi fi-delay-1"><div class="stat-n">3×</div><div class="stat-l">increase in teen anxiety rates since 2007 (APA)</div></div>
-        <div class="stat-cell fi fi-delay-2"><div class="stat-n">1:500</div><div class="stat-l">actual school counselor ratio vs. recommended 1:250</div></div>
-        <div class="stat-cell fi fi-delay-3"><div class="stat-n">11 yrs</div><div class="stat-l">average age symptoms appear before any treatment begins</div></div>
+        <div class="stat-cell fi"><div class="stat-n">1 in 7</div><div class="stat-l">10–19-year-olds globally experience a mental disorder (WHO, 2025)</div></div>
+        <div class="stat-cell fi fi-delay-1"><div class="stat-n">Access</div><div class="stat-l">cost and availability can stand between young people and care</div></div>
+        <div class="stat-cell fi fi-delay-2"><div class="stat-n">Trust</div><div class="stat-l">stigma can make it harder to ask for help</div></div>
+        <div class="stat-cell fi fi-delay-3"><div class="stat-n">Support</div><div class="stat-l">schools, families and communities all have a role</div></div>
       </div>
 
-      <h3 class="fi" style="font-family:var(--fh);font-size:1.5rem;font-weight:400;margin:2.5rem 0 1.25rem;color:var(--text)">Why existing solutions fall short</h3>
+      <p class="fi" style="font-size:.85rem">Source: World Health Organization. “Mental Health of Adolescents.” <em>WHO</em>, 1 Sept. 2025, <a href="https://www.who.int/news-room/fact-sheets/detail/adolescent-mental-health">who.int</a>. Accessed 28 Oct. 2026. WHO is an international public health authority; its global estimate does not measure Rei’s effectiveness.</p><h3 class="fi" style="font-family:var(--fh);font-size:1.5rem;font-weight:400;margin:2.5rem 0 1.25rem;color:var(--text)">Barriers worth understanding</h3>
 
       <div class="egrid">
         <div class="ec r fi"><h3>🏫 School Counselors</h3><p>Overworked, under-resourced. Weeks-long waitlists. Unavailable after 3pm and on weekends — exactly when most crises happen.</p></div>
@@ -1550,7 +1558,7 @@ footer a:hover { opacity: .75; }
         <div class="card fi"><div class="card-icon">💬</div><h3>Active Listening</h3><p>Rei asks gentle follow-ups, reflects what it hears, and validates emotions without being dismissive or falsely cheerful.</p></div>
         <div class="card fi fi-delay-1"><div class="card-icon">📓</div><h3>Guided Journaling</h3><p>Prompts that help teens articulate feelings, track moods over time, and notice patterns in their emotional world.</p></div>
         <div class="card fi fi-delay-2"><div class="card-icon">🌬️</div><h3>Calming Techniques</h3><p>Breathing exercises, grounding techniques, and guided mindfulness — practical tools drawn from CBT and DBT principles.</p></div>
-        <div class="card fi"><div class="card-icon">🚨</div><h3>Crisis Detection</h3><p>Trained to recognize warning signs. Always directs teens to crisis lines and trusted adults when risk is detected. No exceptions.</p></div>
+        <div class="card fi"><div class="card-icon">🚨</div><h3>Crisis Detection</h3><p>The demo matches a small set of keywords to a written support message. This is not reliable crisis detection and must not be used to assess anyone’s safety.</p></div>
         <div class="card fi fi-delay-1"><div class="card-icon">👨‍👩‍👧</div><h3>Parental Dashboard</h3><p>Optional, privacy-respecting wellbeing check-ins for parents — aggregate trends, never private conversation content.</p></div>
         <div class="card fi fi-delay-2"><div class="card-icon">🔗</div><h3>Resource Connections</h3><p>Connects teens to counselors, local therapists, crisis lines, and peer communities at the right moment in the conversation.</p></div>
       </div>
@@ -1582,17 +1590,17 @@ footer a:hover { opacity: .75; }
         <div class="tl-item fi fi-delay-1"><div class="tl-dot">2</div><div class="tl-body"><h3>Safety Filter — Real-time Content Screening</h3><p>Every response passes through a safety layer before delivery. This catches harmful content, dangerous advice, or anything inappropriate for teens. If flagged, the response is replaced with a compassionate, grounded message.</p></div></div>
         <div class="tl-item fi fi-delay-2"><div class="tl-dot">3</div><div class="tl-body"><h3>Crisis Detection — Risk Assessment Module</h3><p>A secondary classifier monitors every conversation for distress signals: specific language patterns, sentiment shifts, escalating hopelessness. When thresholds are met, Rei pivots immediately to crisis resources and encourages the teen to reach out to a real person.</p></div></div>
         <div class="tl-item fi fi-delay-3"><div class="tl-dot">4</div><div class="tl-body"><h3>Memory Layer — Personalized Context</h3><p>Within a session, Rei remembers what was shared. Across sessions (with consent), Rei recalls key emotional themes — not to monitor, but to be a consistent companion who doesn't make teens re-explain their whole story every time.</p></div></div>
-        <div class="tl-item fi fi-delay-1"><div class="tl-dot">5</div><div class="tl-body"><h3>Privacy Layer — Data Minimization by Design</h3><p>Rei collects only what's strictly necessary. Conversations are end-to-end encrypted. Teens own their data and can delete it anytime. Compliance with COPPA, GDPR, and youth data laws is built in from day one — not bolted on later.</p></div></div>
+        <div class="tl-item fi fi-delay-1"><div class="tl-dot">5</div><div class="tl-body"><h3>Privacy Layer — Data Minimization by Design</h3><p>The current demo keeps messages in page memory and does not send them to an AI service or save them between visits. It has no encrypted messaging system or verified legal compliance. A future service would need specialist privacy review before collecting real conversations.</p></div></div>
         <div class="tl-item fi fi-delay-2"><div class="tl-dot">6</div><div class="tl-body"><h3>Interface Layer — Calm, Accessible Design</h3><p>No dark patterns. No notification addiction loops. No streaks or engagement gamification. Just a warm, clean space that feels safe to open and easy to put down — designed for anxious, tired teenagers.</p></div></div>
       </div>
 
       <div class="info-card lav fi" style="margin-top:2.5rem">
         <h3 style="font-family:var(--fh);font-size:1.05rem;margin-bottom:.85rem;color:var(--lav)">🔬 Prototype Tech Stack</h3>
-        <p style="margin-bottom:.9rem;font-size:.88rem;color:var(--muted)">The WAICY prototype demonstrates the conversational and safety layers using:</p>
+        <p style="margin-bottom:.9rem;font-size:.88rem;color:var(--muted)">The current demo uses written replies and a basic keyword check. The architecture above describes future design goals, not implemented or validated capabilities:</p>
         <div style="display:flex;flex-wrap:wrap;gap:.45rem">
-          <span class="pill pill-l">Custom LLM Integration</span>
+          <span class="pill pill-l">Scripted Reply Examples</span>
           <span class="pill pill-l">Vanilla JS + HTML/CSS</span>
-          <span class="pill pill-l">Safety System Prompting</span>
+          <span class="pill pill-l">Planned Safety Evaluation</span>
           <span class="pill pill-l">Local Session Memory</span>
           <span class="pill pill-l">Crisis Keyword Detection</span>
           <span class="pill pill-l">GitHub Pages Hosting</span>
@@ -1614,8 +1622,8 @@ footer a:hover { opacity: .75; }
 
       <div class="egrid">
         <div class="ec g fi"><h3>✅ Full Transparency</h3><p>Rei always identifies itself as an AI. It never pretends to be human. Teens know exactly what they're talking to. Nothing is hidden or obscured.</p></div>
-        <div class="ec g fi fi-delay-1"><h3>✅ Privacy First</h3><p>No data selling. No ad targeting. No third-party sharing. Conversations are encrypted. Teens own their data and can delete it completely, anytime.</p></div>
-        <div class="ec g fi fi-delay-2"><h3>✅ Human Escalation</h3><p>Rei knows its limits. Any situation involving safety risk triggers an immediate, warm handoff to crisis resources and real humans. AI steps aside when it matters most.</p></div>
+        <div class="ec g fi fi-delay-1"><h3>✅ Privacy First</h3><p>The scripted demo does not send chat messages to an AI service or store them between visits. Reloading clears the chat. The site still uses external fonts and GitHub hosting; do not enter private information.</p></div>
+        <div class="ec g fi fi-delay-2"><h3>✅ Human Escalation</h3><p>The demo can display a support message, but it cannot contact people, assess risk or arrange a handoff. Human oversight and evaluated safety systems are requirements for future development.</p></div>
         <div class="ec g fi fi-delay-3"><h3>✅ No Engagement Traps</h3><p>No streaks. No addictive push notifications. Rei actively encourages teens to go live their lives, spend time with friends, and put the phone down.</p></div>
         <div class="ec o fi fi-delay-1"><h3>⚠️ Clearly Not Therapy</h3><p>Rei is transparent that it's a companion, not a clinician. It regularly reminds teens that professional support exists and helps them navigate how to access it.</p></div>
         <div class="ec b fi fi-delay-2"><h3>🔵 Balanced Parental Involvement</h3><p>Teens retain privacy. Parents can opt into aggregate wellbeing check-ins. The balance between teen autonomy and parental peace of mind is designed collaboratively.</p></div>
@@ -1639,20 +1647,20 @@ footer a:hover { opacity: .75; }
     <div class="container">
       <div class="label fi">Impact</div>
       <h2 class="sec fi">What <em>real change</em><br>looks like.</h2>
-      <p class="lead fi">Rei isn't just an app — it's an intervention. Every teenager who processes an emotion, every 2am crisis that finds a compassionate response, every teen who finds the courage to talk to a counselor because Rei helped them find the words — that's the real impact.</p>
+      <p class="lead fi">Rei is an educational prototype, not a tested intervention. Every teenager who processes an emotion, every 2am crisis that finds a compassionate response, every teen who finds the courage to talk to a counselor because Rei helped them find the words — that's the real impact.</p>
 
       <div class="stat-strip">
-        <div class="stat-cell fi"><div class="stat-n">24/7</div><div class="stat-l">emotional support availability, no waitlist, no appointment needed</div></div>
+        <div class="stat-cell fi"><div class="stat-n">24/7</div><div class="stat-l">website access only; no staffed or monitored support</div></div>
         <div class="stat-cell fi fi-delay-1"><div class="stat-n">$0</div><div class="stat-l">cost barrier — designed to be free or subsidized for all teens</div></div>
-        <div class="stat-cell fi fi-delay-2"><div class="stat-n">∞</div><div class="stat-l">scalability — one counselor reaches 500 students; Rei can reach millions</div></div>
+        <div class="stat-cell fi fi-delay-2"><div class="stat-n">∞</div><div class="stat-l">a design goal; reach and effectiveness have not been measured</div></div>
       </div>
 
-      <h3 class="fi" style="font-family:var(--fh);font-size:1.5rem;font-weight:400;margin:2.5rem 0 1.25rem;color:var(--text)">Target Outcomes</h3>
+      <h3 class="fi" style="font-family:var(--fh);font-size:1.5rem;font-weight:400;margin:2.5rem 0 1.25rem;color:var(--text)">Proposed Evaluation</h3><p class="fi">No user study or clinical evaluation has been completed. These are questions for future research, not measured results or safety guarantees.</p>
       <div>
-        <div class="prog-wrap fi"><div class="prog-top"><span>Teens who feel heard and validated after a session</span><span class="ta">85%+</span></div><div class="prog-track"><div class="prog-fill" data-w="85%" style="width:0"></div></div></div>
-        <div class="prog-wrap fi fi-delay-1"><div class="prog-top"><span>Sessions resulting in a coping strategy the teen actively uses</span><span class="ta">70%+</span></div><div class="prog-track"><div class="prog-fill" data-w="70%" style="width:0"></div></div></div>
-        <div class="prog-wrap fi fi-delay-2"><div class="prog-top"><span>Teens referred to professional support who follow through</span><span class="ta">60%+</span></div><div class="prog-track"><div class="prog-fill" data-w="60%" style="width:0"></div></div></div>
-        <div class="prog-wrap fi fi-delay-3"><div class="prog-top"><span>Crisis situations that result in safe escalation to human support</span><span class="ta">100%</span></div><div class="prog-track"><div class="prog-fill" data-w="100%" style="width:0"></div></div></div>
+        <div class="prog-wrap fi"><div class="prog-top"><span>Teens who feel heard and validated after a session</span><span class="ta">Not measured</span></div><div class="prog-track"><div class="prog-fill" data-w="0%" style="width:0"></div></div></div>
+        <div class="prog-wrap fi fi-delay-1"><div class="prog-top"><span>Sessions resulting in a coping strategy the teen actively uses</span><span class="ta">Not measured</span></div><div class="prog-track"><div class="prog-fill" data-w="0%" style="width:0"></div></div></div>
+        <div class="prog-wrap fi fi-delay-2"><div class="prog-top"><span>Teens referred to professional support who follow through</span><span class="ta">Not measured</span></div><div class="prog-track"><div class="prog-fill" data-w="0%" style="width:0"></div></div></div>
+        <div class="prog-wrap fi fi-delay-3"><div class="prog-top"><span>Whether people can find appropriate human support</span><span class="ta">Not measured</span></div><div class="prog-track"><div class="prog-fill" data-w="0%" style="width:0"></div></div></div>
       </div>
 
       <div class="grid2" style="margin-top:3rem">
@@ -1673,7 +1681,7 @@ footer a:hover { opacity: .75; }
     <div class="container">
       <div class="label fi">Interactive Demo</div>
       <h2 class="sec fi">Talk to <em>Rei</em>.</h2>
-      <p class="lead fi" style="margin-bottom:1.75rem">A live preview of Rei's conversational companion. Click any scenario to start — or just say what's on your mind.</p>
+      <p class="lead fi" style="margin-bottom:1.75rem">A scripted preview of the idea. Replies are chosen from written examples; no AI service is connected. Please use fictional examples and avoid personal details.</p>
 
       <div class="demo-layout fi">
         <!-- Chat window -->
@@ -1683,7 +1691,7 @@ footer a:hover { opacity: .75; }
               <div class="chat-ava">R</div>
               <div class="chat-name-wrap">
                 <div class="name">Rei</div>
-                <div class="status"><span class="status-dot"></span> here for you, always</div>
+                <div class="status"><span class="status-dot"></span> scripted demonstration</div>
               </div>
             </div>
             <div class="chat-msgs" id="chatMsgs">
@@ -1706,7 +1714,7 @@ footer a:hover { opacity: .75; }
             </div>
           </div>
           <div class="info-card mint" style="margin-top:1rem">
-            <p style="margin:0;font-size:.82rem;color:var(--muted)"><strong style="color:var(--mint)">🛡️ Safety:</strong> Rei always directs teens to professional support in a crisis. US? Call or text <strong style="color:var(--mint)">988</strong> (Suicide &amp; Crisis Lifeline) — 24/7.</p>
+            <p style="margin:0;font-size:.82rem;color:var(--muted)"><strong style="color:var(--mint)">🛡️ Safety:</strong> This scripted demo cannot reliably recognize a crisis or contact help. For urgent support, contact a trusted adult or local emergency services.</p>
           </div>
         </div>
 
@@ -1745,7 +1753,7 @@ footer a:hover { opacity: .75; }
         <div class="crit fi"><div class="crit-n">01</div><div class="crit-body"><h3>Real-World Problem Solving</h3><p>Teen mental health and loneliness represent one of the most documented youth crises of the 21st century. Rei directly addresses a measurable, urgent gap in support infrastructure for adolescents — millions of teens who fall through the cracks of existing systems.</p></div></div>
         <div class="crit fi fi-delay-1"><div class="crit-n">02</div><div class="crit-body"><h3>Ethical AI Development</h3><p>Rei's architecture is built around ethics: transparency, privacy, safety, human oversight, and a refusal to exploit users. Safety classifiers, crisis detection, privacy-first data handling, and zero dark patterns — ethics are the design brief, not a checkbox.</p></div></div>
         <div class="crit fi fi-delay-2"><div class="crit-n">03</div><div class="crit-body"><h3>Youth-Led Innovation</h3><p>Rei was conceived and built by young people who have experienced the teen mental health crisis firsthand. The team understands the users because we are them — or recently were. That lived experience shapes every design decision.</p></div></div>
-        <div class="crit fi fi-delay-3"><div class="crit-n">04</div><div class="crit-body"><h3>Technical Feasibility</h3><p>The prototype demonstrates core functionality with Claude API, custom safety prompting, crisis detection logic, session memory, and a polished responsive interface — all in pure HTML, CSS, and JavaScript. The architecture scales from prototype to production.</p></div></div>
+        <div class="crit fi fi-delay-3"><div class="crit-n">04</div><div class="crit-body"><h3>Technical Feasibility</h3><p>The current prototype uses HTML, CSS and JavaScript, written example replies, keyword matching and temporary in-page chat history. It does not call Claude or another AI API. A working AI service, evaluated safety systems and secure data handling remain future work.</p></div></div>
         <div class="crit fi fi-delay-1"><div class="crit-n">05</div><div class="crit-body"><h3>Social Impact Potential</h3><p>Millions of teenagers worldwide lack adequate emotional support. Rei scales to reach any smartphone-owning teen — a global intervention achievable with a small operational footprint and zero cost barrier for users.</p></div></div>
         <div class="crit fi fi-delay-2"><div class="crit-n">06</div><div class="crit-body"><h3>Presentation &amp; Communication</h3><p>This website communicates Rei's story, purpose, architecture, ethics, and impact in a clear, accessible format. Designed for judges and for the teens Rei serves — warm, readable, and honest about what Rei is and what it isn't.</p></div></div>
       </div>
@@ -1814,7 +1822,7 @@ footer a:hover { opacity: .75; }
       </div>
     </div>
   </section>
-  <footer>Rei · WAICY 2026 · Built by Malek Harrera &amp; Qclaw with 💜 for the teens who needed it · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
+  <footer>Rei · WAICY 2026 · Built by Malek Harera &amp; Qclaw with 💜 for the teens who needed it · <a href="https://github.com/MMH-4ALL/rei-waicy" target="_blank">GitHub ↗</a></footer>
 </div>
 
 
@@ -1844,7 +1852,7 @@ footer a:hover { opacity: .75; }
 /* ── Cursor glow follower ── */
 (function () {
   const glow = document.getElementById('cursorGlow');
-  if (!glow) return;
+  if (!glow || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   let mx = -500, my = -500;
   let cx = -500, cy = -500;
   let ticking = false;
@@ -1869,7 +1877,7 @@ footer a:hover { opacity: .75; }
   const heroInner = document.querySelector('.hero-inner');
   const heroSection = document.querySelector('.hero');
   const orbs = document.querySelectorAll('.bg-orb');
-  if (!heroInner || !heroSection) return;
+  if (!heroInner || !heroSection || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   window.addEventListener('scroll', function () {
     var scrollY = window.scrollY;
@@ -1891,7 +1899,7 @@ footer a:hover { opacity: .75; }
 (function () {
   const hero = document.querySelector('.hero');
   const orbs = document.querySelectorAll('.bg-orb');
-  if (!hero || !orbs.length) return;
+  if (!hero || !orbs.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   hero.addEventListener('mousemove', function (e) {
     var rect = hero.getBoundingClientRect();
@@ -1916,33 +1924,49 @@ footer a:hover { opacity: .75; }
 })();
 
 /* ── Nav ── */
-function nav(id) {
-  document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+function nav(id, updateHistory = true) {
   var pg = document.getElementById('page-' + id);
+  if (!pg) { id = 'home'; pg = document.getElementById('page-home'); }
+  document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
   if (pg) pg.classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(function (a) {
     a.classList.toggle('active', a.dataset.page === id);
+    if (a.dataset.page === id) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
   });
   document.getElementById('navLinks').classList.remove('open');
   document.getElementById('hamBtn').classList.remove('open');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('hamBtn').setAttribute('aria-expanded', 'false');
+  if (updateHistory && location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (updateHistory && pg) {
+    var heading = pg.querySelector('h1, h2');
+    if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+  }
   setTimeout(initFI, 100);
   if (id === 'impact') setTimeout(animateProgress, 400);
 }
 
 function toggleNav() {
-  document.getElementById('navLinks').classList.toggle('open');
+  var open = document.getElementById('navLinks').classList.toggle('open');
   document.getElementById('hamBtn').classList.toggle('open');
+  document.getElementById('hamBtn').setAttribute('aria-expanded', String(open));
 }
 
 /* ── Fade-in observer ── */
+var fadeObserver;
 function initFI() {
-  var obs = new IntersectionObserver(function (entries) {
+  if (fadeObserver) fadeObserver.disconnect();
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.fi').forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  fadeObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      if (e.isIntersecting) e.target.classList.add('in');
+      if (e.isIntersecting) { e.target.classList.add('in'); fadeObserver.unobserve(e.target); }
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.page.active .fi').forEach(function (el) { obs.observe(el); });
+  document.querySelectorAll('.page.active .fi').forEach(function (el) { fadeObserver.observe(el); });
 }
 
 /* ── Progress bars ── */
@@ -2148,13 +2172,13 @@ function quickSend(txt) {
 
 function sendMsg() {
   var inp = document.getElementById('chatIn');
-  if (!inp) return;
+  var btn = document.getElementById('sendBtn');
+  if (!inp || (btn && btn.disabled)) return;
   var txt = inp.value.trim();
   if (!txt) return;
   inp.value = '';
   document.getElementById('quickPs').style.display = 'none';
   addBubble('user', txt);
-  var btn = document.getElementById('sendBtn');
   if (btn) btn.disabled = true;
   setTimeout(function () {
     var typing = addTyping();
@@ -2174,7 +2198,7 @@ function getReiResponse(txt) {
   // Crisis detection — safety first
   var crisisWords = ['suicide', 'kill myself', 'end it all', 'want to die', 'better off dead', 'self harm', 'cutting myself', 'hurt myself'];
   if (crisisWords.some(function (w) { return lower.indexOf(w) !== -1; })) {
-    return "I want you to know — what you're feeling right now matters so much, and you deserve support. Please talk to a trusted adult or call or text 988 (US Suicide & Crisis Lifeline) — it's free, confidential, and someone is there 24/7. You can also text HOME to 741741. You don't have to carry this alone.";
+    return "I want you to know — what you're feeling right now matters so much, and you deserve support. Please reach out to a trusted adult who can stay with you. If you're in immediate danger, contact your local emergency services. This scripted demo cannot assess your safety or contact help.";
   }
 
   // Category detection
@@ -2261,9 +2285,18 @@ function escapeHTML(s) {
 
 /* ── Init ── */
 document.querySelectorAll('.nav-links a').forEach(function (a) {
-  a.addEventListener('click', function (e) { e.preventDefault(); });
+  a.href = '#' + a.dataset.page;
 });
-initFI();
+window.addEventListener('popstate', function () { nav(location.hash.slice(1) || 'home', false); });
+window.addEventListener('hashchange', function () { nav(location.hash.slice(1) || 'home', false); });
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamBtn').classList.remove('open');
+    document.getElementById('hamBtn').setAttribute('aria-expanded', 'false');
+  }
+});
+nav(location.hash.slice(1) || 'home', false);
 renderScenarios();
 </script>
 </body>
